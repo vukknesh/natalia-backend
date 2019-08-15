@@ -23,10 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c6zvbqo(vhx21n5+^8norkywz(+5(-l!q7v)vcb0-b#e-dk0wc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['exp://192.168.0.16:19000',
-                 'exp://ki-fe8.anonymous.frontend.exp.direct:80', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
