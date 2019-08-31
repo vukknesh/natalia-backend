@@ -1,8 +1,13 @@
 from django.apps import AppConfig
+import os
+from datetime import datetime
+from django.conf import settings
 
 
 class UserprofileConfig(AppConfig):
     name = 'userprofile'
 
     def ready(self):
-        import userprofile.signals
+        from . import scheduler
+        if settings.SCHEDULER_AUTOSTART:
+            scheduler.start()

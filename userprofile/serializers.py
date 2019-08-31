@@ -24,27 +24,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         depth = 1
-        fields = ('url', 'id', 'username', 'first_name',
+        fields = ('url',  'username', 'first_name',
                   'email',)
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.id')
-    id = serializers.IntegerField(source='pk', read_only=True)
-
-    slug = serializers.SlugField('slug', read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True)
-    email = serializers.CharField(source='user.email', read_only=True)
-    first_name = serializers.CharField(
-        source='user.first_name', read_only=True)
-    last_name = serializers.CharField(
-        source='user.last_name', read_only=True)
-
     class Meta:
         model = Profile
         depth = 1
-        fields = ('all',)
+        fields = ('facebook', 'instagram', 'phone_number',
+                  'aulas_remarcadas', 'plano')
 
     def get_full_name(self, obj):
         request = self.context['request']
@@ -68,8 +58,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileUpdateSerializer(ModelSerializer):
     user = ReadOnlyField(source='user.id')
     id = IntegerField(source='pk', read_only=True)
-    slug = SlugField('slug', read_only=True)
 
     class Meta:
         model = Profile
-        fields = ['all', ]
+        fields = ['facebook', 'instagram',
+                  'phone_number', 'plano', 'aulas_remarcadas']

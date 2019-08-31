@@ -17,9 +17,20 @@ class Profile(models.Model):
     # personal
     phone_number = models.CharField(
         max_length=20, blank=True, null=True, default='')
-
+    aulas_remarcadas = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
-
+    PLANO_A = '8 Aulas'
+    PLANO_B = '10 Aulas'
+    PLANO_C = '12 Aulas'
+    PLANO_CHOICES = (
+        (PLANO_A, '8 Aulas'),
+        (PLANO_B, '10 Aulas'),
+        (PLANO_C, '12 Aulas'),
+    )
+    plano = models.CharField(
+        max_length=20,
+        choices=PLANO_CHOICES,
+    )
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
