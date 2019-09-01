@@ -110,9 +110,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'natalia',
-            'USER': 'natalia',
-            'PASSWORD': 'natalia',
+            'NAME': 'myprojectpilates',
+            'USER': 'myprojectuser',
+            'PASSWORD': 'password',
             'HOST': 'localhost',
             'PORT': '',
         }
