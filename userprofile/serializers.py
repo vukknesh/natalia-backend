@@ -56,10 +56,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileUpdateSerializer(ModelSerializer):
-    user = ReadOnlyField(source='user.id')
-    id = IntegerField(source='pk', read_only=True)
 
     class Meta:
         model = Profile
-        fields = ('slug', 'facebook', 'instagram', 'phone_number',
-                  'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')
+        fields = ('facebook', 'instagram', 'phone_number',
+                  'aulas_remarcadas', 'plano',  'created_at', 'updated')

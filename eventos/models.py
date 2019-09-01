@@ -23,9 +23,9 @@ class EventoManager(models.Manager):
 
 class Evento(models.Model):
     slug = models.SlugField(unique=True)
-    title = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
-    summary = models.CharField(max_length=255, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    comentario = models.CharField(max_length=255, null=True, blank=True)
     starting_date = models.DateTimeField(max_length=20, null=True, blank=True)
     ending_date = models.DateTimeField(max_length=20, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -33,7 +33,7 @@ class Evento(models.Model):
     objects = EventoManager()
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ['-starting_date']
 
     def __unicode__(self):
         return str(self.user.first_name)

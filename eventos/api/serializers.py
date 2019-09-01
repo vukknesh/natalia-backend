@@ -16,14 +16,10 @@ class EventoCreateUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ['id', 'comentario', 'starting_date', 'ending_date', 'title']
+        fields = ['id', 'comentario', 'starting_date', 'ending_date', 'user']
 
 
 class EventoDetailSerializer(ModelSerializer):
-
-    user = UserSerializer(read_only=True)
-
-    user_image = ImageField(source='user.profile.image', read_only=True)
 
     class Meta:
         model = Evento
