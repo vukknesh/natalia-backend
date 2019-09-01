@@ -29,11 +29,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    user = UserSerializer(user)
 
     class Meta:
         model = Profile
         depth = 1
-        fields = ('slug', 'facebook', 'instagram', 'phone_number',
+        fields = ('id', 'slug', 'facebook', 'instagram', 'phone_number',
                   'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')
 
     def get_full_name(self, obj):
