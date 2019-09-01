@@ -16,7 +16,7 @@ class EventoCreateUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ['id', 'comentario', 'starting_date', 'ending_date', 'user']
+        fields = ['id', 'comentario', 'starting_date', 'ending_date']
 
 
 class EventoDetailSerializer(ModelSerializer):
@@ -24,7 +24,7 @@ class EventoDetailSerializer(ModelSerializer):
     class Meta:
         model = Evento
         fields = [
-            'id', 'slug', 'comentario', 'starting_date', 'ending_date', 'user'
+            'id', 'slug', 'comentario', 'starting_date', 'ending_date', 'user', 'publish'
 
         ]
 
