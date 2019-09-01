@@ -29,6 +29,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    user = ReadOnlyField(source='user.id')
 
     class Meta:
         model = Profile
@@ -56,8 +57,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileUpdateSerializer(ModelSerializer):
+    user = ReadOnlyField(source='user.id')
 
     class Meta:
         model = Profile
-        fields = ('facebook', 'instagram', 'phone_number',
+        fields = ('user', 'facebook', 'instagram', 'phone_number',
                   'aulas_remarcadas', 'plano',  'created_at', 'updated')
