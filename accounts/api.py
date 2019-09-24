@@ -6,6 +6,7 @@ from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from userprofile.serializers import ProfileSerializer
+from userprofile.models import Profile
 
 # Register API
 
@@ -47,10 +48,18 @@ class LoginAPI(generics.GenericAPIView):
 
 
 class UserAPI(generics.RetrieveAPIView):
+    model = User
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+    # authentication_classes = (TokenAuthentication,)
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-    def get_object(self):
-        return self.request.user
+    def retrieve(self, request, pk=None):
+        profile = Profile.objects.filter(user=request.user.id)[0]
+
+        return Response({
+            "user": UserSerializer(request.user).data,
+            "myprofile": ProfileSerializer(profile, context=self.get_serializer_context()).data,
+        })
