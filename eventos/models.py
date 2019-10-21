@@ -26,6 +26,7 @@ class Evento(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
+    desmarcado = models.BooleanField(default=False)
     starting_date = models.DateTimeField(max_length=20, null=True, blank=True)
     ending_date = models.DateTimeField(max_length=20, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
