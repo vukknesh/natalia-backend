@@ -16,4 +16,4 @@ RUN pip install Pillow
 RUN pip install -r requirements.txt
 
 COPY . /backend/
-EXPOSE 8000
+EXPOSE 3333
