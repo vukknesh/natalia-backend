@@ -63,7 +63,6 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
