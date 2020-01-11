@@ -12,19 +12,17 @@ from django.utils.text import slugify
 
 class Profile(models.Model):
     slug = models.SlugField(unique=True)
-    facebook = models.CharField(max_length=100, blank=True, default='')
-    instagram = models.CharField(max_length=100, blank=True, default='')
     # personal
     phone_number = models.CharField(
         max_length=20, blank=True, null=True, default='')
     aulas_remarcadas = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
-    PLANO_A = '8 Aulas'
-    PLANO_B = '10 Aulas'
+    PLANO_A = '4 Aulas'
+    PLANO_B = '8 Aulas'
     PLANO_C = '12 Aulas'
     PLANO_CHOICES = (
-        (PLANO_A, '8 Aulas'),
-        (PLANO_B, '10 Aulas'),
+        (PLANO_A, '4 Aulas'),
+        (PLANO_B, '8 Aulas'),
         (PLANO_C, '12 Aulas'),
     )
     plano = models.CharField(

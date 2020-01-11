@@ -34,13 +34,13 @@ class Evento(models.Model):
     objects = EventoManager()
 
     class Meta:
-        ordering = ['-starting_date']
+        ordering = ['starting_date']
 
     def __unicode__(self):
-        return str(self.user.first_name)
+        return f'{self.user.first_name} - {self.starting_date}'
 
     def __str__(self):
-        return str(self.user.first_name)
+        return f'{self.user.first_name} - {self.starting_date}'
 
     def get_absolute_url(self):
         return reverse("eventos:thread", kwargs={"id": self.id})
