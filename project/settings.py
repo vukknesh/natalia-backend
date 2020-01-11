@@ -55,6 +55,7 @@ SCHEDULER_CONFIG = {
 }
 SCHEDULER_AUTOSTART = True
 
+
 REST_FRAMEWORK = {
     # "DATE_INPUT_FORMATS": ['%d-%m-%Y'],
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
@@ -62,6 +63,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
