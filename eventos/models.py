@@ -56,7 +56,7 @@ def update_evento(sender, instance, **kwargs):
                                           starting_date__month__lte=month)
     if(user.profile.plano == "4 Aulas"):
         if(aulas_do_mes.count() >= 4):
-            a.bonus = True
+            instance.bonus = True
             pass
     if(user.profile.plano == "8 Aulas"):
 
