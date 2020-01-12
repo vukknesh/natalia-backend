@@ -90,7 +90,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
         print(f'dif_hours = {dif_hours}')
-        print(f'dif = {dif}')
+        print(f'diff = {diff}')
         print(f'days = {days}')
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
