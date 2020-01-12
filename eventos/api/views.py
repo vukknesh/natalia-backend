@@ -95,14 +95,14 @@ class EventoUpdateAPIView(UpdateAPIView):
             # evento proximo dia
             print('a')
             if(now.hour > 20 and ((now.day - evento.starting_date.day).days == -1)):
-            print('b')
-            raise ValidationError(
-                {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+                print('b')
+                raise ValidationError(
+                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
             if(((now.day - evento.starting_date.day).days == 0)):
-            print('c')
-            raise ValidationError(
-                {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+                print('c')
+                raise ValidationError(
+                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
         print(
