@@ -158,15 +158,15 @@ class EventoDeleteAPIView(DestroyAPIView):
 
 class EventoListAPIView(ListAPIView):
     serializer_class = EventoListSerializer
-    # filter_backends = [SearchFilter, OrderingFilter]
-    filterset_class = EventoFilter
     permission_classes = [AllowAny]
-    # search_fields = ['title', 'content', 'user__first_name']
 
     def get_queryset(self, *args, **kwargs):
+        print(f'self {self.request}')
         user = self.request.user
+        print(f'user {user}')
+        return user.evento_set.all().filter(starting_date__gte=datetime.now())
 
-        queryset_list = Evento.objects.filter(
-            starting_date__gte=datetime.now()).filter(user=user)  # filter(user=self.request.user)
+        # queryset_list = Evento.objects.filter(
+        #     starting_date__gte=datetime.now()).filter(user=user)  # filter(user=self.request.user)
 
-        return queryset_list
+        # return queryset_list
