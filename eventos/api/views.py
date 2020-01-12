@@ -86,20 +86,11 @@ class EventoUpdateAPIView(UpdateAPIView):
         # print now.year, now.month, now.day, now.hour, now.minute, now.second
         year = now.year
         month = now.month
-        print(f'evento = {evento}')
-        print(f'now.hour = {now.hour}')
-        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
-        print(f'user.first_name = {user.first_name}')
-
-        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
+        if(evento.desmarcado) raise ValidationError(
+            {"message": "Aula já desmarcada!"}) 
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
-            print(f'now.hour {now.hour}')
-            print(f'now.day {now.day}')
-            print(f'evento.starting_date.day {evento.starting_date.day}')
-            print('b acima do if')
             if(now.hour > 20 and ((evento.starting_date.day - now.day) == 1)):
-                print('b')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
@@ -109,10 +100,8 @@ class EventoUpdateAPIView(UpdateAPIView):
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
-        print(
-            f'evento.starting_date.hour - now.hour < 3 {(evento.starting_date.hour - now.hour) < 3}')
-        if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and ((evento.starting_date.hour - now.hour) < 3)):
-            print('d')
+
+        if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and ((evento.starting_date.hour - now.hour).hours < 3)):
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
 
@@ -120,8 +109,6 @@ class EventoUpdateAPIView(UpdateAPIView):
                                               starting_date__month__gte=month,
                                               starting_date__year__lte=year,
                                               starting_date__month__lte=month)
-        print(f'aulas_do_mes = {aulas_do_mes}')
-        print(f'user.profile.plano = {user.profile.plano}')
         if(user.profile.plano == "4 Aulas"):
             if(user.profile.aulas_remarcadas > 0):
                 raise ValidationError(
@@ -151,11 +138,8 @@ class EventoUpdateAPIView(UpdateAPIView):
                         {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
                 pass
         profile = user.profile
-        print(f'p[rofile =] {profile}')
         profile.aulas_remarcadas = profile.aulas_remarcadas + 1
-        print(f'p[rofile.aulas_remarcadas =] {profile.aulas_remarcadas}')
         profile.save()
-        print('profile.save()')
         serializer.save(user=user)
         # email send_email
 
