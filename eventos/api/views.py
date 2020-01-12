@@ -99,7 +99,6 @@ class EventoUpdateAPIView(UpdateAPIView):
             print(f'evento.starting_date.day {evento.starting_date.day}')
             print('b acima do if')
             if(now.hour > 20 and (evento.starting_date.day - now.day == 1)):
-                print(((evento.starting_date.day - now.day).days == 1))
                 print('b')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
