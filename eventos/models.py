@@ -48,41 +48,64 @@ class Evento(models.Model):
 def update_evento(sender, instance, **kwargs):
     user = instance.user
     now = datetime.now(timezone.utc)
-    # print now.year, now.month, now.day, now.hour, now.minute, now.second
     year = instance.starting_date.year
     month = instance.starting_date.month
     aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
                                           starting_date__month__gte=month,
                                           starting_date__year__lte=year,
                                           starting_date__month__lte=month)
-    print(f'aulas_do_mes = {aulas_do_mes}')
-    my_list = list(aulas_do_mes)
-    my_list.append(instance)
-    print(f'my_list = {my_list}')
-    newlist = sorted(my_list, key=lambda x: x.starting_date, reverse=True)
-    print(f'newList = {newlist}')
     if(user.profile.plano == "4 Aulas"):
-
-        print(f'eentrou  4')
-        if(my_list.count() > 4):
-            print(f'eentrou >    4')
-            instance.bonus = True
+        if(aulas_do_mes.count() >= 4):
+            a.bonus = True
             pass
     if(user.profile.plano == "8 Aulas"):
-        print(f'eentrou 8')
 
-        if(my_list.count() > 8):
-            print(f'eentrou >    8')
+        if(aulas_do_mes.count() >= 8):
             instance.bonus = True
-            print(f'instance.bonus {instance.bonus}')
             pass
 
     if(user.profile.plano == "12 Aulas"):
 
-        if(my_list.count() > 12):
+        if(aulas_do_mes.count() >= 12):
             instance.bonus = True
             pass
     print(f'instance{instance} pre save')
 
 
 pre_save.connect(update_evento, sender=Evento)
+
+
+# def update_evento(sender, instance, **kwargs):
+#     user = instance.user
+#     now = datetime.now(timezone.utc)
+#     # print now.year, now.month, now.day, now.hour, now.minute, now.second
+#     year = instance.starting_date.year
+#     month = instance.starting_date.month
+#     aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+#                                           starting_date__month__gte=month,
+#                                           starting_date__year__lte=year,
+#                                           starting_date__month__lte=month)
+#     my_list = list(aulas_do_mes)
+#     my_list.append(instance)
+#     newlist = sorted(my_list, key=lambda x: x.starting_date, reverse=True)
+#     if(user.profile.plano == "4 Aulas"):
+
+#         if(aulas_do_mes.count() >= 4):
+#             a = newlist[0]
+#             a.bonus = True
+#             pass
+#     if(user.profile.plano == "8 Aulas"):
+
+#         if(aulas_do_mes.count() >= 8):
+#             instance.bonus = True
+#             pass
+
+#     if(user.profile.plano == "12 Aulas"):
+
+#         if(aulas_do_mes.count() >= 12):
+#             instance.bonus = True
+#             pass
+#     print(f'instance{instance} pre save')
+
+
+# pre_save.connect(update_evento, sender=Evento)
