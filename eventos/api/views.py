@@ -160,7 +160,7 @@ class EventoListAPIView(ListAPIView):
     serializer_class = EventoListSerializer
     # filter_backends = [SearchFilter, OrderingFilter]
     filterset_class = EventoFilter
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [AllowAny]
     # search_fields = ['title', 'content', 'user__first_name']
 
     def get_queryset(self, *args, **kwargs):

@@ -27,6 +27,7 @@ class Profile(models.Model):
     plano = models.CharField(
         max_length=20,
         choices=PLANO_CHOICES,
+        default="4 Aulas"
     )
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
@@ -68,7 +69,7 @@ def create_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
-    instance.profile.plano = PLANO_A
+
     instance.profile.save()
 
 
