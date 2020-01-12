@@ -44,8 +44,37 @@ class Evento(models.Model):
 
 
 def update_evento(sender, instance, **kwargs):
-    print(f'sender{sender}')
-    print(f'instance{instance}')
+    user = instance.user
+    now = datetime.now(timezone.utc)
+    # print now.year, now.month, now.day, now.hour, now.minute, now.second
+    year = now.year
+    month = now.month
+    aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+                                          starting_date__month__gte=month,
+                                          starting_date__year__lte=year,
+                                          starting_date__month__lte=month)
+    if(user.profile.plano == "4 Aulas"):
+
+        if(aulas_do_mes.count() > 4):
+            instance.bonus = True
+            pass
+    if(user.profile.plano == "8 Aulas"):
+        print(f'eentrou 8')
+
+        if(aulas_do_mes.count() > 8):
+            print(f'eentrou >    8')
+            instance.bonus = True
+            print(f'instance.bonus {instance.bonus}')
+            pass
+
+    if(user.profile.plano == "12 Aulas"):
+
+        if(aulas_do_mes.count() > 12):
+            instance.bonus = True
+            pass
+    print(f'instance{instance} pre save')
+    instance.save()
+    print(f'instance{instance} post save')
 
 
 post_save.connect(update_evento, sender=Evento)
