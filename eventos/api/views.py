@@ -100,6 +100,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             if(((now.day - evento.starting_date.day).days == 0)):
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+            pass
         # funcionando
         if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and (evento.starting_date.hour - now.hour < 3)):
             raise ValidationError(
@@ -138,7 +139,9 @@ class EventoUpdateAPIView(UpdateAPIView):
                     raise ValidationError(
                         {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
                 pass
-
+        profile = user.profile
+        profile.aulas_remarcadas = profile.aulas_remarcadas + 1
+        profile.save()
         serializer.save(user=user)
         # email send_email
 
