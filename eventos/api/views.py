@@ -17,7 +17,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 from datetime import datetime, timezone
-
+from django.contrib.auth.models import User
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
