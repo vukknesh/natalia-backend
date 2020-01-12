@@ -49,8 +49,8 @@ def update_evento(sender, instance, **kwargs):
     user = instance.user
     now = datetime.now(timezone.utc)
     # print now.year, now.month, now.day, now.hour, now.minute, now.second
-    year = now.year
-    month = now.month
+    year = instance.starting_date.year
+    month = instance.starting_date.month
     aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
                                           starting_date__month__gte=month,
                                           starting_date__year__lte=year,
