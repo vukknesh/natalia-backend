@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 
 from markdown_deux import markdown
 
@@ -26,6 +26,7 @@ class Evento(models.Model):
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
     desmarcado = models.BooleanField(default=False)
+    bonus = models.BooleanField(default=False)
     starting_date = models.DateTimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -45,3 +46,11 @@ class Evento(models.Model):
 
     def get_delete_url(self):
         return reverse("eventos:delete", kwargs={"id": self.id})
+
+
+def update_evento(sender, instance, **kwargs):
+    print(f'sender{sender}')
+    print(f'instance{instance}')
+
+
+post_save.connect(update_evento, sender=Evento)

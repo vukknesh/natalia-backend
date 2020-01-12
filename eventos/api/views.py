@@ -89,9 +89,6 @@ class EventoUpdateAPIView(UpdateAPIView):
         diff = evento.starting_date - now
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
-        print(f'dif_hours = {dif_hours}')
-        print(f'diff = {diff}')
-        print(f'days = {days}')
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
         if(evento.starting_date.hour <= 12):
@@ -147,6 +144,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile = user.profile
         profile.aulas_remarcadas = profile.aulas_remarcadas + 1
         profile.save()
+        print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
         serializer.save(user=user)
         # email send_email
 
