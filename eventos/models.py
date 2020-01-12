@@ -59,8 +59,8 @@ def update_evento(sender, instance, **kwargs):
     my_list = list(aulas_do_mes)
     my_list.append(instance)
     print(f'my_list = {my_list}')
-    print(my_list.sort(key=lambda r: r.starting_date))
-    print(my_list.sort(key=lambda r: r.starting_date).reverse())
+    newlist = sorted(my_list, key=lambda x: x.starting_date, reverse=True)
+    print(f'newList = {newlist}')
     if(user.profile.plano == "4 Aulas"):
 
         print(f'eentrou  4')
