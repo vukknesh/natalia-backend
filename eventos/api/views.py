@@ -86,7 +86,11 @@ class EventoUpdateAPIView(UpdateAPIView):
         # print now.year, now.month, now.day, now.hour, now.minute, now.second
         year = now.year
         month = now.month
+        print(f'evento = {evento}')
+        print(f'now = {now}')
+        print(f'user.first_name = {user.first_name}')
 
+        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
             if(now.hour > 20 and ((now.day - evento.starting_date.day).days == -1)):
@@ -97,13 +101,15 @@ class EventoUpdateAPIView(UpdateAPIView):
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
         # funcionando
-        # if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and (evento.starting_date.hour - now.hour < 3)):
-        #     raise ValidationError(
-        #         {"message": "Voce so pode remarcar aulas 3 horas antes."})
+        if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and (evento.starting_date.hour - now.hour < 3)):
+            raise ValidationError(
+                {"message": "Voce so pode remarcar aulas 3 horas antes."})
         aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
                                               starting_date__month__gte=month,
                                               starting_date__year__lte=year,
                                               starting_date__month__lte=month)
+        print(f'aulas_do_mes = {aulas_do_mes}')
+        print(f'user.profile.plano = {user.profile.plano}')
         if(user.profile.plano == "4 Aulas"):
             if(user.profile.aulas_remarcadas > 0):
                 raise ValidationError(
