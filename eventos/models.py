@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -26,8 +26,8 @@ class Evento(models.Model):
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
     desmarcado = models.BooleanField(default=False)
-    starting_date = models.DateField(auto_now=False, auto_now_add=False)
-    time = models.TimeField(auto_now=False, auto_now_add=False)
+    starting_date = models.DateTimeField(
+        auto_now=False, auto_now_add=False, default=timezone.now)
     timestamp = models.DateTimeField(auto_now_add=True)
     objects = EventoManager()
 

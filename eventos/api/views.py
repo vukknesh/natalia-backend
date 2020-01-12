@@ -88,11 +88,11 @@ class EventoUpdateAPIView(UpdateAPIView):
         month = now.month
         print(f'evento = {evento}')
         print(f'now.hour = {now.hour}')
-        print(f'evento.time.hour = {evento.time.hour}')
+        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
         print(f'user.first_name = {user.first_name}')
 
-        print(f'evento.time.hour = {evento.time.hour}')
-        if(evento.time.hour <= 12):
+        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
+        if(evento.starting_date.hour <= 12):
             # evento proximo dia
             print(f'now.hour {now.hour}')
             print(f'now.day {now.day}')
@@ -111,7 +111,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         # funcionando
         print(
             f'evento.starting_date.hour - now.hour < 3 {(evento.starting_date.hour - now.hour) < 3}')
-        if(evento.time.hour > 12 and evento.time.hour <= 24 and ((evento.starting_date.hour - now.hour) < 3)):
+        if(evento.starting_date.hour > 12 and evento.starting_date.hour <= 24 and ((evento.starting_date.hour - now.hour) < 3)):
             print('d')
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
@@ -153,7 +153,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile = user.profile
         print(f'p[rofile =] {profile}')
         profile.aulas_remarcadas = profile.aulas_remarcadas + 1
-        print(f'p[rofile.aulas_marcadas =] {profile.aulas_marcadas}')
+        print(f'p[rofile.aulas_remarcadas =] {profile.aulas_remarcadas}')
         profile.save()
         print('profile.save()')
         serializer.save(user=user)
