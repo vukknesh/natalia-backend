@@ -55,17 +55,23 @@ def update_evento(sender, instance, **kwargs):
                                           starting_date__month__gte=month,
                                           starting_date__year__lte=year,
                                           starting_date__month__lte=month)
+    print(f'aulas_do_mes = {aulas_do_mes}')
+    my_list = list(aulas_do_mes)
+    my_list.append(instance)
+    print(f'my_list = {my_list}')
+    print(my_list.sort(key=lambda r: r.starting_date))
+    print(my_list.sort(key=lambda r: r.starting_date).reverse())
     if(user.profile.plano == "4 Aulas"):
 
         print(f'eentrou  4')
-        if(aulas_do_mes.count() > 4):
+        if(my_list.count() > 4):
             print(f'eentrou >    4')
             instance.bonus = True
             pass
     if(user.profile.plano == "8 Aulas"):
         print(f'eentrou 8')
 
-        if(aulas_do_mes.count() > 8):
+        if(my_list.count() > 8):
             print(f'eentrou >    8')
             instance.bonus = True
             print(f'instance.bonus {instance.bonus}')
@@ -73,7 +79,7 @@ def update_evento(sender, instance, **kwargs):
 
     if(user.profile.plano == "12 Aulas"):
 
-        if(aulas_do_mes.count() > 12):
+        if(my_list.count() > 12):
             instance.bonus = True
             pass
     print(f'instance{instance} pre save')
