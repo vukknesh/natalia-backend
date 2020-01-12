@@ -26,7 +26,8 @@ class Evento(models.Model):
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
     desmarcado = models.BooleanField(default=False)
-    starting_date = models.DateTimeField(max_length=20, null=True, blank=True)
+    starting_date = models.DateField(auto_now=False, auto_now_add=False)
+    time = models.TimeField(auto_now=False, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     objects = EventoManager()
 

@@ -12,7 +12,6 @@ from rest_framework.serializers import (
     HyperlinkedModelSerializer,
     ReadOnlyField,
     IntegerField,
-    SlugField
 )
 from django.shortcuts import get_object_or_404
 from .models import Profile
