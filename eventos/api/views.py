@@ -93,18 +93,25 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'evento.time.hour = {evento.time.hour}')
         if(evento.time.hour <= 12):
             # evento proximo dia
+            print('a')
             if(now.hour > 20 and ((now.day - evento.starting_date.day).days == -1)):
-                raise ValidationError(
-                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+            print('b')
+            raise ValidationError(
+                {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
             if(((now.day - evento.starting_date.day).days == 0)):
-                raise ValidationError(
-                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+            print('c')
+            raise ValidationError(
+                {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
+        print(
+            f'evento.starting_date.hour - now.hour < 3 {evento.starting_date.hour - now.hour < 3}')
         if(evento.time.hour > 12 and evento.time.hour <= 24 and (evento.starting_date.hour - now.hour < 3)):
+            print('d')
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
+
         aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
                                               starting_date__month__gte=month,
                                               starting_date__year__lte=year,
@@ -140,8 +147,11 @@ class EventoUpdateAPIView(UpdateAPIView):
                         {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
                 pass
         profile = user.profile
+        print(f'p[rofile =] {profile}')
         profile.aulas_remarcadas = profile.aulas_remarcadas + 1
+        print(f'p[rofile.aulas_marcadas =] {profile.aulas_marcadas}')
         profile.save()
+        print('profile.save()')
         serializer.save(user=user)
         # email send_email
 
