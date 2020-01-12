@@ -178,6 +178,5 @@ class EventoListAPIView(ListAPIView):
             user=u).filter(starting_date__gte=datetime.now())
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
         print(f'queryset_list {queryset_list}')
-        print(f'queryset_list.data {queryset_list.data}')
 
         return Response({"eventos": EventoListSerializer(queryset_list.data, many=True).data})
