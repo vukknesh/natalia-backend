@@ -13,8 +13,7 @@ from django.utils.text import slugify
 class Profile(models.Model):
     slug = models.SlugField(unique=True)
     # personal
-    phone_number = models.CharField(
-        max_length=20, blank=True, null=True, default='')
+
     aulas_remarcadas = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
     PLANO_A = '4 Aulas'
@@ -42,12 +41,6 @@ class Profile(models.Model):
 
     def get_api_url(self):
         return reverse("profiles-api:detail", kwargs={"id": self.id})
-
-    @property
-    def get_content_type(self):
-        instance = self
-        content_type = ContentType.objects.get_for_model(instance.__class__)
-        return content_type
 
 
 def create_slug(instance, new_slug=None):

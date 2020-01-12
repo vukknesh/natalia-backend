@@ -27,7 +27,7 @@ class EventoDetailSerializer(ModelSerializer):
     class Meta:
         model = Evento
         fields = [
-            'id',  'comentario', 'starting_date',  'user', 'publish', 'desmarcado'
+            'id',  'comentario', 'starting_date',  'user', 'desmarcado'
 
         ]
 
