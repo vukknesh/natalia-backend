@@ -179,4 +179,4 @@ class EventoListAPIView(ListAPIView):
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
         print(f'queryset_list {queryset_list}')
 
-        return queryset_list
+        return queryset_list.data
