@@ -160,19 +160,13 @@ class EventoListAPIView(ListAPIView):
     serializer_class = EventoListSerializer
     # filter_backends = [SearchFilter, OrderingFilter]
     filterset_class = EventoFilter
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerOrReadOnly]
     # search_fields = ['title', 'content', 'user__first_name']
 
     def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+
         queryset_list = Evento.objects.filter(
-            starting_date__gte=datetime.now())  # filter(user=self.request.user)
-        print(queryset_list)
-        query = self.request.GET.get("q")
-        if query:
-            queryset_list = queryset_list.filter(
-                Q(title__icontains=query) |
-                Q(content__icontains=query) |
-                Q(user__first_name__icontains=query) |
-                Q(user__last_name__icontains=query)
-            ).distinct()
+            starting_date__gte=datetime.now()).filter(user=user)  # filter(user=self.request.user)
+
         return queryset_list
