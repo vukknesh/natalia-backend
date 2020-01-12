@@ -87,13 +87,19 @@ class EventoUpdateAPIView(UpdateAPIView):
         year = now.year
         month = now.month
         print(f'evento = {evento}')
+        print(f'now.hour = {now.hour}')
         print(f'evento.time.hour = {evento.time.hour}')
         print(f'user.first_name = {user.first_name}')
 
         print(f'evento.time.hour = {evento.time.hour}')
         if(evento.time.hour <= 12):
             # evento proximo dia
-            print('a')
+            print(f'now.hour {now.hour}')
+            print(f'now.day {now.day}')
+            print(f'evento.starting_date.day {evento.starting_date.day}')
+            print(
+                f'((now.day - evento.starting_date.day).days == -1) {((now.day - evento.starting_date.day).days == -1)}')
+            print('b acima do if')
             if(now.hour > 20 and ((now.day - evento.starting_date.day).days == -1)):
                 print('b')
                 raise ValidationError(
