@@ -1,15 +1,10 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
-from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-
-from markdown_deux import markdown
 
 
 class EventoManager(models.Manager):
