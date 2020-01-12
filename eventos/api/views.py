@@ -90,7 +90,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'evento.time.hour = {evento.time.hour}')
         print(f'user.first_name = {user.first_name}')
 
-        print(f'evento.starting_date.hour = {evento.starting_date.hour}')
+        print(f'evento.time.hour = {evento.time.hour}')
         if(evento.time.hour <= 12):
             # evento proximo dia
             if(now.hour > 20 and ((now.day - evento.starting_date.day).days == -1)):
@@ -102,7 +102,7 @@ class EventoUpdateAPIView(UpdateAPIView):
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
-        if(evento.time.hour > 12 and evento.time.hour <= 24 and (evento.time.hour - now.hour < 3)):
+        if(evento.time.hour > 12 and evento.time.hour <= 24 and (evento.starting_date.hour - now.hour < 3)):
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
         aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
