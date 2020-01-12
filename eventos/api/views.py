@@ -171,8 +171,8 @@ class EventoListAPIView(ListAPIView):
         else:
             u = User.objects.first()
         print(f'user {u}')
-        queryset_list = Evento.objects.filter(
-            starting_date__gte=datetime.now()).filter(user=u)  # filter(user=self.request.user)
+        queryset_list = Evento.objects.filter(user=u)
+        # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
         print(f'query_list {query_list}')
 
         return queryset_list
