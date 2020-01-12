@@ -6,7 +6,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
 
 
 class EventoManager(models.Manager):
@@ -57,7 +57,9 @@ def update_evento(sender, instance, **kwargs):
                                           starting_date__month__lte=month)
     if(user.profile.plano == "4 Aulas"):
 
+        print(f'eentrou  4')
         if(aulas_do_mes.count() > 4):
+            print(f'eentrou >    4')
             instance.bonus = True
             pass
     if(user.profile.plano == "8 Aulas"):
@@ -75,8 +77,6 @@ def update_evento(sender, instance, **kwargs):
             instance.bonus = True
             pass
     print(f'instance{instance} pre save')
-    instance.save()
-    print(f'instance{instance} post save')
 
 
-post_save.connect(update_evento, sender=Evento)
+pre_save.connect(update_evento, sender=Evento)
