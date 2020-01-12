@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
-from datetime import datetime, timezone
+from django.utils import timezone
+
 from datetime import datetime
 from django.conf import settings
 from django.urls import reverse
