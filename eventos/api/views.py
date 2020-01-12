@@ -160,13 +160,17 @@ class EventoListAPIView(ListAPIView):
     serializer_class = EventoListSerializer
     permission_classes = [AllowAny]
 
-    def get_queryset(self, *args, **kwargs):
-        print(f'self {self.request}')
-        user = self.request.user
-        print(f'user {user}')
-        return user.evento_set.all().filter(starting_date__gte=datetime.now())
+    def post(self, request, *args, **kwargs):
+        # this makes post method on listapiview
+        return self.list(request, *args, **kwargs)
 
-        # queryset_list = Evento.objects.filter(
-        #     starting_date__gte=datetime.now()).filter(user=user)  # filter(user=self.request.user)
+    def list(self, request):
+        if request.data['user_id'] is not None:
+            u = User.objects.get(id=request.data['user_id'])
+        else:
+            u = User.objects.first()
 
-        # return queryset_list
+        queryset_list = Evento.objects.filter(
+            starting_date__gte=datetime.now()).filter(user=u)  # filter(user=self.request.user)
+
+        return queryset_list
