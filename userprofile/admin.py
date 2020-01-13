@@ -4,7 +4,7 @@ from .models import Profile
 # Register your models here.
 # admin.site.register(Profile)
 
-admin.site.register(Porfile, MyAdmin)
+admin.site.register(Profile, MyAdmin)
 
 
 class MyAdmin(admin.ModelAdmin):
