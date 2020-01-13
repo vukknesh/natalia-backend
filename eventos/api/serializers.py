@@ -36,3 +36,14 @@ class EventoListSerializer(ModelSerializer):
         model = Evento
         fields = ['id', 'comentario', 'starting_date', 'bonus',
                   'user',  'desmarcado']
+
+
+class EventoListAllSerializer(ModelSerializer):
+    user = UserSerializer(read_only=True)
+    first_name = CharField(source="user.first_name")
+    plano = CharField(source="user.profile.plano")
+
+    class Meta:
+        model = Evento
+        fields = ['id', 'comentario', 'starting_date', 'bonus',
+                  'user',  'desmarcado', 'first_name', 'plano']

@@ -34,7 +34,8 @@ from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     EventoCreateUpdateSerializer,
     EventoDetailSerializer,
-    EventoListSerializer
+    EventoListSerializer,
+    EventoListAllSerializer
 )
 
 import django_filters
@@ -183,7 +184,7 @@ class EventoListAPIView(ListAPIView):
 
 
 class EventoListAllAPIView(ListAPIView):
-    serializer_class = EventoListSerializer
+    serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self, *args, **kwargs):
