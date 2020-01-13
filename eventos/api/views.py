@@ -184,11 +184,11 @@ class EventoListAPIView(ListAPIView):
 
 class EventoListAllAPIView(ListAPIView):
     serializer_class = EventoListSerializer
-    filterset_class = EventoFilter
     permission_classes = [AllowAny]
 
     def get_queryset(self, *args, **kwargs):
 
         queryset_list = Evento.objects.all()  # filter(user=self.request.user)
+        print(f'querylist = {queryset_list}')
 
         return queryset_list
