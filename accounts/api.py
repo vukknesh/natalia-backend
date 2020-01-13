@@ -76,13 +76,9 @@ class RegisterWithPlano(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        perfil = Profile.objects.get(user_id=user.id)
-
+        perfil = Profile.objects.get(user=user)
+        print('perfil')
         perfil.plano = plano
         perfil.save()
 
-        return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "myprofile": ProfileSerializer(user.profile, context=self.get_serializer_context()).data,
-
-        })
+        return Response({"message": "ok"})
