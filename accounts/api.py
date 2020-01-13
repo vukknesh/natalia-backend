@@ -62,5 +62,5 @@ class UserAPI(generics.RetrieveAPIView):
         return Response({
             "user": UserSerializer(request.user).data,
             "myprofile": ProfileSerializer(profile, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+
         })
