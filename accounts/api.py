@@ -64,3 +64,25 @@ class UserAPI(generics.RetrieveAPIView):
             "myprofile": ProfileSerializer(profile, context=self.get_serializer_context()).data,
 
         })
+
+
+class RegisterWithPlano(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+    query_set = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        plano = request.data['plano']
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        perfil = Profile.objects.get(user_id=user.id)
+
+        perfil.plano = plano
+        perfil.save()
+
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "myprofile": ProfileSerializer(user.profile, context=self.get_serializer_context()).data,
+
+        })
