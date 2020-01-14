@@ -73,7 +73,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
 ]
-
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
@@ -157,7 +157,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticdjango')
 STATIC_URL = '/staticdjango/'
 
-
+CSRF_COOKIE_NAME = "csrftoken"
 CORS_ORIGIN_ALLOW_ALL = True
 
 # CORS_ORIGIN_WHITELIST = [
