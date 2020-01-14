@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from userprofile.serializers import ProfileSerializer
 from userprofile.models import Profile
+from eventos.models import Evento
+from datetime import date, timedelta
 
 # Register API
 
@@ -72,6 +74,8 @@ class RegisterWithPlano(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         plano = request.data['plano']
+        dias = request.data['dias']
+        horario = request.data['horario']
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -80,5 +84,27 @@ class RegisterWithPlano(generics.GenericAPIView):
         print('perfil')
         perfil.plano = plano
         perfil.save()
+
+        year = 2018
+        date_object = date(year, 1, 1)
+        date_object += timedelta(days=1-date_object.isoweekday())
+
+        def daterange(start_date, end_date):
+            for n in range(int((end_date - start_date).days)):
+                yield start_date + timedelta(n)
+
+        start_date = date(2013, 1, 1)
+        end_date = date(2015, 6, 2)
+        for single_date in daterange(start_date, end_date):
+            print(single_date.strftime("%Y-%m-%d"))
+        while date_object.year == year:
+            print(date_object)
+            date_object += timedelta(days=7)
+        # if dias and horario:
+        #     for(dia in range()):
+
+        #           if date.dia.weekday() == 0: #  weekday (0 = Monday)
+        #              print(f'dia = {dia}')
+        #     Evento.objects.create()
 
         return Response({"message": "ok"})
