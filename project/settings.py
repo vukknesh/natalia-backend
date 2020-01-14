@@ -63,8 +63,6 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -72,6 +70,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -160,10 +160,10 @@ STATIC_URL = '/staticdjango/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = [
-    'http://67.207.91.188:3333',
-    'http://67.207.91.188:3332',
-    'http://localhost:3006',
-    'http://localhost:3000',
-    'http://localhost:8000',
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'http://67.207.91.188:3333',
+#     'http://67.207.91.188:3332',
+#     'http://localhost:3006',
+#     'http://localhost:3000',
+#     'http://localhost:8000',
+# ]
