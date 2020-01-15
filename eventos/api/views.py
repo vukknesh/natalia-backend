@@ -16,6 +16,7 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateAPIView
 )
+from rest_framework.pagination import LimitOffsetPagination
 from datetime import datetime, timezone
 from django.contrib.auth.models import User
 from rest_framework.permissions import (
@@ -176,7 +177,7 @@ class EventoListAPIView(ListAPIView):
         qs = Evento.objects.filter(starting_date__gte=datetime.now())
         print(f'qs = {qs}')
         queryset_list = Evento.objects.filter(
-            user=u).filter(starting_date__gte=datetime.now())
+            user=u).filter(starting_date__gte=datetime.now())[:30]
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
         print(f'queryset_list {queryset_list}')
 
@@ -186,6 +187,7 @@ class EventoListAPIView(ListAPIView):
 class EventoListAllAPIView(ListAPIView):
     serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
 

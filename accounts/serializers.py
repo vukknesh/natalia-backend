@@ -16,7 +16,7 @@ from django.contrib.auth import authenticate
 
 
 class UserSerializer(ModelSerializer):
-    profile_id = ReadOnlyField(source="user.profile.id")
+    profile_id = ReadOnlyField(source="profile.id")
 
     class Meta:
         model = User
@@ -26,6 +26,7 @@ class UserSerializer(ModelSerializer):
 
 
 class RegisterSerializer(ModelSerializer):
+    profile_id = ReadOnlyField(source="profile.id")
 
     class Meta:
         model = User
@@ -34,6 +35,7 @@ class RegisterSerializer(ModelSerializer):
             'email',
             'password',
             'first_name',
+            'profile_id',
 
 
 
