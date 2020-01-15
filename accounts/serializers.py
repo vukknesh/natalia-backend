@@ -15,10 +15,11 @@ from django.contrib.auth import authenticate
 
 
 class UserSerializer(ModelSerializer):
+    profile_id = ReadOnlyField(source="user.profile.id")
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', )
+        fields = ('id', 'username', 'email', 'first_name', 'profile_id', )
 
 # Register Serializer
 

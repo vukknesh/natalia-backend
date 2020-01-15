@@ -79,22 +79,6 @@ class RegisterWithPlano(generics.GenericAPIView):
         plano = None
         if request.data['plano']:
             plano = request.data['plano']
-        horario = None
-        if request.data['horario']:
-            horario = request.data['horario']
-        dias = None
-        if request.data['dias']:
-            dias = request.data['dias']
-
-        print(f'plano = {plano}')
-        print(f'dias = {dias}')
-        print(f'horario = {horario}')
-        now = datetime.now(timezone.utc)
-        print(f'now {now}')
-        year = now.year
-        print(f'year {year}')
-        month = now.month
-        print(f'month {month}')
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -104,41 +88,7 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil.plano = plano
         perfil.save()
 
-        if dias and horario:
-
-            date_object = date(year, 1, 1)
-            print(f'date_object {date_object}')
-            date_object += timedelta(days=1-date_object.isoweekday())
-
-            def daterange(start_date, end_date):
-                for n in range(int((end_date - start_date).days)):
-                    yield start_date + timedelta(n)
-
-            start_date = date(year, month, 1)
-
-            end_date = date(2020, 12, 30)
-            tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
-            for single_date in daterange(start_date, end_date):
-                for dia in dias:
-
-                    if(single_date.weekday() == dia):
-
-                        mydatetime = datetime.combine(
-                            single_date, tempo_horario)
-                        Evento.objects.create(
-                            user=user, starting_date=mydatetime)
-                        print('criado')
-            while date_object.year == year:
-                print(date_object)
-                date_object += timedelta(days=7)
-        # if dias and horario:
-        #     for(dia in range()):
-
-        #           if date.dia.weekday() == 0: #  weekday (0 = Monday)
-        #              print(f'dia = {dia}')
-        #     Evento.objects.create()
-
-        return Response({"message": "ok"})
+        return Response({"user": UserSerializer(user).data})
 
 
 @api_view(['POST'])

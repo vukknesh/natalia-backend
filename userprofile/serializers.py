@@ -19,11 +19,12 @@ from .models import Profile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    profile_id = ReadOnlyField(source="user.profile.id")
 
     class Meta:
         model = User
         depth = 1
-        fields = ('id',  'username', 'first_name',
+        fields = ('id',  'username', 'first_name', 'profile_id',
                   'email',)
 
 
@@ -34,7 +35,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     aulas = SerializerMethodField()
 
     def get_aulas(self, obj):
-        c_qs = Evento.objects.filter_by_instance(obj)
+        c_qs = Evento.objects.filter_by_instance(obj).distinct('starting_date')
         aulas = EventoDetailSerializer(c_qs, many=True).data
         return aulas
 
