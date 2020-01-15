@@ -9,6 +9,8 @@ from userprofile.serializers import ProfileSerializer
 from userprofile.models import Profile
 from eventos.models import Evento
 from datetime import datetime, date, timedelta, timezone
+from rest_framework.decorators import api_view
+
 
 # Register API
 
@@ -102,7 +104,70 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil.plano = plano
         perfil.save()
 
-        date_object = date(year, 1, 1)
+        if dias and horario:
+
+            date_object = date(year, 1, 1)
+            print(f'date_object {date_object}')
+            date_object += timedelta(days=1-date_object.isoweekday())
+
+            def daterange(start_date, end_date):
+                for n in range(int((end_date - start_date).days)):
+                    yield start_date + timedelta(n)
+
+            start_date = date(year, month, 1)
+
+            end_date = date(2020, 12, 30)
+            tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
+            for single_date in daterange(start_date, end_date):
+                for dia in dias:
+
+                    if(single_date.weekday() == dia):
+
+                        mydatetime = datetime.combine(
+                            single_date, tempo_horario)
+                        Evento.objects.create(
+                            user=user, starting_date=mydatetime)
+                        print('criado')
+            while date_object.year == year:
+                print(date_object)
+                date_object += timedelta(days=7)
+        # if dias and horario:
+        #     for(dia in range()):
+
+        #           if date.dia.weekday() == 0: #  weekday (0 = Monday)
+        #              print(f'dia = {dia}')
+        #     Evento.objects.create()
+
+        return Response({"message": "ok"})
+
+
+@api_view(['POST'])
+def add_aulas_por_aluno(request):
+    now = datetime.now(timezone.utc)
+    print(f'now {now}')
+    year = now.year
+    print(f'year {year}')
+    month = now.month
+    print(f'month {month}')
+    aluno_id = None
+    user = None
+    if request.data['alunoId']:
+        aluno_id = request.data['alunoId']
+        user = User.objects.get(id=aluno_id)
+
+    horario = None
+    if request.data['horario']:
+        horario = request.data['horario']
+    ate_ano = None
+    if request.data['ateAno']:
+        ate_ano = request.data['ateAno']
+    dias = None
+    if request.data['dias']:
+        dias = request.data['dias']
+
+    if (dias and horario and ate_ano):
+        print('dentro do if')
+        date_object = date(year, month, 1)
         print(f'date_object {date_object}')
         date_object += timedelta(days=1-date_object.isoweekday())
 
@@ -112,24 +177,20 @@ class RegisterWithPlano(generics.GenericAPIView):
 
         start_date = date(year, month, 1)
 
-        end_date = date(2020, 12, 30)
+        end_date = date(ate_ano, 12, 30)
         tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
         for single_date in daterange(start_date, end_date):
             for dia in dias:
 
                 if(single_date.weekday() == dia):
 
-                    mydatetime = datetime.combine(single_date, tempo_horario)
-                    Evento.objects.create(user=user, starting_date=mydatetime)
+                    mydatetime = datetime.combine(
+                        single_date, tempo_horario)
+                    Evento.objects.create(
+                        user=user, starting_date=mydatetime)
                     print('criado')
         while date_object.year == year:
             print(date_object)
             date_object += timedelta(days=7)
-        # if dias and horario:
-        #     for(dia in range()):
 
-        #           if date.dia.weekday() == 0: #  weekday (0 = Monday)
-        #              print(f'dia = {dia}')
-        #     Evento.objects.create()
-
-        return Response({"message": "ok"})
+    return Response({"message": "OK"})
