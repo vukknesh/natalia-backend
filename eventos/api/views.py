@@ -188,6 +188,7 @@ class EventoListAllAPIView(ListAPIView):
     serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
+    page_size = 50
 
     def get_queryset(self, *args, **kwargs):
 
