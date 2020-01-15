@@ -4,7 +4,8 @@ from rest_framework.serializers import (
     ValidationError,
     Serializer,
     CharField,
-    ValidationError,
+
+    ReadOnlyField,
     ImageField
 )
 from django.contrib.auth.models import User
