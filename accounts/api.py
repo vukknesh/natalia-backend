@@ -8,7 +8,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from userprofile.serializers import ProfileSerializer
 from userprofile.models import Profile
 from eventos.models import Evento
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta, timezone
 
 # Register API
 
@@ -73,9 +73,26 @@ class RegisterWithPlano(generics.GenericAPIView):
     query_set = User.objects.all()
 
     def post(self, request, *args, **kwargs):
-        plano = request.data['plano']
-        dias = request.data['dias']
-        horario = request.data['horario']
+
+        plano = None
+        if request.data['plano']:
+            plano = request.data['plano']
+        horario = None
+        if request.data['horario']:
+            horario = request.data['horario']
+        dias = None
+        if request.data['dias']:
+            dias = request.data['dias']
+
+        print(f'plano = {plano}')
+        print(f'dias = {dias}')
+        print(f'horario = {horario}')
+        now = datetime.now(timezone.utc)
+        print(f'now {now}')
+        year = now.year
+        print(f'year {year}')
+        month = now.month
+        print(f'month {month}')
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -85,18 +102,26 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil.plano = plano
         perfil.save()
 
-        year = 2018
         date_object = date(year, 1, 1)
+        print(f'date_object {date_object}')
         date_object += timedelta(days=1-date_object.isoweekday())
 
         def daterange(start_date, end_date):
             for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
 
-        start_date = date(2013, 1, 1)
-        end_date = date(2015, 6, 2)
+        start_date = date(year, month, 1)
+
+        end_date = date(2020, 12, 30)
+        tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
         for single_date in daterange(start_date, end_date):
-            print(single_date.strftime("%Y-%m-%d"))
+            for dia in dias:
+
+                if(single_date.weekday() == dia):
+
+                    mydatetime = datetime.combine(single_date, tempo_horario)
+                    Evento.objects.create(user=user, starting_date=mydatetime)
+                    print('criado')
         while date_object.year == year:
             print(date_object)
             date_object += timedelta(days=7)

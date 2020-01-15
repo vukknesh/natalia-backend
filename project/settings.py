@@ -25,11 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [ 'http://67.207.91.188:3333',
-    'http://67.207.91.188:3332',
-    'http://localhost:3006',
-    'http://localhost:3000',
-    'http://localhost:8000']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -41,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django_apscheduler",
+    'rest_framework',
     'corsheaders',
     'knox',
-    'rest_framework',
     'accounts',
     'userprofile.apps.UserprofileConfig',
     'eventos',
@@ -67,17 +63,22 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
-  
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
@@ -161,14 +162,4 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticdjango')
 STATIC_URL = '/staticdjango/'
 
-CORS_ALLOW_CREDENTIALS = True
-
-# CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ORIGIN_WHITELIST = [
-    'http://67.207.91.188:3333',
-    'http://67.207.91.188:3332',
-    'http://localhost:3006',
-    'http://localhost:3000',
-    'http://localhost:8000',
-]
+# CORS_ALLOW_CREDENTIALS = True

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-
+from eventos.models import Evento
+from eventos.api.serializers import EventoDetailSerializer
 
 from rest_framework.serializers import (
     HyperlinkedIdentityField,
@@ -28,11 +29,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     user = ReadOnlyField(source='user.id')
+    first_name = CharField(source='user.first_name')
+    email = CharField(source='user.email')
+    aulas = SerializerMethodField()
+
+    def get_aulas(self, obj):
+        c_qs = Evento.objects.filter_by_instance(obj)
+        aulas = EventoDetailSerializer(c_qs, many=True).data
+        return aulas
 
     class Meta:
         model = Profile
         depth = 1
-        fields = ('id', 'slug',
+        fields = ('id', 'slug', 'first_name', 'email', 'endereco', 'aulas',
                   'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')
 
     def get_full_name(self, obj):
@@ -60,4 +69,4 @@ class ProfileUpdateSerializer(ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user',
-                  'aulas_remarcadas', 'plano',  'created_at', 'updated')
+                  'aulas_remarcadas', 'plano',  'created_at', 'updated', 'endereco')

@@ -47,6 +47,8 @@ class Evento(models.Model):
 
 def update_evento(sender, instance, **kwargs):
     user = instance.user
+    print(f'user do instance {user.profile.plano}')
+    print(f'user do sender {sender}')
     now = datetime.now(timezone.utc)
     year = instance.starting_date.year
     month = instance.starting_date.month

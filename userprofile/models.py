@@ -29,6 +29,7 @@ class Profile(models.Model):
         choices=PLANO_CHOICES,
         default="4 Aulas"
     )
+    endereco = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

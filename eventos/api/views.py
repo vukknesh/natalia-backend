@@ -193,3 +193,16 @@ class EventoListAllAPIView(ListAPIView):
         print(f'querylist = {queryset_list}')
 
         return queryset_list
+
+
+class EventoAdminUpdateAPIView(UpdateAPIView):
+    queryset = Evento.objects.filter(starting_date__gte=datetime.now())
+    serializer_class = EventoCreateUpdateSerializer
+    lookup_field = 'id'
+    permission_classes = [IsAdminUser]
+
+    def perform_update(self, serializer):
+        user = self.request.user
+
+        evento = self.get_object()
+        serializer.save(user=user)
