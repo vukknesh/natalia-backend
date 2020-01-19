@@ -82,6 +82,7 @@ class EventoUpdateAPIView(UpdateAPIView):
     permission_classes = [IsOwnerOrReadOnly]
 
     def perform_update(self, serializer):
+        # tudo calculado 3 horas a mais pelo timezone UTC
         user = self.request.user
         now = datetime.now(timezone.utc)
         evento = self.get_object()
@@ -89,8 +90,8 @@ class EventoUpdateAPIView(UpdateAPIView):
         year = now.year
         month = now.month
         diff = evento.starting_date - now
-        duration_in_s = diff.total_seconds()
-        print(f'duration in s = {duration_in_s}')
+        # duration_in_s = diff.total_seconds()
+        # print(f'duration in s = {duration_in_s}')
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
         print(f'dif_hours = {dif_hours}')
@@ -112,9 +113,8 @@ class EventoUpdateAPIView(UpdateAPIView):
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
-        if(duration_in_s < 10800):
-            print(f'10800 < {duration_in_s}')
-        if(dif_hours < 10800):
+
+        if(dif_hours < 21600):
             print('dentro')
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
