@@ -114,7 +114,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             pass
         # funcionando
 
-        if(dif_hours < 21600):
+        if(dif_hours <= 0):
             print('dentro')
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
