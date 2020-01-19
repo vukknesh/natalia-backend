@@ -91,16 +91,21 @@ class EventoUpdateAPIView(UpdateAPIView):
         diff = evento.starting_date - now
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
+        print(f'dif_hours = {dif_hours}')
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
+        if(evento.bonus):
+            raise ValidationError(
+                {"message": "Aula bônus não pode ser desmarcada!"})
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
-            if(now.hour > 20 and ((evento.starting_date.day - now.day) == 1)):
+            if(now.hour >= 17 and ((evento.starting_date.day - now.day) == 1)):
+                print(f'now.hour = {now.hour}')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
             if((now.day - evento.starting_date.day) == 0):
-                print('c')
+                print(f'now.day = {now.day}')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
