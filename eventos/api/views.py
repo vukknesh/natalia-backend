@@ -175,19 +175,15 @@ class EventoListAPIView(ListAPIView):
         return self.list(request, *args, **kwargs)
 
     def list(self, request):
-        print(f'request.data {request.data}')
         if request.data['user_id'] is not None:
             u=User.objects.get(id=request.data['user_id'])
         else:
             u=User.objects.first()
-        print(f'user {u}')
 
         qs=Evento.objects.filter(starting_date__gte=datetime.now())
-        print(f'qs = {qs}')
         queryset_list=Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now())[:30]
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
-        print(f'queryset_list {queryset_list}')
 
         return Response({"eventos": EventoListSerializer(queryset_list, many=True).data})
 
