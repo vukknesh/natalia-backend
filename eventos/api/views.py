@@ -103,12 +103,12 @@ class EventoUpdateAPIView(UpdateAPIView):
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
             if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
-                print(f'now.hour = {now.hour}')
+                print(f'um dia anterior')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
-            if((now.day - evento.starting_date.day) == 0):
-                print(f'now.day = {now.day}')
+            if((now.date() == evento.starting_date.date()):
+                print(f'same date')
                 raise ValidationError(
                     {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
@@ -119,7 +119,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             raise ValidationError(
                 {"message": "Voce so pode remarcar aulas 3 horas antes."})
 
-        aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+        aulas_do_mes=user.evento_set.filter(starting_date__year__gte=year,
                                               starting_date__month__gte=month,
                                               starting_date__year__lte=year,
                                               starting_date__month__lte=month)
@@ -151,8 +151,8 @@ class EventoUpdateAPIView(UpdateAPIView):
                     raise ValidationError(
                         {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
                 pass
-        profile = user.profile
-        profile.aulas_remarcadas = profile.aulas_remarcadas + 1
+        profile=user.profile
+        profile.aulas_remarcadas=profile.aulas_remarcadas + 1
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
         serializer.save(user=user)
@@ -160,15 +160,15 @@ class EventoUpdateAPIView(UpdateAPIView):
 
 
 class EventoDeleteAPIView(DestroyAPIView):
-    queryset = Evento.objects.all()
-    serializer_class = EventoDetailSerializer
-    lookup_field = 'id'
-    permission_classes = [IsAdminUser]
+    queryset=Evento.objects.all()
+    serializer_class=EventoDetailSerializer
+    lookup_field='id'
+    permission_classes=[IsAdminUser]
 
 
 class EventoListAPIView(ListAPIView):
-    serializer_class = EventoListSerializer
-    permission_classes = [AllowAny]
+    serializer_class=EventoListSerializer
+    permission_classes=[AllowAny]
 
     def post(self, request, *args, **kwargs):
         # this makes post method on listapiview
@@ -177,14 +177,14 @@ class EventoListAPIView(ListAPIView):
     def list(self, request):
         print(f'request.data {request.data}')
         if request.data['user_id'] is not None:
-            u = User.objects.get(id=request.data['user_id'])
+            u=User.objects.get(id=request.data['user_id'])
         else:
-            u = User.objects.first()
+            u=User.objects.first()
         print(f'user {u}')
 
-        qs = Evento.objects.filter(starting_date__gte=datetime.now())
+        qs=Evento.objects.filter(starting_date__gte=datetime.now())
         print(f'qs = {qs}')
-        queryset_list = Evento.objects.filter(
+        queryset_list=Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now())[:30]
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
         print(f'queryset_list {queryset_list}')
@@ -193,27 +193,27 @@ class EventoListAPIView(ListAPIView):
 
 
 class EventoListAllAPIView(ListAPIView):
-    serializer_class = EventoListAllSerializer
-    permission_classes = [AllowAny]
-    pagination_class = LimitOffsetPagination
-    page_size = 50
+    serializer_class=EventoListAllSerializer
+    permission_classes=[AllowAny]
+    pagination_class=LimitOffsetPagination
+    page_size=50
 
     def get_queryset(self, *args, **kwargs):
 
-        queryset_list = Evento.objects.all()  # filter(user=self.request.user)
+        queryset_list=Evento.objects.all()  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
         return queryset_list
 
 
 class EventoAdminUpdateAPIView(UpdateAPIView):
-    queryset = Evento.objects.filter(starting_date__gte=datetime.now())
-    serializer_class = EventoCreateUpdateSerializer
-    lookup_field = 'id'
-    permission_classes = [IsAdminUser]
+    queryset=Evento.objects.filter(starting_date__gte=datetime.now())
+    serializer_class=EventoCreateUpdateSerializer
+    lookup_field='id'
+    permission_classes=[IsAdminUser]
 
     def perform_update(self, serializer):
-        user = self.request.user
+        user=self.request.user
 
-        evento = self.get_object()
+        evento=self.get_object()
         serializer.save(user=user)
