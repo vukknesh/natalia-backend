@@ -163,7 +163,7 @@ class EventoDeleteAPIView(DestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = EventoDetailSerializer
     lookup_field = 'id'
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAdminUser]
 
 
 class EventoListAPIView(ListAPIView):
