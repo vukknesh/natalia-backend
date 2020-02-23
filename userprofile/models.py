@@ -13,25 +13,46 @@ from django.utils.text import slugify
 class Profile(models.Model):
     slug = models.SlugField(unique=True)
     # personal
-
     aulas_remarcadas = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
     PLANO_A = '4 Aulas'
     PLANO_B = '8 Aulas'
     PLANO_C = '12 Aulas'
+    PAGAMENTO_A = 'Mensal'
+    PAGAMENTO_B = 'Trimestral'
+    PAGAMENTO_C = 'Semestral'
+    PAGAMENTO_D = 'Anual'
     PLANO_CHOICES = (
         (PLANO_A, '4 Aulas'),
         (PLANO_B, '8 Aulas'),
         (PLANO_C, '12 Aulas'),
+    )
+    PAGAMENTO_CHOICES = (
+        (PAGAMENTO_A, 'Mensal'),
+        (PAGAMENTO_B, 'Trimestral'),
+        (PAGAMENTO_C, 'Semestral'),
+        (PAGAMENTO_D, 'Anual'),
     )
     plano = models.CharField(
         max_length=20,
         choices=PLANO_CHOICES,
         default="4 Aulas"
     )
+    data_nascimento = models.DateField(blank=True, null=True)
+    rg = models.CharField(max_length=40, null=True, blank=True, default="")
+    cpf = models.CharField(max_length=40, null=True, blank=True, default="")
     endereco = models.CharField(max_length=255, null=True, blank=True)
+    dia_pagamento = models.IntegerField(default=5, blank=True, null=True)
+    plano_pagamento = models.CharField(max_length=20,
+                                       choices=PAGAMENTO_CHOICES,
+                                       default="Mensal"
+                                       )
+    is_professor = models.BooleanField(default=False)
+    professor = models.ForeignKey(
+        User, null=True, blank=True, related_name="professor", on_delete=models.SET_NULL)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
+    data_rematricula = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
 

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'userprofile.apps.UserprofileConfig',
     'eventos',
+    'financeiro',
 ]
 
 SCHEDULER_CONFIG = {

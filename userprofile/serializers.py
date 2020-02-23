@@ -8,6 +8,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
     CharField,
+    BooleanField,
     ImageField,
     ValidationError,
     HyperlinkedModelSerializer,
@@ -29,9 +30,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    user = ReadOnlyField(source='user.id')
+    user_id = ReadOnlyField(source='user.id')
     first_name = CharField(source='user.first_name')
     email = CharField(source='user.email')
+    ativo = BooleanField(source='user.is_active')
     aulas = SerializerMethodField()
 
     def get_aulas(self, obj):
@@ -43,8 +45,39 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
         depth = 1
-        fields = ('id', 'slug', 'first_name', 'email', 'endereco', 'aulas',
-                  'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')
+        fields = ('id', 'slug', 'ativo', 'data_nascimento', 'rg', 'plano_pagamento', 'is_professor', 'cpf', 'first_name', 'email', 'endereco', 'aulas', 'professor',
+                  'aulas_remarcadas', 'plano', 'user_id', 'created_at', 'updated')
+
+    def get_full_name(self, obj):
+        request = self.context['request']
+        return request.user.get_full_name()
+
+    def update(self, instance, validated_data):
+        # First, update the User
+        user_data = validated_data.pop('user', {})
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+
+        # Then, update UserProfile
+
+        for attr, value in validated_data.items():
+            print(validated_data)
+            setattr(instance, attr, value)
+            instance.save()
+        return instance
+
+
+class ProfessorSerializer(serializers.HyperlinkedModelSerializer):
+    user_id = ReadOnlyField(source='user.id')
+    first_name = CharField(source='user.first_name')
+    email = CharField(source='user.email')
+    ativo = BooleanField(source='user.is_active')
+
+    class Meta:
+        model = Profile
+        depth = 1
+        fields = ('id', 'slug', 'ativo', 'data_nascimento', 'rg',   'cpf', 'first_name', 'email', 'endereco',
+                  'user_id')
 
     def get_full_name(self, obj):
         request = self.context['request']
@@ -70,5 +103,5 @@ class ProfileUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('user',
-                  'aulas_remarcadas', 'plano',  'created_at', 'updated', 'endereco')
+        fields = ('id', 'slug', 'data_nascimento', 'rg', 'plano_pagamento', 'is_professor', 'cpf', 'first_name', 'email', 'endereco', 'aulas', 'professor',
+                  'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')

@@ -1,19 +1,19 @@
 from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User
 from .models import Profile
-from .serializers import UserSerializer, ProfileSerializer, ProfileUpdateSerializer
+from .serializers import UserSerializer, ProfileSerializer, ProfileUpdateSerializer, ProfessorSerializer
 from .permissions import (
     IsOwnerOrReadOnly, IsAdminUserOrReadOnly, IsSameUserAllowEditionOrReadOnly
 )
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_filters import rest_framework as filters
-
+from rest_framework.decorators import api_view
 from rest_framework.generics import (
     RetrieveUpdateAPIView,
     ListAPIView
 )
-
+from datetime import datetime, timezone
 
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
@@ -72,6 +72,18 @@ class ProfileViewSet(viewsets.ModelViewSet):
                           IsOwnerOrReadOnly,)
 
 
+class ProfessorListAllAPIView(ListAPIView):
+    serializer_class = ProfessorSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+
+        queryset_list = Profile.objects.filter(
+            is_professor=True)  # filter(user=self.request.user)
+
+        return queryset_list
+
+
 class ProfileUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileUpdateSerializer
@@ -81,3 +93,35 @@ class ProfileUpdateAPIView(RetrieveUpdateAPIView):
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
         # email send_email
+
+
+class AniversariantesListApiView(ListAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+        now = datetime.now(timezone.utc)
+        month = now.month
+        day = now.day
+        print(f'day= {day}')
+        print(f'month= {month}')
+        queryset_list = Profile.objects.filter(
+            data_nascimento__day=day).filter(data_nascimento__month=month)
+
+        return queryset_list
+
+
+# @api_view(['GET'])
+# def get_aniversariantes(request):
+#     now = datetime.now(timezone.utc)
+#     month = now.month
+#     day = now.day
+#     print(f'day= {day}')
+#     print(f'month= {month}')
+#     aniversariantes = Profile.objects.filter(
+#         data_nascimento__day=day).filter(data_nascimento__month=month)
+
+#     print(f'aniversariantes = {aniversariantes}')
+
+#     return Response({
+#         "aniversariantes": ProfileSerializer(aniversariantes, many=True).data})

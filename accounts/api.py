@@ -10,7 +10,7 @@ from userprofile.models import Profile
 from eventos.models import Evento
 from datetime import datetime, date, timedelta, timezone
 from rest_framework.decorators import api_view
-
+from financeiro.models import Pagamento
 
 # Register API
 
@@ -77,8 +77,19 @@ class RegisterWithPlano(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
 
         plano = None
+        professor = None
+        professor_id = None
+        dia_pagamento = None
+        plano_pagamento = None
         if request.data['plano']:
             plano = request.data['plano']
+        if request.data['plano_pagamento']:
+            plano_pagamento = request.data['plano_pagamento']
+        if request.data['dia_pagamento']:
+            dia_pagamento = request.data['dia_pagamento']
+        if request.data['professor_id']:
+            professor_id = request.data['professor_id']
+            professor = User.objects.get(id=professor_id)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -86,7 +97,12 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil = Profile.objects.get(user=user)
         print('perfil')
         perfil.plano = plano
+        perfil.professor = professor
+        perfil.dia_pagamento = dia_pagamento
+        perfil.plano_pagamento = plano_pagamento
+        # adicionar pagamentos no bancode dados
         perfil.save()
+        add_pagamentos_por_aluno(user.id)
 
         return Response({"user": UserSerializer(user).data})
 
@@ -99,8 +115,8 @@ def add_aulas_por_aluno(request):
     print(f'year {year}')
     month = now.month
     print(f'month {month}')
-    aluno_id = None
     user = None
+    aluno_id = None
     if request.data['alunoId']:
         aluno_id = request.data['alunoId']
         user = User.objects.get(id=aluno_id)
@@ -108,14 +124,12 @@ def add_aulas_por_aluno(request):
     horario = None
     if request.data['horario']:
         horario = request.data['horario']
-    ate_ano = None
-    if request.data['ateAno']:
-        ate_ano = request.data['ateAno']
+
     dias = None
     if request.data['dias']:
         dias = request.data['dias']
 
-    if (dias and horario and ate_ano):
+    if (dias and horario):
         print('dentro do if')
         date_object = date(year, month, 1)
         print(f'date_object {date_object}')
@@ -127,7 +141,7 @@ def add_aulas_por_aluno(request):
 
         start_date = date(year, month, 1)
 
-        end_date = date(ate_ano, 12, 30)
+        end_date = date(2025, 12, 30)
         tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
         for single_date in daterange(start_date, end_date):
             for dia in dias:
@@ -142,5 +156,72 @@ def add_aulas_por_aluno(request):
         while date_object.year == year:
             print(date_object)
             date_object += timedelta(days=7)
+
+    return Response({"message": "OK"})
+
+
+@api_view(['GET'])
+def get_pagamentos_retroativo(request, user_id):
+    add_pagamentos_por_aluno(user_id)
+    return Response({"message": "Ok"})
+
+
+def add_pagamentos_por_aluno(aluno_id):
+    now = datetime.now(timezone.utc)
+    year = now.year
+    month = now.month
+
+    user = User.objects.get(id=aluno_id)
+    print(f'user = {user.first_name}')
+    dia = user.profile.dia_pagamento
+    plano_pagamento = user.profile.plano_pagamento
+    plano = user.profile.plano
+    print(f'dia = {dia}')
+
+    date_object = date(year, month, 1)
+    date_object += timedelta(days=1-date_object.isoweekday())
+
+    def daterange(start_date, end_date):
+        for n in range(int((end_date - start_date).days)):
+            yield start_date + timedelta(n)
+
+    start_date = date(year, month, 1)
+
+    end_date = date(2025, 12, 30)
+    valor = 0
+    # print(f'single_date = {single_date}')
+    if (plano == "4 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 180
+        if(plano_pagamento == "Trimestral"):
+            valor = 170
+        if(plano_pagamento == "Semestral"):
+            valor = 160
+        if(plano_pagamento == "Anual"):
+            valor = 150
+    if (plano == "8 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 300
+        if(plano_pagamento == "Trimestral"):
+            valor = 280
+        if(plano_pagamento == "Semestral"):
+            valor = 260
+        if(plano_pagamento == "Anual"):
+            valor = 240
+    if (plano == "12 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 420
+        if(plano_pagamento == "Trimestral"):
+            valor = 400
+        if(plano_pagamento == "Semestral"):
+            valor = 380
+        if(plano_pagamento == "Anual"):
+            valor = 360
+    for single_date in daterange(start_date, end_date):
+
+        if(single_date.day == dia):
+            Pagamento.objects.get_or_create(
+                user=user, data=single_date, valor=valor, plano_pagamento=plano_pagamento)
+            # print(f'ifififif single_date = {single_date}')
 
     return Response({"message": "OK"})
