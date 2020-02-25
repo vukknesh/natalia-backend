@@ -22,7 +22,7 @@ class Pagamento(models.Model):
         ordering = ['data']
 
     def __str__(self):
-        return f'{self.user.first_name} - {self.data}'
+        return f'{self.user} - {self.data}'
 
 
 class AulaExperimental(models.Model):
@@ -31,7 +31,7 @@ class AulaExperimental(models.Model):
     data = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.first_name} - {self.data}'
+        return f'{self.user} - {self.data}'
 
 
 class AulaAvulsaGrupo(models.Model):
@@ -40,7 +40,7 @@ class AulaAvulsaGrupo(models.Model):
     data = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.first_name} - {self.data}'
+        return f'{self.user} - {self.data}'
 
 
 class AulaPersonal(models.Model):
@@ -49,7 +49,7 @@ class AulaPersonal(models.Model):
     data = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.first_name} - {self.data}'
+        return f'{self.user} - {self.data}'
 
 
 class ResumoMensal(models.Model):

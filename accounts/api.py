@@ -81,6 +81,18 @@ class RegisterWithPlano(generics.GenericAPIView):
         professor_id = None
         dia_pagamento = None
         plano_pagamento = None
+        cpf = None
+        rg = None
+        data_nascimento = None
+        endereco = None
+        if request.data['endereco']:
+            endereco = request.data['endereco']
+        if request.data['cpf']:
+            cpf = request.data['cpf']
+        if request.data['rg']:
+            rg = request.data['rg']
+        if request.data['data_nascimento']:
+            data_nascimento = request.data['data_nascimento']
         if request.data['plano']:
             plano = request.data['plano']
         if request.data['plano_pagamento']:
@@ -100,6 +112,10 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil.professor = professor
         perfil.dia_pagamento = dia_pagamento
         perfil.plano_pagamento = plano_pagamento
+        perfil.data_nascimento = data_nascimento
+        perfil.rg = rg
+        perfil.cpf = cpf
+        perfil.endereco = endereco
         # adicionar pagamentos no bancode dados
         perfil.save()
         add_pagamentos_por_aluno(user.id)
@@ -162,14 +178,19 @@ def add_aulas_por_aluno(request):
 
 @api_view(['GET'])
 def get_pagamentos_retroativo(request, user_id):
-    add_pagamentos_por_aluno(user_id)
-    return Response({"message": "Ok"})
+    resposta = add_pagamentos_por_aluno(user_id)
+    return Response({"message": resposta})
 
 
 def add_pagamentos_por_aluno(aluno_id):
     now = datetime.now(timezone.utc)
     year = now.year
     month = now.month
+    pagamentos_do_aluno = Pagamento.objects.filter(user_id=aluno_id)
+    print(f'pagamentos_do_aluno={pagamentos_do_aluno}')
+
+    for pg in pagamentos_do_aluno:
+        pg.delete()
 
     user = User.objects.get(id=aluno_id)
     print(f'user = {user.first_name}')
@@ -189,7 +210,6 @@ def add_pagamentos_por_aluno(aluno_id):
 
     end_date = date(2025, 12, 30)
     valor = 0
-    # print(f'single_date = {single_date}')
     if (plano == "4 Aulas"):
         if(plano_pagamento == "Mensal"):
             valor = 180
@@ -218,10 +238,11 @@ def add_pagamentos_por_aluno(aluno_id):
         if(plano_pagamento == "Anual"):
             valor = 360
     for single_date in daterange(start_date, end_date):
+        print(f'single_date = {single_date}')
 
         if(single_date.day == dia):
             Pagamento.objects.get_or_create(
                 user=user, data=single_date, valor=valor, plano_pagamento=plano_pagamento)
             # print(f'ifififif single_date = {single_date}')
 
-    return Response({"message": "OK"})
+    return "ok"

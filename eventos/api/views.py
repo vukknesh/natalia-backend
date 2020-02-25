@@ -29,7 +29,7 @@ from rest_framework.permissions import (
 from django_filters import rest_framework as filters
 from eventos.models import Evento
 
-
+from rest_framework.decorators import api_view
 from .permissions import IsOwnerOrReadOnly
 
 from .serializers import (
@@ -213,3 +213,12 @@ class EventoAdminUpdateAPIView(UpdateAPIView):
 
         evento = self.get_object()
         serializer.save(user=user)
+
+
+@api_view(['GET'])
+def delete_all_aulas(request, alunoId):
+    user = User.objects.get(id=alunoId)
+
+    Evento.objects.filter(user=user).delete()
+
+    return Response({"message": "Todas Aulas Deletadas"})

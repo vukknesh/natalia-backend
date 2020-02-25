@@ -10,7 +10,10 @@ from .views import (
     PagamentoListAllAPIView,
     get_resumo_mes,
     get_pagamento_professor,
-    ResumoMensalListAllAPIView
+    ResumoMensalListAllAPIView,
+    AulaExperimentalCreateAPIView,
+    AulaAvulsaGrupoCreateAPIView,
+    AulaPersonalCreateAPIView,
 
 
 )
@@ -22,9 +25,10 @@ urlpatterns = [
     url(r'^pagamento-professores/$', get_pagamento_professor, name='pagamento-mes'),
     url(r'^historico/$', ResumoMensalListAllAPIView.as_view(), name='historico'),
     url(r'^create/$', PagamentoCreateAPIView.as_view(), name='create'),
-    url(r'^add-experimental/$', PagamentoCreateAPIView.as_view(), name='experimental'),
-    url(r'^add-avulsa/$', PagamentoCreateAPIView.as_view(), name='avulsa'),
-    url(r'^add-personal/$', PagamentoCreateAPIView.as_view(), name='personal'),
+    url(r'^add-experimental/$',
+        AulaExperimentalCreateAPIView.as_view(), name='experimental'),
+    url(r'^add-avulsa/$', AulaAvulsaGrupoCreateAPIView.as_view(), name='avulsa'),
+    url(r'^add-personal/$', AulaPersonalCreateAPIView.as_view(), name='personal'),
     url(r'^(?P<id>[\w-]+)/$',
         PagamentoDetailAPIView.as_view(), name='detail'),
     url(r'^(?P<id>[\w-]+)/edit/$',
