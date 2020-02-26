@@ -202,6 +202,21 @@ class EventoListAllAPIView(ListAPIView):
         return queryset_list
 
 
+class EventoByProfAPIView(ListAPIView):
+    serializer_class = EventoListAllSerializer
+    permission_classes = [AllowAny]
+    pagination_class = LimitOffsetPagination
+    page_size = 200
+
+    def get_queryset(self, *args, **kwargs):
+
+        queryset_list = Evento.objects.filter(
+            user__profile__professor=self.request.user)  # filter(user=self.request.user)
+        print(f'querylist = {queryset_list}')
+
+        return queryset_list
+
+
 class EventoAdminUpdateAPIView(UpdateAPIView):
     queryset = Evento.objects.filter(starting_date__gte=datetime.now())
     serializer_class = EventoCreateUpdateSerializer

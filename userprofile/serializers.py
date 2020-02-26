@@ -103,5 +103,5 @@ class ProfileUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('id', 'slug', 'data_nascimento', 'rg', 'plano_pagamento', 'profissao', 'estado_civil', 'telefone', 'is_professor', 'cpf', 'first_name', 'email', 'endereco', 'aulas', 'professor',
+        fields = ('id', 'slug', 'data_nascimento', 'rg', 'plano_pagamento', 'profissao', 'estado_civil', 'telefone', 'is_professor', 'cpf', 'first_name',  'endereco', 'aulas', 'professor',
                   'aulas_remarcadas', 'plano', 'user', 'created_at', 'updated')

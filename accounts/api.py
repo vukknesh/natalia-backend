@@ -75,7 +75,7 @@ class RegisterWithPlano(generics.GenericAPIView):
     query_set = User.objects.all()
 
     def post(self, request, *args, **kwargs):
-
+        print('dentro')
         plano = None
         professor = None
         professor_id = None
@@ -88,6 +88,8 @@ class RegisterWithPlano(generics.GenericAPIView):
         profissao = None
         estado_civil = None
         telefone = None
+        print('dps das variaveis')
+        print(f'request.data = {request.data}')
         if request.data['profissao']:
             profissao = request.data['profissao']
         if request.data['estado_civil']:
@@ -110,10 +112,14 @@ class RegisterWithPlano(generics.GenericAPIView):
             dia_pagamento = request.data['dia_pagamento']
         if request.data['professor_id']:
             professor_id = request.data['professor_id']
+            print('antes do professor')
             professor = User.objects.get(id=professor_id)
 
+        print('aqui dps dos ifs')
         serializer = self.get_serializer(data=request.data)
+        print('antes do is valid')
         serializer.is_valid(raise_exception=True)
+        print('depois do is valid')
         user = serializer.save()
         perfil = Profile.objects.get(user=user)
         print('perfil')

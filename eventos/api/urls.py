@@ -9,12 +9,15 @@ from .views import (
     EventoUpdateAPIView,
     EventoListAllAPIView,
     EventoAdminUpdateAPIView,
-    delete_all_aulas
+    delete_all_aulas,
+    EventoByProfAPIView
 )
 
 urlpatterns = [
     url(r'^$', EventoListAPIView.as_view(), name='list'),
     url(r'^list-all/$', EventoListAllAPIView.as_view(), name='list-all'),
+    url(r'^list-by-professor/$',
+        EventoByProfAPIView.as_view(), name='prof-aulas'),
     url(r'^create/$', EventoCreateAPIView.as_view(), name='create'),
     url(r'^delete-all/(?P<alunoId>[\w-]+)$',
         delete_all_aulas, name='delete-all'),
