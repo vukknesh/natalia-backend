@@ -22,6 +22,12 @@ class Profile(models.Model):
     PAGAMENTO_B = 'Trimestral'
     PAGAMENTO_C = 'Semestral'
     PAGAMENTO_D = 'Anual'
+    ESTADO_A = 'Solteiro'
+    ESTADO_B = 'Casado'
+    ESTADO_CHOICES = (
+        (ESTADO_A, 'Solteiro'),
+        (ESTADO_B, 'Casado'),
+    )
     PLANO_CHOICES = (
         (PLANO_A, '4 Aulas'),
         (PLANO_B, '8 Aulas'),
@@ -43,7 +49,8 @@ class Profile(models.Model):
     cpf = models.CharField(max_length=40, null=True, blank=True, default="")
     endereco = models.CharField(max_length=255, null=True, blank=True)
     profissao = models.CharField(max_length=80, null=True, blank=True)
-    estado_civil = models.CharField(max_length=50, null=True, blank=True)
+    estado_civil = models.CharField(
+        max_length=50, choices=ESTADO_CHOICES, default="Solteiro", null=True, blank=True)
     telefone = models.CharField(max_length=50, null=True, blank=True)
     dia_pagamento = models.IntegerField(default=5, blank=True, null=True)
     plano_pagamento = models.CharField(max_length=20,
