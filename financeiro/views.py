@@ -131,32 +131,32 @@ class PagamentoUpdateAPIView(UpdateAPIView):
     lookup_field = 'id'
     permission_classes = [IsAuthenticated]
 
-    def perform_update(self, serializer):
-        pagamento_obj = self.get_object()
-        print(f'pagamento_obj = {pagamento_obj}')
+    # def perform_update(self, serializer):
+    #     pagamento_obj = self.get_object()
+    #     print(f'pagamento_obj = {pagamento_obj}')
 
-        instance = serializer.save()
-        # pag_user = instance.user
-        # todos_pag = Pagamento.objects.filter(
-        #     user=pag_user, data__gt=instance.data)[:12]
-        # print(f'todos_pag ={todos_pag}')
-        # plano_pag = instance.user.profile.plano_pagamento
+    #     instance = serializer.save()
+    # pag_user = instance.user
+    # todos_pag = Pagamento.objects.filter(
+    #     user=pag_user, data__gt=instance.data)[:12]
+    # print(f'todos_pag ={todos_pag}')
+    # plano_pag = instance.user.profile.plano_pagamento
 
-        # if(plano_pag == "Trimestral"):
-        #     for pp in todos_pag[:2]:
-        #         pp.pago = True
-        #         pp.save()
+    # if(plano_pag == "Trimestral"):
+    #     for pp in todos_pag[:2]:
+    #         pp.pago = True
+    #         pp.save()
 
-        # if(plano_pag == "Semestral"):
-        #     for pp in todos_pag[:5]:
-        #         pp.pago = True
-        #         pp.save()
-        # if(plano_pag == "Anual"):
-        #     for pp in todos_pag[:11]:
-        #         pp.pago = True
-        #         pp.save()
+    # if(plano_pag == "Semestral"):
+    #     for pp in todos_pag[:5]:
+    #         pp.pago = True
+    #         pp.save()
+    # if(plano_pag == "Anual"):
+    #     for pp in todos_pag[:11]:
+    #         pp.pago = True
+    #         pp.save()
 
-        # return instance
+    # return instance
 
 
 class PagamentoDeleteAPIView(DestroyAPIView):
