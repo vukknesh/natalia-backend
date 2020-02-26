@@ -42,6 +42,9 @@ class Profile(models.Model):
     rg = models.CharField(max_length=40, null=True, blank=True, default="")
     cpf = models.CharField(max_length=40, null=True, blank=True, default="")
     endereco = models.CharField(max_length=255, null=True, blank=True)
+    profissao = models.CharField(max_length=80, null=True, blank=True)
+    estado_civil = models.CharField(max_length=50, null=True, blank=True)
+    telefone = models.CharField(max_length=50, null=True, blank=True)
     dia_pagamento = models.IntegerField(default=5, blank=True, null=True)
     plano_pagamento = models.CharField(max_length=20,
                                        choices=PAGAMENTO_CHOICES,

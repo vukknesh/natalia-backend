@@ -85,8 +85,17 @@ class RegisterWithPlano(generics.GenericAPIView):
         rg = None
         data_nascimento = None
         endereco = None
+        profissao = None
+        estado_civil = None
+        telefone = None
+        if request.data['profissao']:
+            profissao = request.data['profissao']
+        if request.data['estado_civil']:
+            estado_civil = request.data['estado_civil']
         if request.data['endereco']:
             endereco = request.data['endereco']
+        if request.data['telefone']:
+            telefone = request.data['telefone']
         if request.data['cpf']:
             cpf = request.data['cpf']
         if request.data['rg']:
@@ -116,6 +125,9 @@ class RegisterWithPlano(generics.GenericAPIView):
         perfil.rg = rg
         perfil.cpf = cpf
         perfil.endereco = endereco
+        perfil.profissao = profissao
+        perfil.estado_civil = estado_civil
+        perfil.telefone = telefone
         # adicionar pagamentos no bancode dados
         perfil.save()
         add_pagamentos_por_aluno(user.id)
