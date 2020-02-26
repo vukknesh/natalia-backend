@@ -24,9 +24,15 @@ class Profile(models.Model):
     PAGAMENTO_D = 'Anual'
     ESTADO_A = 'Solteiro'
     ESTADO_B = 'Casado'
+    ESTADO_C = 'Separado'
+    ESTADO_D = 'Divorciado'
+    ESTADO_E = 'Viuvo'
     ESTADO_CHOICES = (
         (ESTADO_A, 'Solteiro'),
         (ESTADO_B, 'Casado'),
+        (ESTADO_C, 'Separado'),
+        (ESTADO_D, 'Divorciado'),
+        (ESTADO_E, 'Viuvo'),
     )
     PLANO_CHOICES = (
         (PLANO_A, '4 Aulas'),
