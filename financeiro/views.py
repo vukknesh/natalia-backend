@@ -28,7 +28,7 @@ from rest_framework.permissions import (
 
 )
 from django_filters import rest_framework as filters
-from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal
+from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item
 
 
 from .permissions import IsOwnerOrReadOnly
@@ -41,7 +41,9 @@ from .serializers import (
     ResumoMensalListAllSerializer,
     AulaAvulsaGrupoCreateUpdateSerializer,
     AulaExperimentalCreateUpdateSerializer,
-    AulaPersonalCreateUpdateSerializer
+    AulaPersonalCreateUpdateSerializer,
+    VendaItemsCreateUpdateSerializer,
+    ItemCreateUpdateSerializer
 )
 
 import django_filters
@@ -72,9 +74,33 @@ class PagamentoCreateAPIView(CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class ItemCreateAPIView(CreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
 class AulaAvulsaGrupoCreateAPIView(CreateAPIView):
     queryset = AulaAvulsaGrupo.objects.all()
     serializer_class = AulaAvulsaGrupoCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        if self.request.data['user']:
+            id = self.request.data['user']
+            print(f'id = {id}')
+            u = User.objects.get(id=id)
+        if u is None:
+            u = User.objects.first()
+        serializer.save(user=u)
+
+
+class VendaItemsCreateAPIView(CreateAPIView):
+    queryset = VendaItems.objects.all()
+    serializer_class = VendaItemsCreateUpdateSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):

@@ -55,7 +55,7 @@ class ProfileFilter(filters.FilterSet):
 
 class UserViewSet(viewsets.ModelViewSet):
 
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('first_name')
     serializer_class = UserSerializer
     filterset_class = UserFilter
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,

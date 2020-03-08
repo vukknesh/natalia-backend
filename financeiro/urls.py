@@ -14,7 +14,8 @@ from .views import (
     AulaExperimentalCreateAPIView,
     AulaAvulsaGrupoCreateAPIView,
     AulaPersonalCreateAPIView,
-
+    VendaItemsCreateAPIView,
+    ItemCreateAPIView
 
 )
 
@@ -25,6 +26,10 @@ urlpatterns = [
     url(r'^pagamento-professores/$', get_pagamento_professor, name='pagamento-mes'),
     url(r'^historico/$', ResumoMensalListAllAPIView.as_view(), name='historico'),
     url(r'^create/$', PagamentoCreateAPIView.as_view(), name='create'),
+    url(r'^add-item/$',
+        ItemCreateAPIView.as_view(), name='item'),
+    url(r'^add-vendaitems/$',
+        VendaItemsCreateAPIView.as_view(), name='venda-items'),
     url(r'^add-experimental/$',
         AulaExperimentalCreateAPIView.as_view(), name='experimental'),
     url(r'^add-avulsa/$', AulaAvulsaGrupoCreateAPIView.as_view(), name='avulsa'),

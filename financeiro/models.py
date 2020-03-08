@@ -52,6 +52,27 @@ class AulaPersonal(models.Model):
         return f'{self.user} - {self.data}'
 
 
+class Item(models.Model):
+    nome = models.CharField(max_length=255, default='', null=True, blank=True)
+    descricao = models.CharField(
+        max_length=255, default='', null=True, blank=True)
+    valor = models.CharField(max_length=255, default='', null=True, blank=True)
+    cod = models.CharField(max_length=255, default='', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.nome} - {self.valor} - {self.cod}'
+
+
+class VendaItems(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.CASCADE)
+    quant = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.item.nome} - {self.item.valor} - {self.user.first_name}'
+
+
 class ResumoMensal(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     total_experimental = models.IntegerField()

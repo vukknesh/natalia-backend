@@ -18,6 +18,7 @@ class Profile(models.Model):
     PLANO_A = '4 Aulas'
     PLANO_B = '8 Aulas'
     PLANO_C = '12 Aulas'
+    PLANO_D = 'Gratuito'
     PAGAMENTO_A = 'Mensal'
     PAGAMENTO_B = 'Trimestral'
     PAGAMENTO_C = 'Semestral'
@@ -38,6 +39,7 @@ class Profile(models.Model):
         (PLANO_A, '4 Aulas'),
         (PLANO_B, '8 Aulas'),
         (PLANO_C, '12 Aulas'),
+        (PLANO_D, 'Gratuito'),
     )
     PAGAMENTO_CHOICES = (
         (PAGAMENTO_A, 'Mensal'),
