@@ -264,6 +264,10 @@ def get_resumo_mes(request):
     valor_personal = 120
     valor_matricula = 80
     valor_rematricula = 50
+    total_itens = 0
+
+    for venda in VendaItems.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month):
+        total_itens += venda.item.valor * venda.quant
 
     total_experimental = AulaExperimental.objects.filter(data__year__gte=year,
                                                          data__month__gte=month,
@@ -294,42 +298,14 @@ def get_resumo_mes(request):
 
     for pagamento in Pagamento.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month).filter(pago=True):
         total_pagamento += pagamento.valor
-        # plano = pagamento.user.profile.plano
-        # plano_pagamento = pagamento.user.profile.plano_pagamento
-        # if (plano == "4 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 180
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 170
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 160
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 150
-        # if (plano == "8 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 300
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 280
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 260
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 240
-        # if (plano == "12 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 420
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 400
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 380
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 360
 
     total_mes = total_experimental + total_avulsa + total_matricula + \
-        total_pagamento + total_personal + total_rematricula
+        total_pagamento + total_personal + total_rematricula + total_itens
 
     return Response({
         "total_experimental": total_experimental,
         "total_avulsa": total_avulsa,
+        "total_itens": total_itens,
         "total_personal": total_personal,
         "total_matricula": total_matricula,
         "total_rematricula": total_rematricula,
@@ -348,6 +324,10 @@ def resumo_mensal():
     valor_personal = 120
     valor_matricula = 80
     valor_rematricula = 50
+    total_itens = 0
+
+    for venda in VendaItems.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month):
+        total_itens += venda.item.valor * venda.quant
 
     total_experimental = AulaExperimental.objects.filter(data__year__gte=year,
                                                          data__month__gte=month,
@@ -378,41 +358,12 @@ def resumo_mensal():
 
     for pagamento in Pagamento.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month).filter(pago=True):
         total_pagamento += pagamento.valor
-        # plano = pagamento.user.profile.plano
-        # plano_pagamento = pagamento.user.profile.plano_pagamento
-        # if (plano == "4 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 180
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 170
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 160
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 150
-        # if (plano == "8 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 300
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 280
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 260
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 240
-        # if (plano == "12 Aulas"):
-        #     if(plano_pagamento == "Mensal"):
-        #         valor = 420
-        #     if(plano_pagamento == "Trimestral"):
-        #         valor = 400
-        #     if(plano_pagamento == "Semestral"):
-        #         valor = 380
-        #     if(plano_pagamento == "Anual"):
-        #         valor = 360
 
     total_mes = total_experimental + total_avulsa + total_matricula + \
-        total_pagamento + total_personal + total_rematricula
+        total_pagamento + total_personal + total_rematricula + total_itens
 
     ResumoMensal.objects.create(total_experimental=total_experimental, total_avulsa=total_avulsa, total_personal=total_personal,
-                                total_matricula=total_matricula, total_rematricula=total_rematricula, total_pagamento=total_pagamento, total_mes=total_mes)
+                                total_matricula=total_matricula, total_rematricula=total_rematricula, total_pagamento=total_pagamento, total_mes=total_mes, total_itens=total_itens)
 
 
 @api_view(['GET'])

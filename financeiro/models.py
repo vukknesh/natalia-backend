@@ -65,6 +65,7 @@ class Item(models.Model):
 
 
 class VendaItems(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.CASCADE)
@@ -76,6 +77,7 @@ class VendaItems(models.Model):
 
 class ResumoMensal(models.Model):
     data = models.DateTimeField(auto_now_add=True)
+    total_itens = models.IntegerField()
     total_experimental = models.IntegerField()
     total_avulsa = models.IntegerField()
     total_personal = models.IntegerField()
