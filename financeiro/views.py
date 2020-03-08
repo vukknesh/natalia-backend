@@ -110,7 +110,14 @@ class VendaItemsCreateAPIView(CreateAPIView):
             u = User.objects.get(id=id)
         if u is None:
             u = User.objects.first()
-        serializer.save(user=u)
+
+        venda = serializer.save(user=u)
+        print(f'venda.quant = {venda.quant}')
+        i = venda.item
+        print(f'i.estoque = {i.estoque}')
+        i.estoque = i.estoque - venda.quant
+        i.save()
+        print(f'i.estoque dps de salvo = {i.estoque}')
 
 
 class AulaExperimentalCreateAPIView(CreateAPIView):
