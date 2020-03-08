@@ -224,6 +224,17 @@ class PagamentoListAllAPIView(ListAPIView):
         return queryset_list
 
 
+class ItemsListAllAPIView(ListAPIView):
+    serializer_class = ItemCreateUpdateSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+
+        queryset_list = Item.objects.all()  # filter(user=self.request.user)
+
+        return queryset_list
+
+
 class ResumoMensalListAllAPIView(ListAPIView):
     serializer_class = ResumoMensalListAllSerializer
     permission_classes = [AllowAny]

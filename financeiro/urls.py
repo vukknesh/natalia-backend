@@ -15,13 +15,15 @@ from .views import (
     AulaAvulsaGrupoCreateAPIView,
     AulaPersonalCreateAPIView,
     VendaItemsCreateAPIView,
-    ItemCreateAPIView
+    ItemCreateAPIView,
+    ItemsListAllAPIView
 
 )
 
 urlpatterns = [
     url(r'^$', PagamentoListAPIView.as_view(), name='list'),
     url(r'^list-all/$', PagamentoListAllAPIView.as_view(), name='list-all'),
+    url(r'^list-items/$', ItemsListAllAPIView.as_view(), name='list-items'),
     url(r'^resumo-mes/$', get_resumo_mes, name='resumo-mes'),
     url(r'^pagamento-professores/$', get_pagamento_professor, name='pagamento-mes'),
     url(r'^historico/$', ResumoMensalListAllAPIView.as_view(), name='historico'),

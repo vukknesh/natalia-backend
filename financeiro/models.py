@@ -56,7 +56,7 @@ class Item(models.Model):
     nome = models.CharField(max_length=255, default='', null=True, blank=True)
     descricao = models.CharField(
         max_length=255, default='', null=True, blank=True)
-    valor = models.CharField(max_length=255, default='', null=True, blank=True)
+    valor = models.FloatField(default=0.0)
     cod = models.CharField(max_length=255, default='', null=True, blank=True)
 
     def __str__(self):
