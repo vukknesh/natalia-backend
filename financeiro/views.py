@@ -28,7 +28,7 @@ from rest_framework.permissions import (
 
 )
 from django_filters import rest_framework as filters
-from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item
+from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item, DespesasFixa
 
 
 from .permissions import IsOwnerOrReadOnly
@@ -265,6 +265,10 @@ def get_resumo_mes(request):
     valor_matricula = 80
     valor_rematricula = 50
     total_itens = 0
+    total_despesas = 0
+
+    for despesa in DespesasFixa.objects.all():
+        total_despesas += despesa.valor
 
     for venda in VendaItems.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month):
         total_itens += venda.item.valor * venda.quant
@@ -300,7 +304,7 @@ def get_resumo_mes(request):
         total_pagamento += pagamento.valor
 
     total_mes = total_experimental + total_avulsa + total_matricula + \
-        total_pagamento + total_personal + total_rematricula + total_itens
+        total_pagamento + total_personal + total_rematricula + total_itens - total_despesas
 
     return Response({
         "total_experimental": total_experimental,
@@ -310,6 +314,7 @@ def get_resumo_mes(request):
         "total_matricula": total_matricula,
         "total_rematricula": total_rematricula,
         "total_pagamento": total_pagamento,
+        "total_despesas": total_despesas,
         "total_mes": total_mes
     })
 
@@ -325,7 +330,10 @@ def resumo_mensal():
     valor_matricula = 80
     valor_rematricula = 50
     total_itens = 0
+    total_despesas = 0
 
+    for despesa in DespesasFixa.objects.all():
+        total_despesas += despesa.valor
     for venda in VendaItems.objects.filter(data__year__gte=year, data__month__gte=month, data__year__lte=year, data__month__lte=month):
         total_itens += venda.item.valor * venda.quant
 
@@ -360,10 +368,10 @@ def resumo_mensal():
         total_pagamento += pagamento.valor
 
     total_mes = total_experimental + total_avulsa + total_matricula + \
-        total_pagamento + total_personal + total_rematricula + total_itens
+        total_pagamento + total_personal + total_rematricula + total_itens - total_despesas
 
     ResumoMensal.objects.create(total_experimental=total_experimental, total_avulsa=total_avulsa, total_personal=total_personal,
-                                total_matricula=total_matricula, total_rematricula=total_rematricula, total_pagamento=total_pagamento, total_mes=total_mes, total_itens=total_itens)
+                                total_matricula=total_matricula, total_rematricula=total_rematricula, total_pagamento=total_pagamento, total_mes=total_mes, total_itens=total_itens, total_despesas=total_despesas)
 
 
 @api_view(['GET'])

@@ -43,6 +43,15 @@ class AulaAvulsaGrupo(models.Model):
         return f'{self.user} - {self.data}'
 
 
+class DespesasFixa(models.Model):
+    nome = models.CharField(max_length=255, default='', null=True, blank=True)
+
+    valor = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f'{self.nome} - {self.valor}'
+
+
 class AulaPersonal(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.CASCADE)
@@ -78,6 +87,7 @@ class VendaItems(models.Model):
 class ResumoMensal(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     total_itens = models.FloatField(default=0.0)
+    total_despesas = models.FloatField(default=0.0)
     total_experimental = models.IntegerField()
     total_avulsa = models.IntegerField()
     total_personal = models.IntegerField()
