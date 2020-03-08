@@ -58,7 +58,7 @@ class Item(models.Model):
         max_length=255, default='', null=True, blank=True)
     valor = models.FloatField(default=0.0)
     cod = models.CharField(max_length=255, default='', null=True, blank=True)
-    estoque = models.IntegerField()
+    estoque = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f'{self.nome} - {self.valor} - {self.cod} - estoque {self.estoque}'
