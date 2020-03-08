@@ -77,7 +77,7 @@ class VendaItems(models.Model):
 
 class ResumoMensal(models.Model):
     data = models.DateTimeField(auto_now_add=True)
-    total_itens = models.IntegerField()
+    total_itens = models.FloatField(default=0.0)
     total_experimental = models.IntegerField()
     total_avulsa = models.IntegerField()
     total_personal = models.IntegerField()
