@@ -194,7 +194,7 @@ class EventoListAllAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = Evento.objects.filter(user_is_active=True).filter(starting_date__gte=datetime.now())[
+        queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=datetime.now())[
             :900]  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
@@ -210,7 +210,7 @@ class EventoByProfAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
 
         queryset_list = Evento.objects.filter(
-            user__profile__professor=self.request.user).filter(user_is_active=True)  # filter(user=self.request.user)
+            user__profile__professor=self.request.user).filter(user__is_active=True)  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
         return queryset_list
