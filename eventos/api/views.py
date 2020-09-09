@@ -67,6 +67,17 @@ class EventoCreateAPIView(CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class EventoRemarcacaoListAllAPIView(CreateAPIView):
+    queryset = Evento.objects.all()
+    serializer_class = EventoCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        print('Remarcacao self.request')
+        print(self.request)
+        serializer.save(user=self.request.user)
+
+
 class EventoDetailAPIView(RetrieveAPIView):
     queryset = Evento.objects.filter(starting_date__gte=datetime.now())
     serializer_class = EventoDetailSerializer
@@ -175,12 +186,18 @@ class EventoListAPIView(ListAPIView):
         return self.list(request, *args, **kwargs)
 
     def list(self, request):
+        now = datetime.now(timezone.utc)
+        year = now.year
+        month = now.month
+
+        data__month__lte = month
         if request.data['user_id'] is not None:
             u = User.objects.get(id=request.data['user_id'])
         else:
             u = User.objects.first()
 
-        qs = Evento.objects.filter(starting_date__gte=datetime.now())
+        qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
+                                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now())[:30]
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
@@ -197,6 +214,18 @@ class EventoListAllAPIView(ListAPIView):
         queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=datetime.now())[
             :900]  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
+
+        return queryset_list
+
+
+class EventoDesmarcadosListAllAPIView(ListAPIView):
+    serializer_class = EventoListAllSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Evento.objects.filter(
+            starting_date__gte=datetime.now(), desmarcado=True)
+        print(f'desmarcados = {queryset_list}')
 
         return queryset_list
 

@@ -10,12 +10,17 @@ from .views import (
     EventoListAllAPIView,
     EventoAdminUpdateAPIView,
     delete_all_aulas,
-    EventoByProfAPIView
+    EventoByProfAPIView,
+    EventoRemarcacaoListAllAPIView,
+    EventoDesmarcadosListAllAPIView
 )
 
 urlpatterns = [
     url(r'^$', EventoListAPIView.as_view(), name='list'),
     url(r'^list-all/$', EventoListAllAPIView.as_view(), name='list-all'),
+    url(r'^desmarcados/$', EventoDesmarcadosListAllAPIView.as_view(), name='desmarcados'),
+    url(r'^add-remarcacao/$',
+        EventoRemarcacaoListAllAPIView.as_view(), name='remarcacao'),
     url(r'^list-by-professor/$',
         EventoByProfAPIView.as_view(), name='prof-aulas'),
     url(r'^create/$', EventoCreateAPIView.as_view(), name='create'),
