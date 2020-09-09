@@ -11,6 +11,7 @@ class MyAdmin(admin.ModelAdmin):
 
 
 class ExtraAdmin(admin.ModelAdmin):
+    search_fields = ('user__first_name', )
     list_display = ('get_name', 'plano', 'plano_pagamento',
                     'dia_pagamento', 'rg', 'cpf', 'telefone', 'endereco')
     list_editable = ('plano', 'plano_pagamento', 'dia_pagamento',

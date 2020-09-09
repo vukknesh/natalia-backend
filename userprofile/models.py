@@ -76,6 +76,9 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+    class Meta:
+        ordering = ['user__first_name', ]
+
     def __str__(self):
         return self.user.username
 
