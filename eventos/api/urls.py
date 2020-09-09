@@ -18,7 +18,8 @@ from .views import (
 urlpatterns = [
     url(r'^$', EventoListAPIView.as_view(), name='list'),
     url(r'^list-all/$', EventoListAllAPIView.as_view(), name='list-all'),
-    url(r'^desmarcados/$', EventoDesmarcadosListAllAPIView.as_view(), name='desmarcados'),
+    url(r'^mostrar-desmarcados/$',
+        EventoDesmarcadosListAllAPIView.as_view(), name='desmarcados'),
     url(r'^add-remarcacao/$',
         EventoRemarcacaoListAllAPIView.as_view(), name='remarcacao'),
     url(r'^list-by-professor/$',
