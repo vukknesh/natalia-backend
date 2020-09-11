@@ -201,11 +201,13 @@ class EventoListAPIView(ListAPIView):
         dia_pg = u.profile.dia_pagamento
         print(f'dia de pagamento = {dia_pg}')
         ultimo_dia = dia_pg - 1
+        print(f'dia de pagamento = {dia_pg}')
+        mes_mais = month + 1
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
-                           starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month, starting_date__day__lte=ultimo_dia)
+                           starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=mes_mais, starting_date__day__lte=ultimo_dia)
         # queryset_list = Evento.objects.filter(
         #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
