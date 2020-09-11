@@ -218,7 +218,7 @@ class EventoListAPIView(ListAPIView):
         #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
 
-        return Response({"eventos": EventoListSerializer(queryset_list, many=True).data})
+        return Response({"eventos": EventoListSerializer(qs, many=True).data})
 
 
 class EventoListAllAPIView(ListAPIView):
