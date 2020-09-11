@@ -198,11 +198,17 @@ class EventoListAPIView(ListAPIView):
         else:
             u = User.objects.first()
 
-       # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
+        dia_pg = u.profile.dia_pagamento
+        print(f'dia de pagamento = {dia_pg}')
+        ultimo_dia = dia_pg - 1
+        # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
-                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
+                           starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month, starting_date__day__lte=ultimo_dia)
+        # queryset_list = Evento.objects.filter(
+        #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
+        #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
 
         return Response({"eventos": EventoListSerializer(queryset_list, many=True).data})
