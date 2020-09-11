@@ -206,7 +206,7 @@ class EventoListAPIView(ListAPIView):
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
-                           starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month, starting_date__day__lt=dia_pg)
+                           starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         # queryset_list = Evento.objects.filter(
         #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
