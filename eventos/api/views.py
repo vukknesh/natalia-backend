@@ -189,8 +189,10 @@ class EventoListAPIView(ListAPIView):
         now = datetime.now(timezone.utc)
         year = now.year
         month = now.month
+        print(f'now = {now}')
+        print(f'month = {month}')
+        print(f'year = {year}')
 
-        data__month__lte = month
         if request.data['user_id'] is not None:
             u = User.objects.get(id=request.data['user_id'])
         else:
@@ -199,7 +201,7 @@ class EventoListAPIView(ListAPIView):
         qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
                                    starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
-            user=u).filter(starting_date__gte=datetime.now())[:30]
+            user=u).filter(starting_date__gte=datetime.now())
         # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
 
         return Response({"eventos": EventoListSerializer(queryset_list, many=True).data})
