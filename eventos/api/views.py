@@ -203,8 +203,8 @@ class EventoListAPIView(ListAPIView):
 
         start_date = datetime.datetime(year, month, dia_pg)
         end_date = datetime.datetime(year, month_mais, dia_pg)
-        print(f'month  {month}')
-        print(f'dia_pg mais {dia_pg}')
+        print(f'start_date  {start_date}')
+        print(f'end_date  {end_date}')
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
