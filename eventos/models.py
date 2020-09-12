@@ -56,13 +56,15 @@ def update_evento(sender, instance, **kwargs):
 
     dia_pg = user.profile.dia_pagamento
     month_mais = month + 1
-    dia_mais = dia_pg + 30
-    aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-                                          starting_date__month__gte=month,
-                                          starting_date__year__lte=year,
-                                          starting_date__month__lte=month)
-    # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year, starting_date__month__gte=month, starting_date__day__gte=dia_pg,
-    #                                      starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lte=dia_mais)
+
+    start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+    # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+    #                                       starting_date__month__gte=month,
+    #                                       starting_date__year__lte=year,
+    #                                       starting_date__month__lte=month)
+    aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
+                                          starting_date__lt=end_date)
 
     if(user.profile.plano == "4 Aulas"):
         if(aulas_do_mes.count() >= 4):
