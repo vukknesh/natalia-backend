@@ -200,17 +200,19 @@ class EventoListAPIView(ListAPIView):
 
         dia_pg = u.profile.dia_pagamento
         month_mais = month + 1
-        dia_mais = dia_pg + 1
+
+        start_date = datetime.date(year, month, dia_pg)
+        end_date = datetime.date(year, month_mais, dia_pg)
         print(f'month  {month}')
-        print(f'month mais {dia_mais}')
+        print(f'dia_pg mais {dia_pg}')
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
             user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
                            starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         print(f'queryset_list === {queryset_list}')
-        qs = Evento.objects.filter(user=u).filter(starting_date__year__gte=year, starting_date__month__gte=month, starting_date__day__gte=dia_pg,
-                                                  starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lte=dia_mais + timedelta(days=30))
+        qs = Evento.objects.filter(user=u).filter(
+            starting_date__gte=start_date, starting_date__lte=end_date)
         for qqq in qs:
             print(f'qqq.starting_date.day = {qqq.starting_date.day}')
         print(f'qs === {qs}')
