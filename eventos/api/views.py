@@ -201,8 +201,8 @@ class EventoListAPIView(ListAPIView):
         dia_pg = u.profile.dia_pagamento
         month_mais = month + 1
 
-        start_date = datetime.datetime(year, month, dia_pg)
-        end_date = datetime.datetime(year, month_mais, dia_pg)
+        start_date = datetime.date(year, month, dia_pg)
+        end_date = datetime.date(year, month_mais, dia_pg)
         print(f'start_date  {start_date}')
         print(f'end_date  {end_date}')
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
