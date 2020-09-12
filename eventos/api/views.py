@@ -17,7 +17,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 from rest_framework.pagination import LimitOffsetPagination
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from django.contrib.auth.models import User
 from rest_framework.permissions import (
     AllowAny,
@@ -210,7 +210,7 @@ class EventoListAPIView(ListAPIView):
                            starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         print(f'queryset_list === {queryset_list}')
         qs = Evento.objects.filter(user=u).filter(starting_date__year__gte=year, starting_date__month__gte=month, starting_date__day__gte=dia_pg,
-                                                  starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lte=dia_mais)
+                                                  starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lte=dia_mais + timedelta(days=30))
         for qqq in qs:
             print(f'qqq.starting_date.day = {qqq.starting_date.day}')
         print(f'qs === {qs}')
