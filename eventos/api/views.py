@@ -255,7 +255,7 @@ class EventoDesmarcadosListAllAPIView(ListAPIView):
 
 class EventoByProfAPIView(ListAPIView):
     serializer_class = EventoListAllSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = LimitOffsetPagination
     page_size = 200
 
@@ -270,7 +270,7 @@ class EventoByProfAPIView(ListAPIView):
 
 class EventoDesmarcadoByProfAPIView(ListAPIView):
     serializer_class = EventoListAllSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = LimitOffsetPagination
     page_size = 200
 
