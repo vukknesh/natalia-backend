@@ -16,7 +16,7 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 # @register_job(scheduler, "interval", seconds=60, replace_existing=True)
 
 
-@register_job(scheduler, trigger='cron', hour='23', minute='59', replace_existing=True)
+@register_job(scheduler, trigger='cron', hour='1', minute='10', replace_existing=True)
 def resetRemarcadas():
     now = datetime.now(timezone.utc)
 
