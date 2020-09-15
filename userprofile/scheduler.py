@@ -13,18 +13,7 @@ scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
 
 
-@register_job(scheduler, "interval", seconds=60, replace_existing=True)
-def testeeeees():
-    now = datetime.now(timezone.utc)
-
-    alunos = Profile.objects.all()
-    for aluno in alunos:
-        print(f'aluno.dia_pagamento = {aluno.dia_pagamento}')
-        print(f'now.day = {now.day}')
-
-        if aluno.dia_pagamento == now.day:
-            print(f'aluno.dia_pagamento = {aluno.dia_pagamento}')
-            Profile.objects.filter(user=aluno.user).update(aulas_remarcadas=0)
+# @register_job(scheduler, "interval", seconds=60, replace_existing=True)
 
 
 @register_job(scheduler, trigger='cron', hour='23', minute='59', replace_existing=True)

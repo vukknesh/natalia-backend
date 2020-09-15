@@ -202,6 +202,10 @@ class EventoListAPIView(ListAPIView):
         month_mais = month + 1
 
         start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        if month_mais == 13:
+            month_mais = 1
+            year = year + 1
+
         end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
         print(f'start_date  {start_date}')
         print(f'end_date  {end_date}')
@@ -259,6 +263,21 @@ class EventoByProfAPIView(ListAPIView):
 
         queryset_list = Evento.objects.filter(
             user__profile__professor=self.request.user).filter(user__is_active=True)  # filter(user=self.request.user)
+        print(f'querylist = {queryset_list}')
+
+        return queryset_list
+
+
+class EventoDesmarcadoByProfAPIView(ListAPIView):
+    serializer_class = EventoListAllSerializer
+    permission_classes = [AllowAny]
+    pagination_class = LimitOffsetPagination
+    page_size = 200
+
+    def get_queryset(self, *args, **kwargs):
+
+        queryset_list = Evento.objects.filter(
+            user__profile__professor=self.request.user).filter(user__is_active=True, desmarcado=True)  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
         return queryset_list

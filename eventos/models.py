@@ -56,8 +56,12 @@ def update_evento(sender, instance, **kwargs):
 
     dia_pg = user.profile.dia_pagamento
     month_mais = month + 1
-
     start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+
+    if month_mais == 13:
+        month_mais = 1
+        year = year + 1
+
     end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
     # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
     #                                       starting_date__month__gte=month,

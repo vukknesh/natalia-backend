@@ -24,17 +24,17 @@ class Profile(models.Model):
     PAGAMENTO_C = 'Semestral'
     PAGAMENTO_D = 'Anual'
     ESTADO_A = 'Solteiro(a)'
-    ESTADO_B = 'Casado'
-    ESTADO_C = 'Separado'
-    ESTADO_D = 'Divorciado'
-    ESTADO_E = 'Viuvo'
+    ESTADO_B = 'Casado(a)'
+    ESTADO_C = 'Separado(a)'
+    ESTADO_D = 'Divorciado(a)'
+    ESTADO_E = 'Viuvo(a)'
     ESTADO_F = 'Uniao Estavel'
     ESTADO_CHOICES = (
         (ESTADO_A, 'Solteiro(a)'),
-        (ESTADO_B, 'Casado'),
-        (ESTADO_C, 'Separado'),
-        (ESTADO_D, 'Divorciado'),
-        (ESTADO_E, 'Viuvo'),
+        (ESTADO_B, 'Casado(a)'),
+        (ESTADO_C, 'Separado(a)'),
+        (ESTADO_D, 'Divorciado(a)'),
+        (ESTADO_E, 'Viuvo(a)'),
         (ESTADO_F, 'Uniao Estavel'),
     )
     PLANO_CHOICES = (
