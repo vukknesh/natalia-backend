@@ -275,9 +275,10 @@ class EventoDesmarcadoByProfAPIView(ListAPIView):
     page_size = 200
 
     def get_queryset(self, *args, **kwargs):
-
+        print('dentro do query')
+        print(f'self.request.user = {self.request.user}')
         queryset_list = Evento.objects.filter(
-            user__profile__professor=self.request.user).filter(user__is_active=True, desmarcado=True)  # filter(user=self.request.user)
+            user__profile__professor=self.request.user).filter(user__is_active=True).filter(desmarcado=True)  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
         return queryset_list
