@@ -88,9 +88,8 @@ def update_evento(sender, instance, **kwargs):
             pass
     print(f'instance{instance} pre save')
     response_text = "ok"
-    if(kwargs.response_text):
-        response_text = kwargs.response_text
-    print(f'response_text  = {response_text}')
+    print(f'kwargs {kwargs}')
+
     return Response({"evento": instance, "message": response_text})
 
 
