@@ -87,7 +87,12 @@ def update_evento(sender, instance, **kwargs):
             instance.bonus = True
             pass
     print(f'instance{instance} pre save')
-    return Response({"evento": instance, "message": kwargs.response_text})
+    response_text = "ok"
+    if(kwargs.response_text):
+        response_text = kwargs.response_text
+    print(f'kwags.response_text  = {kwargs.respose_text}')
+    print(f'response_text  = {respose_text}')
+    return Response({"evento": instance, "message": response_text})
 
 
 pre_save.connect(update_evento, sender=Evento)
