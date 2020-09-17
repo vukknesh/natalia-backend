@@ -194,9 +194,12 @@ class EventoListAPIView(ListAPIView):
         print(f'year = {year}')
 
         agora = datetime.now()
+        print(f'agora  = {agora}')
         days = datetime.timedelta(5)
+        print(f'days  = {days}')
 
         new_date = agora - days
+        print(f'new_date  = {new_date}')
 
         if request.data['user_id'] is not None:
             u = User.objects.get(id=request.data['user_id'])
