@@ -242,10 +242,15 @@ class EventoListAllAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        agora = datetime.now()
+        agora_now = datetime.now()
+        print(f'agora_now  = {agora_now}')
+        agora = datetime.now().date()
+        print(f'agora  = {agora}')
         days = datetime.timedelta(5)
+        print(f'days  = {days}')
 
         new_date = agora - days
+        print(f'new_date  = {new_date}')
         queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=new_date)[
             :900]  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
