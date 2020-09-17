@@ -193,6 +193,11 @@ class EventoListAPIView(ListAPIView):
         print(f'month = {month}')
         print(f'year = {year}')
 
+        agora = datetime.now()
+        days = datetime.timedelta(5)
+
+        new_date = agora - days
+
         if request.data['user_id'] is not None:
             u = User.objects.get(id=request.data['user_id'])
         else:
@@ -212,10 +217,10 @@ class EventoListAPIView(ListAPIView):
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
-            user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
+            user=u).filter(starting_date__gte=new_date, starting_date__year__gte=year,
                            starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         print(f'queryset_list === {queryset_list}')
-        qs = Evento.objects.filter(user=u).filter(starting_date__gte=datetime.now(),
+        qs = Evento.objects.filter(user=u).filter(starting_date__gte=new_date,
                                                   starting_date__lt=end_date)
         for qqq in qs:
             print(f'qqq.starting_date.day = {qqq.starting_date.day}')
@@ -234,7 +239,11 @@ class EventoListAllAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=datetime.now())[
+        agora = datetime.now()
+        days = datetime.timedelta(5)
+
+        new_date = agora - days
+        queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=new_date)[
             :900]  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
@@ -246,8 +255,12 @@ class EventoDesmarcadosListAllAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self, *args, **kwargs):
+        agora = datetime.now()
+        days = datetime.timedelta(5)
+
+        new_date = agora - days
         queryset_list = Evento.objects.filter(
-            starting_date__gte=datetime.now(), desmarcado=True)
+            starting_date__gte=new_date, desmarcado=True)
         print(f'desmarcados = {queryset_list}')
 
         return queryset_list
