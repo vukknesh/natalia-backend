@@ -90,8 +90,8 @@ def update_evento(sender, instance, **kwargs):
     response_text = "ok"
     if(kwargs.response_text):
         response_text = kwargs.response_text
-    print(f'kwags.response_text  = {kwargs.respose_text}')
-    print(f'response_text  = {respose_text}')
+    print(f'kwags.response_text  = {kwargs.response_text}')
+    print(f'response_text  = {response_text}')
     return Response({"evento": instance, "message": response_text})
 
 
