@@ -108,36 +108,50 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'dif_hours = {dif_hours}')
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
-        if(evento.bonus):
-            raise ValidationError(
-                {"message": "Aula bônus não pode ser desmarcada!"})
+        # if(evento.bonus):
+        #    raise ValidationError(
+        #        {"message": "Esta é uma aula bônus e não poderá ser remarcada!"})
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
             if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
                 print(f'um dia anterior')
                 raise ValidationError(
-                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+                    {"message": "Você só poderá remarcar aulas matutinas antes das 20hrs do dia anterior."})
             # msm dia que evento matutino
             if(now.date() == evento.starting_date.date()):
                 print(f'same date')
                 raise ValidationError(
-                    {"message": "Voce so pode remarcar aulas matutinas antes das 20hrs do dia anterior."})
+                    {"message": "Você só poderá remarcar aulas matutinas antes das 20hrs do dia anterior."})
             pass
         # funcionando
 
         if(dif_hours <= 0):
             print('dentro')
             raise ValidationError(
-                {"message": "Voce so pode remarcar aulas 3 horas antes."})
+                {"message": "Você só poderá remarcar aulas 3 horas antes."})
+        dia_pg = user.profile.dia_pagamento
+        month_mais = month + 1
+        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
 
-        aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-                                              starting_date__month__gte=month,
-                                              starting_date__year__lte=year,
-                                              starting_date__month__lte=month)
+        if month_mais == 13:
+            month_mais = 1
+            year = year + 1
+
+        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+        # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+        #                                       starting_date__month__gte=month,
+        #                                       starting_date__year__lte=year,
+        #                                       starting_date__month__lte=month)
+        aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
+                                              starting_date__lt=end_date)
+        # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
+        #                                      starting_date__month__gte=month,
+        #                                      starting_date__year__lte=year,
+        #                                      starting_date__month__lte=month)
         if(user.profile.plano == "4 Aulas"):
             if(user.profile.aulas_remarcadas > 0):
                 raise ValidationError(
-                    {"message": "Voce ja remarcou 1 aula deste mes."})
+                    {"message": "Você já remarcou 1 aula deste mês."})
             if(aulas_do_mes.count() > 4):
                 if(aulas_do_mes.last() == evento):
                     raise ValidationError(
@@ -146,7 +160,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         if(user.profile.plano == "8 Aulas"):
             if(user.profile.aulas_remarcadas > 1):
                 raise ValidationError(
-                    {"message": "Voce ja remarcou 2 aulas deste mes."})
+                    {"message": "Você já remarcou 2 aulas deste mês."})
             if(aulas_do_mes.count() > 8):
                 if(aulas_do_mes.last() == evento):
                     raise ValidationError(
@@ -156,7 +170,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         if(user.profile.plano == "12 Aulas"):
             if(user.profile.aulas_remarcadas > 2):
                 raise ValidationError(
-                    {"message": "Voce ja remarcou 3 aulas deste mes."})
+                    {"message": "Você já remarcou 3 aulas deste mês."})
             if(aulas_do_mes.count() > 12):
                 if(aulas_do_mes.last() == evento):
                     raise ValidationError(
@@ -189,17 +203,7 @@ class EventoListAPIView(ListAPIView):
         now = datetime.now(timezone.utc)
         year = now.year
         month = now.month
-        print(f'now = {now}')
-        print(f'month = {month}')
-        print(f'year = {year}')
-
-        agora = datetime.now()
-        print(f'agora  = {agora}')
-        days = datetime.timedelta(5)
-        print(f'days  = {days}')
-
-        new_date = agora - days
-        print(f'new_date  = {new_date}')
+        dt = date.today()
 
         if request.data['user_id'] is not None:
             u = User.objects.get(id=request.data['user_id'])
@@ -220,10 +224,10 @@ class EventoListAPIView(ListAPIView):
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
         queryset_list = Evento.objects.filter(
-            user=u).filter(starting_date__gte=new_date, starting_date__year__gte=year,
+            user=u).filter(starting_date__gte=dt, starting_date__year__gte=year,
                            starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         print(f'queryset_list === {queryset_list}')
-        qs = Evento.objects.filter(user=u).filter(starting_date__gte=new_date,
+        qs = Evento.objects.filter(user=u).filter(starting_date__gte=dt,
                                                   starting_date__lt=end_date)
         for qqq in qs:
             print(f'qqq.starting_date.day = {qqq.starting_date.day}')
@@ -242,9 +246,7 @@ class EventoListAllAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        agora_now = datetime.now()
         dt = date.today() - timedelta(5)
-        print(f'dt = {dt}')
 
         queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=dt)[
             :900]  # filter(user=self.request.user)
@@ -258,12 +260,9 @@ class EventoDesmarcadosListAllAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self, *args, **kwargs):
-        agora = datetime.now()
-        days = datetime.timedelta(5)
-
-        new_date = agora - days
+        dt = date.today() - timedelta(30)
         queryset_list = Evento.objects.filter(
-            starting_date__gte=new_date, desmarcado=True)
+            starting_date__gte=dt, desmarcado=True)
         print(f'desmarcados = {queryset_list}')
 
         return queryset_list
