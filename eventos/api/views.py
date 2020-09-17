@@ -106,6 +106,9 @@ class EventoUpdateAPIView(UpdateAPIView):
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
         print(f'dif_hours = {dif_hours}')
+        response_text = 'Aula desmarcada com sucesso!'
+        bonus_counter = user.profile.bonus_remarcadas
+        aulas_counter = user.profile.aulas_remarcadas
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
         # if(evento.bonus):
@@ -148,39 +151,61 @@ class EventoUpdateAPIView(UpdateAPIView):
         #                                      starting_date__month__gte=month,
         #                                      starting_date__year__lte=year,
         #                                      starting_date__month__lte=month)
+
         if(user.profile.plano == "4 Aulas"):
+            if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas > 0):
+                aulas_counter = aulas_counter + 1
+                pass
             if(user.profile.aulas_remarcadas > 0):
                 raise ValidationError(
                     {"message": "Você já remarcou 1 aula deste mês."})
-            if(aulas_do_mes.count() > 4):
-                if(aulas_do_mes.last() == evento):
-                    raise ValidationError(
-                        {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
-                pass
+
         if(user.profile.plano == "8 Aulas"):
+            if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas > 0):
+                aulas_counter = aulas_counter + 1
+                pass
             if(user.profile.aulas_remarcadas > 1):
                 raise ValidationError(
                     {"message": "Você já remarcou 2 aulas deste mês."})
-            if(aulas_do_mes.count() > 8):
-                if(aulas_do_mes.last() == evento):
-                    raise ValidationError(
-                        {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
-                pass
+
+            # if(user.profile.aulas_remarcadas > 1):
+            #    raise ValidationError(
+            #        {"message": "Você já remarcou 2 aulas deste mês."})
+            # if(aulas_do_mes.count() > 8):
+            #    if(aulas_do_mes.last() == evento):
+            #        raise ValidationError(
+            #            {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
+            #    pass
 
         if(user.profile.plano == "12 Aulas"):
+            if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
+                aulas_counter = aulas_counter + 1
+                pass
             if(user.profile.aulas_remarcadas > 2):
                 raise ValidationError(
                     {"message": "Você já remarcou 3 aulas deste mês."})
-            if(aulas_do_mes.count() > 12):
-                if(aulas_do_mes.last() == evento):
-                    raise ValidationError(
-                        {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
-                pass
+
         profile = user.profile
-        profile.aulas_remarcadas = profile.aulas_remarcadas + 1
+        profile.aulas_remarcadas = aulas_counter
+        profile.bonus_remarcadas = bonus_counter
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
         serializer.save(user=user)
+        return Response({
+            "message": response_text})
+
         # email send_email
 
 

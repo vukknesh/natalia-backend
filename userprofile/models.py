@@ -14,6 +14,7 @@ class Profile(models.Model):
     slug = models.SlugField(unique=True)
     # personal
     aulas_remarcadas = models.IntegerField(default=0)
+    bonus_remarcadas = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
     PLANO_A = '4 Aulas'
     PLANO_B = '8 Aulas'

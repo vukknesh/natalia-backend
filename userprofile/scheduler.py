@@ -23,7 +23,8 @@ def resetRemarcadas():
     alunos = Profile.objects.all()
     for aluno in alunos:
         if aluno.dia_pagamento == now.day:
-            Profile.objects.filter(user=aluno.user).update(aulas_remarcadas=0)
+            Profile.objects.filter(user=aluno.user).update(
+                aulas_remarcadas=0, bonus_remarcadas=0)
 
     # Profile.objects.all().update(aulas_remarcadas=0)
 
