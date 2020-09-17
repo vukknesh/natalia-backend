@@ -47,14 +47,6 @@ class Evento(models.Model):
         return reverse("eventos:delete", kwargs={"id": self.id})
 
 
-def save(self, *args, **kwargs):
-    print(f'args ={args}')
-    print(f'kwargs ={kwargs}')
-
-    ev = super(Evento, self).save(*args, **kwargs)
-    return Response({"evento": ev, "message": "aaa"})
-
-
 def update_evento(sender, instance, **kwargs):
     user = instance.user
     print(f'user do instance {user.profile.plano}')

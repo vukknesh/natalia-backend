@@ -17,6 +17,7 @@ from rest_framework.serializers import (
 )
 from django.shortcuts import get_object_or_404
 from .models import Profile
+from datetime import datetime, timezone
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,6 +36,25 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     email = CharField(source='user.email')
     ativo = BooleanField(source='user.is_active')
     aulas = SerializerMethodField()
+    tem_bonus = SerializerMethodField()
+
+    def get_tem_bonus(self, obj):
+        now = datetime.now(timezone.utc)
+        year = now.year
+        month = now.month
+        dia_pg = obj.user.profile.dia_pagamento
+        month_mais = month + 1
+        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+
+        if month_mais == 13:
+            month_mais = 1
+            year = year + 1
+
+        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+        aulas_do_mes = Evento.objects.filter_by_instance(obj).distinct('starting_date').filter(starting_date__gte=start_date,
+                                                                                               starting_date__lt=end_date)[:30]
+
+        return aulas_do_mes.count()
 
     def get_aulas(self, obj):
         c_qs = Evento.objects.filter_by_instance(
@@ -46,7 +66,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = Profile
         depth = 1
         fields = ('id', 'slug', 'ativo', 'data_nascimento', 'rg', 'plano_pagamento', 'profissao', 'estado_civil', 'telefone', 'is_professor', 'cpf', 'first_name', 'email', 'endereco', 'aulas', 'professor',
-                  'aulas_remarcadas', 'bonus_remarcadas', 'plano', 'user_id', 'created_at', 'updated')
+                  'aulas_remarcadas', 'bonus_remarcadas', 'plano', 'user_id', 'created_at', 'updated', 'tem_bonus')
 
     def get_full_name(self, obj):
         request = self.context['request']
