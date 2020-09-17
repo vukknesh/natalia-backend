@@ -141,12 +141,12 @@ class EventoUpdateAPIView(UpdateAPIView):
             year = year + 1
 
         end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+        aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
+                                              starting_date__lt=end_date)
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
         #                                       starting_date__year__lte=year,
         #                                       starting_date__month__lte=month)
-        aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                              starting_date__lt=end_date)
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                      starting_date__month__gte=month,
         #                                      starting_date__year__lte=year,
