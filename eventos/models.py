@@ -50,6 +50,8 @@ class Evento(models.Model):
 def save(self, *args, **kwargs):
     print(f'args ={args}')
     print(f'kwargs ={kwargs}')
+    if(kwargs.response_text):
+        print(kwargs.response_text)
     ev = super(Evento, self).save(*args, **kwargs)
     return Response({"evento": ev, "message": "aaa"})
 

@@ -203,7 +203,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
-        ev = serializer.save(user=user)
+        ev = serializer.save(user=user, response_text=response_text)
 
         # email send_email
 
