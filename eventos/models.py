@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
+from rest_framework.response import Response
 
 
 class EventoManager(models.Manager):
@@ -44,6 +45,13 @@ class Evento(models.Model):
 
     def get_delete_url(self):
         return reverse("eventos:delete", kwargs={"id": self.id})
+
+
+def save(self, *args, **kwargs):
+    print(f'args ={args}')
+    print(f'kwargs ={kwargs}')
+    ev = super(Evento, self).save(*args, **kwargs)
+    return Response({"evento": ev, "message": "aaa"})
 
 
 def update_evento(sender, instance, **kwargs):
