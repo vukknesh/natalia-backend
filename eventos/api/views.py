@@ -202,9 +202,8 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.bonus_remarcadas = bonus_counter
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
+        evento.message = response_text
         serializer.save(user=user)
-        return Response({
-            "message": response_text})
 
         # email send_email
 
