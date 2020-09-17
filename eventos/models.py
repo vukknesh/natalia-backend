@@ -47,15 +47,6 @@ class Evento(models.Model):
         return reverse("eventos:delete", kwargs={"id": self.id})
 
 
-def save(self, *args, **kwargs):
-    print(f'args ={args}')
-    print(f'kwargs ={kwargs}')
-    if(kwargs.response_text):
-        print(kwargs.response_text)
-    ev = super(Evento, self).save(*args, **kwargs)
-    return Response({"evento": ev, "message": "aaa"})
-
-
 def update_evento(sender, instance, **kwargs):
     user = instance.user
     print(f'user do instance {user.profile.plano}')
@@ -96,6 +87,7 @@ def update_evento(sender, instance, **kwargs):
             instance.bonus = True
             pass
     print(f'instance{instance} pre save')
+    return Response({"evento": instance, "message": kwargs.response_text})
 
 
 pre_save.connect(update_evento, sender=Evento)
