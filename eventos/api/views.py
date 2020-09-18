@@ -153,6 +153,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         #                                      starting_date__month__lte=month)
 
         if(user.profile.plano == "4 Aulas"):
+
             if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
                 response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
@@ -165,11 +166,23 @@ class EventoUpdateAPIView(UpdateAPIView):
                     {"message": "Você já remarcou 1 aula deste mês."})
 
         if(user.profile.plano == "8 Aulas"):
-            if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
+            aulas_bonus = aulas_do_mes.count() - 8
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
                 response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
-            if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas > 0):
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
+            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    bonus_counter = bonus_counter + 1
+            #    pass
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
+                aulas_counter = aulas_counter + 1
+                pass
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas > 1):
                 aulas_counter = aulas_counter + 1
                 pass
             if(user.profile.aulas_remarcadas > 1):
@@ -186,13 +199,39 @@ class EventoUpdateAPIView(UpdateAPIView):
             #    pass
 
         if(user.profile.plano == "12 Aulas"):
-            if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
+            aulas_bonus = aulas_do_mes.count() - 12
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
                 response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
-            if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_bonus == 3 and user.profile.bonus_remarcadas <= 3):
+                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
+            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    bonus_counter = bonus_counter + 1
+            #    pass
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
                 aulas_counter = aulas_counter + 1
                 pass
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas == 2):
+                aulas_counter = aulas_counter + 1
+                pass
+            if(aulas_bonus == 3 and user.profile.bonus_remarcadas == 3):
+                aulas_counter = aulas_counter + 1
+                pass
+            # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
+            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    bonus_counter = bonus_counter + 1
+            #    pass
+            # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
+            #    aulas_counter = aulas_counter + 1
+            #    pass
             if(user.profile.aulas_remarcadas > 2):
                 raise ValidationError(
                     {"message": "Você já remarcou 3 aulas deste mês."})
@@ -299,9 +338,9 @@ class EventoByProfAPIView(ListAPIView):
     page_size = 200
 
     def get_queryset(self, *args, **kwargs):
-
+        dt = date.today() + timedelta(30)
         queryset_list = Evento.objects.filter(
-            user__profile__professor=self.request.user).filter(user__is_active=True)  # filter(user=self.request.user)
+            user__profile__professor=self.request.user).filter(user__is_active=True, starting_date__gte=date.today(), starting_date__lte=dt)  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
         return queryset_list
