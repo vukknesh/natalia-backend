@@ -45,7 +45,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         dia_pg = obj.user.profile.dia_pagamento
         month_mais = month + 1
         start_date = f'{year}-{month}-{dia_pg} 00:00:00'
-        resp = False
+        resp = 0
         if month_mais == 13:
             month_mais = 1
             year = year + 1
@@ -54,12 +54,12 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         aulas_do_mes = Evento.objects.filter_by_instance(obj).distinct('starting_date').filter(starting_date__gte=start_date,
                                                                                                starting_date__lt=end_date)
         if(obj.user.profile.plano == "4 Aulas" and aulas_do_mes.count() > 4):
-            resp = True
+            resp = aulas_do_mes.count() - 4
 
         if(obj.user.profile.plano == "8 Aulas" and aulas_do_mes.count() > 8):
-            resp = True
+            resp = aulas_do_mes.count() - 8
         if(obj.user.profile.plano == "12 Aulas" and aulas_do_mes.count() > 12):
-            resp = True
+            resp = aulas_do_mes.count() - 12
 
         return resp
 
