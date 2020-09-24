@@ -65,7 +65,8 @@ class EventoCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         if self.request.data['user']:
-            user = self.request.data['user']
+
+            user = User.objects.get(id=self.request.data['user'])
         else:
             user = self.request.user
         serializer.save(user=user)
