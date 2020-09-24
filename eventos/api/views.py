@@ -76,7 +76,11 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
         print(f'self.request.data  = {self.request.data}')
         user = self.request.data['user']
         starting_date = self.request.data['starting_date']
-        serializer.save(user=user, starting_date=starting_date)
+        if self.request.data['user'] is not None:
+            u = User.objects.get(id=self.request.data['user'])
+        else:
+            u = User.objects.first()
+        serializer.save(user=u, starting_date=starting_date)
 
 
 class EventoDetailAPIView(RetrieveAPIView):
