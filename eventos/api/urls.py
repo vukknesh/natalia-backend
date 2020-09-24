@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^desmarcado-by-prof/$',
         EventoDesmarcadoByProfAPIView.as_view(), name='desbyprof'),
     url(r'^add-remarcacao/$',
-        EventoCreateAPIView.as_view(), name='remarcacao'),
+        EventoRemarcacaoListAllAPIView.as_view(), name='remarcacao'),
     url(r'^list-by-professor/$',
         EventoByProfAPIView.as_view(), name='prof-aulas'),
     url(r'^create/$', EventoCreateAPIView.as_view(), name='create'),
