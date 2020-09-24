@@ -79,7 +79,20 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
         else:
             u = User.objects.first()
         print(f'user = {u}')
-        serializer.save()
+        serializer.save(user=u)
+
+
+@api_view(['POST'])
+def add_remarcacao(request):
+    print(f'request {request}')
+    print(f'request.data {request.data}')
+    u = request.data['user']
+    user = User.objects.get(id=u)
+    starting_date = request.data['starting_date']
+
+    Evento.objects.create(user=user, starting_date=starting_date)
+
+    return Response({"message": "Aula remarcada com sucesso!"})
 
 
 class EventoDetailAPIView(RetrieveAPIView):
