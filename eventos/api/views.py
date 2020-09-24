@@ -73,9 +73,9 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        print('Remarcacao self.request')
-        print(self.request)
-        serializer.save(user=self.request.user)
+        print(f'self.request {self.request}')
+        print(f'serializer = {serializer}')
+        serializer.save()
 
 
 class EventoDetailAPIView(RetrieveAPIView):
