@@ -74,7 +74,7 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         print(f'self.request {self.request}')
-        print(f'serializer = {serializer}')
+        print(f'self.request.Request {self.request.Request}')
         serializer.save()
 
 
