@@ -72,14 +72,14 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
     serializer_class = EventoCreateUpdateSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_update(self, serializer):
-        print(f'self.request.data  = {self.request.data}')
+    def perform_create(self, serializer):
 
         if self.request.data['user'] is not None:
             u = User.objects.get(id=self.request.data['user'])
         else:
             u = User.objects.first()
-        serializer.save(user=u)
+        print(f'user = {u}')
+        serializer.save()
 
 
 class EventoDetailAPIView(RetrieveAPIView):
