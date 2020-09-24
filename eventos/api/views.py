@@ -74,8 +74,9 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         print(f'self.request.data  = {self.request.data}')
-        Evento.objects.create(
-            user=self.request.data['user'], starting_date=self.request.data['starting_date'])
+        user = self.request.data['user']
+        starting_date = self.request.data['starting_date']
+        serializer.save(user=user, starting_date=starting_date)
 
 
 class EventoDetailAPIView(RetrieveAPIView):
