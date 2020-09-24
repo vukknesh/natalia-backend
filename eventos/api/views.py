@@ -64,12 +64,15 @@ class EventoCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        data = datetime.now()
+        if self.request.data['starting_date']:
+            data = self.request.data['starting_date']
         if self.request.data['user']:
 
             user = User.objects.get(id=self.request.data['user'])
         else:
             user = self.request.user
-        serializer.save(user=user)
+        serializer.save(user=user, starting_date=data)
 
 
 class EventoRemarcacaoListAllAPIView(CreateAPIView):
