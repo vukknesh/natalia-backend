@@ -226,7 +226,8 @@ class PagamentoListAllAPIView(ListAPIView):
 
     def get_queryset(self, *args, **kwargs):
 
-        queryset_list = Pagamento.objects.all()  # filter(user=self.request.user)
+        queryset_list = Pagamento.objects.filter(
+            user__is_active=True)  # filter(user=self.request.user)
 
         return queryset_list
 
