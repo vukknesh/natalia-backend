@@ -270,8 +270,8 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.bonus_remarcadas = bonus_counter
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
-
-        serializer.save(user=user)
+        self.perform_update(serializer)
+        # serializer.save(user=user)
         
         # keep the return value of serializer.data
         serialized_data = serializer.data
@@ -280,7 +280,13 @@ class EventoUpdateAPIView(UpdateAPIView):
         serialized_data['test'] = 'I am cute'
         print(f'serialized_data = {serialized_data}')
         # Return the manipulated dict
-        return Response(serialized_data)
+        result = {
+            "message": "success",
+            "details": serializer.data,
+            "status": 200
+
+            }
+        return Response(result)
 
         # email send_email
 
