@@ -273,8 +273,10 @@ class EventoUpdateAPIView(UpdateAPIView):
 
         serializer.save(user=user)
         serialized_data = serializer.data
+        print(f'serialized_data ={serialized_data}')
         # Manipulate it as you wish
         serialized_data['test'] = 'I am cute'
+        print(f'serialized_data ={serialized_data}')
         # Return the manipulated dict
         return Response(serialized_data)
 
