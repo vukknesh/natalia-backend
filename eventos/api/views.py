@@ -272,6 +272,11 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         serializer.save(user=user)
+        serialized_data = serializer.data
+        # Manipulate it as you wish
+        serialized_data['test'] = 'I am cute'
+        # Return the manipulated dict
+        return Response(serialized_data)
 
         # email send_email
 
