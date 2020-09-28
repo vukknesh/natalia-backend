@@ -204,7 +204,8 @@ def add_pagamentos_por_aluno(aluno_id):
     now = datetime.now(timezone.utc)
     year = now.year
     month = now.month
-    pagamentos_do_aluno = Pagamento.objects.filter(user_id=aluno_id)
+    pagamentos_do_aluno = Pagamento.objects.filter(
+        user_id=aluno_id, data__gte=now)
     print(f'pagamentos_do_aluno={pagamentos_do_aluno}')
 
     for pg in pagamentos_do_aluno:
