@@ -268,14 +268,13 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile = user.profile
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
+        
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         serializer.save(user=user)
         
-        new_serializer_data = list(serializer.data)
-        new_serializer_data.append({'dict_key': 'dict_value'})
-        return Response(new_serializer_data)
+        
 
         # email send_email
 
@@ -358,7 +357,7 @@ class EventoDesmarcadosListAllAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
         dt = date.today() - timedelta(30)
         queryset_list = Evento.objects.filter(
-            starting_date__gte=dt, desmarcado=True)
+            starting_date__gte=dt, desmarcado=True, remarcacao=True)
         print(f'desmarcados = {queryset_list}')
 
         return queryset_list

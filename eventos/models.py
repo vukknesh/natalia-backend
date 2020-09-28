@@ -46,6 +46,7 @@ class Evento(models.Model):
     def get_delete_url(self):
         return reverse("eventos:delete", kwargs={"id": self.id})
 
+  
 
 def update_evento(sender, instance, **kwargs):
     user = instance.user
