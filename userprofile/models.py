@@ -106,7 +106,16 @@ def pre_save_profile_receiver(sender, instance, *args, **kwargs):
 
     print(f'pre save instance = {instance}')
     print(f'pre save instance.dia_pagamento = {instance.dia_pagamento}')
-    print(f'pre save profile = {instance.profile.dia_pagamento}')
+    print(f'pre save sender = {sender}')
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        # Object is new, so field hasn't technically changed, but you may want to do something else here.
+        pass
+    else:
+        if not obj.dia_pagamento == instance.dia_pagamento:  # Field has changed
+            print(f'dia de  pagamento mudou')
+            pass
     if not instance.slug:
         instance.slug = create_slug(instance)
 
