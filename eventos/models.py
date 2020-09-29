@@ -87,7 +87,7 @@ def update_evento(sender, instance, **kwargs):
         if(aulas_do_mes.count() >= 12):
             instance.bonus = True
             pass
-    print(f'instance{instance} pre save')
+    print(f'instance{instance.comentario} pre save')
 
 
 pre_save.connect(update_evento, sender=Evento)
