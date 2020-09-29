@@ -6,10 +6,10 @@ from .models import Evento
 
 
 class ExtraAdmin(admin.ModelAdmin):
-    list_display = ('get_name', 'desmarcado', 'bonus', 'starting_date'
+    list_display = ('get_name', 'desmarcado', 'bonus', 'remarcacao', 'starting_date'
                     )
-    list_editable = ('desmarcado', 'bonus',)
-    list_filter = ('desmarcado', 'user', 'bonus', )
+    list_editable = ('desmarcado', 'bonus', 'remarcacao')
+    list_filter = ('desmarcado', 'user', 'bonus', 'remarcacao')
 
     def get_name(self, obj):
         return "{}".format(obj.user.first_name)

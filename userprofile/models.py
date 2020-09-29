@@ -115,6 +115,7 @@ def pre_save_profile_receiver(sender, instance, *args, **kwargs):
     else:
         if not obj.dia_pagamento == instance.dia_pagamento:  # Field has changed
             print(f'dia de  pagamento mudou')
+            alterar_plano()
             pass
     if not instance.slug:
         instance.slug = create_slug(instance)
@@ -133,3 +134,7 @@ def save_profile(sender, instance, **kwargs):
 
 
 pre_save.connect(pre_save_profile_receiver, sender=Profile)
+
+
+def alterar_plano():
+    print('alterado o plano')
