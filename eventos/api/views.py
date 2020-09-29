@@ -273,7 +273,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
         evento.comentario = response_text
         print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user)
+        serializer.save(user=user, comentario=response_text)
 
         # email send_email
 
