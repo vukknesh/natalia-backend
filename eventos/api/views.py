@@ -272,7 +272,8 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
-        serializer.save(user=user)
+        mudancas = serializer.save(user=user)
+        return Response({'message': 'aaaa'})
 
         # email send_email
 
