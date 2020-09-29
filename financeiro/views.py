@@ -232,6 +232,25 @@ class PagamentoListAllAPIView(ListAPIView):
         return queryset_list
 
 
+class PagamentoPorAulunoAPIView(ListAPIView):
+    serializer_class = PagamentoListAllSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = LimitOffsetPagination
+    page_size = 200
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+
+        now = datetime.now(timezone.utc)
+        year = now.year
+        month = now.month
+
+        queryset_list = Pagamento.objects.filter(
+            user__is_active=True, user=user, data__year=year)  # filter(user=self.request.user)
+
+        return queryset_list
+
+
 class ItemsListAllAPIView(ListAPIView):
     serializer_class = ItemCreateUpdateSerializer
     permission_classes = [AllowAny]
