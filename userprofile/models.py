@@ -117,7 +117,7 @@ def pre_save_profile_receiver(sender, instance, *args, **kwargs):
     else:
         if not obj.dia_pagamento == instance.dia_pagamento:  # Field has changed
             print(f'dia de  pagamento mudou')
-            alterar_plano(instance.pk)
+            alterar_plano(instance)
             pass
     if not instance.slug:
         instance.slug = create_slug(instance)
@@ -138,7 +138,8 @@ def save_profile(sender, instance, **kwargs):
 pre_save.connect(pre_save_profile_receiver, sender=Profile)
 
 
-def alterar_plano(aluno_id):
+def alterar_plano(instance):
+    aluno_id = instance.pk
     now = datetime.now(timezone.utc)
     year = now.year
     month = now.month
@@ -149,11 +150,11 @@ def alterar_plano(aluno_id):
     for pg in pagamentos_do_aluno:
         pg.delete()
     print('alterado o plano')
-    user = User.objects.get(id=aluno_id)
+    user = instance.user
     print(f'user = {user.first_name}')
-    dia = user.profile.dia_pagamento
-    plano_pagamento = user.profile.plano_pagamento
-    plano = user.profile.plano
+    dia = instance.dia_pagamento
+    plano_pagamento = instance.plano_pagamento
+    plano = instance.plano
     print(f'dia = {dia}')
 
     date_object = date(year, month, 1)
