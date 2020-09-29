@@ -29,6 +29,7 @@ class Evento(models.Model):
     starting_date = models.DateTimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
     timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     objects = EventoManager()
 
     class Meta:
@@ -46,7 +47,6 @@ class Evento(models.Model):
     def get_delete_url(self):
         return reverse("eventos:delete", kwargs={"id": self.id})
 
-  
 
 def update_evento(sender, instance, **kwargs):
     user = instance.user

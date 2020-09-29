@@ -103,6 +103,10 @@ def create_slug(instance, new_slug=None):
 
 
 def pre_save_profile_receiver(sender, instance, *args, **kwargs):
+
+    print(f'pre save instance = {instance}')
+    print(f'pre save instance.dia_pagamento = {instance.dia_pagamento}')
+    print(f'pre save profile = {instance.profile.dia_pagamento}')
     if not instance.slug:
         instance.slug = create_slug(instance)
 
