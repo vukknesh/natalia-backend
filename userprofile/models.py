@@ -8,6 +8,8 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
 from django.utils.text import slugify
+from datetime import datetime, date, timedelta, timezone
+from financeiro.models import Pagamento
 
 
 class Profile(models.Model):
@@ -115,7 +117,7 @@ def pre_save_profile_receiver(sender, instance, *args, **kwargs):
     else:
         if not obj.dia_pagamento == instance.dia_pagamento:  # Field has changed
             print(f'dia de  pagamento mudou')
-            alterar_plano()
+            alterar_plano(instance.pk)
             pass
     if not instance.slug:
         instance.slug = create_slug(instance)
@@ -136,5 +138,65 @@ def save_profile(sender, instance, **kwargs):
 pre_save.connect(pre_save_profile_receiver, sender=Profile)
 
 
-def alterar_plano():
+def alterar_plano(aluno_id):
+    now = datetime.now(timezone.utc)
+    year = now.year
+    month = now.month
+    pagamentos_do_aluno = Pagamento.objects.filter(
+        user_id=aluno_id, data__gte=now)
+    print(f'pagamentos_do_aluno={pagamentos_do_aluno}')
+
+    for pg in pagamentos_do_aluno:
+        pg.delete()
     print('alterado o plano')
+    user = User.objects.get(id=aluno_id)
+    print(f'user = {user.first_name}')
+    dia = user.profile.dia_pagamento
+    plano_pagamento = user.profile.plano_pagamento
+    plano = user.profile.plano
+    print(f'dia = {dia}')
+
+    date_object = date(year, month, 1)
+    date_object += timedelta(days=1-date_object.isoweekday())
+
+    def daterange(start_date, end_date):
+        for n in range(int((end_date - start_date).days)):
+            yield start_date + timedelta(n)
+
+    start_date = date(year, month, 1)
+
+    end_date = date(2025, 12, 30)
+    valor = 0
+    if (plano == "4 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 180
+        if(plano_pagamento == "Trimestral"):
+            valor = 170
+        if(plano_pagamento == "Semestral"):
+            valor = 160
+        if(plano_pagamento == "Anual"):
+            valor = 150
+    if (plano == "8 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 300
+        if(plano_pagamento == "Trimestral"):
+            valor = 280
+        if(plano_pagamento == "Semestral"):
+            valor = 260
+        if(plano_pagamento == "Anual"):
+            valor = 240
+    if (plano == "12 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 420
+        if(plano_pagamento == "Trimestral"):
+            valor = 400
+        if(plano_pagamento == "Semestral"):
+            valor = 380
+        if(plano_pagamento == "Anual"):
+            valor = 360
+    for single_date in daterange(start_date, end_date):
+        print(f'single_date = {single_date}')
+
+        if(single_date.day == dia):
+            Pagamento.objects.get_or_create(
+                user=user, data=single_date, valor=valor, plano_pagamento=plano_pagamento)
