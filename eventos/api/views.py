@@ -99,10 +99,8 @@ def add_remarcacao(request):
     starting_date = request.data['starting_date']
     print(f'starting_date ={starting_date}')
 
-    aula = Evento(user=user, starting_date=starting_date,
-                  desmarcado=False, bonus=True)
-    print(f'aula = {aula}')
-    aula.save()
+    Evento.objects.create(user=user, starting_date=starting_date,
+                          desmarcado=False, bonus=True)
 
     return Response({"message": "Aula remarcada com sucesso!"})
 
