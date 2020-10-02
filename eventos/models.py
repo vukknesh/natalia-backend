@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 
-from datetime import datetime
+from datetime import datetime, date
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
@@ -55,16 +55,24 @@ def update_evento(sender, instance, **kwargs):
     now = datetime.now(timezone.utc)
     year = instance.starting_date.year
     month = instance.starting_date.month
-
+    dt = date.today()
     dia_pg = user.profile.dia_pagamento
     month_mais = month + 1
-    start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    month_menos = month - 1
+    if month_menos == 0:
+        month_menos = 12
+        year = year - 1
 
     if month_mais == 13:
         month_mais = 1
         year = year + 1
 
-    end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+    if dt < dia_pg:
+        start_date = f'{year}-{month_menos}-{dia_pg} 00:00:00'
+        end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    else:
+        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
     # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
     #                                       starting_date__month__gte=month,
     #                                       starting_date__year__lte=year,
