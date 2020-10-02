@@ -179,6 +179,8 @@ def desmarcar_aula_request(request, eventoId):
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date)
 
+    print(f'aulas_do_mes {aulas_do_mes}')
+
     if(user.profile.plano == "4 Aulas"):
 
         if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
@@ -311,6 +313,7 @@ class EventoUpdateAPIView(UpdateAPIView):
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                               starting_date__lt=end_date)
+        print(f'aulas_do_mes {aulas_do_mes}')
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
         #                                       starting_date__year__lte=year,
