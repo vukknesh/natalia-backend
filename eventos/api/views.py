@@ -131,7 +131,7 @@ def desmarcar_aula_request(request, eventoId):
     days, seconds = diff.days, diff.seconds
     dif_hours = days * 24 + seconds
     print(f'dif_hours = {dif_hours}')
-    response_text = ""
+    response_text = "Ok"
     dt = date.today()
     bonus_counter = user.profile.bonus_remarcadas
     aulas_counter = user.profile.aulas_remarcadas
@@ -268,7 +268,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
         print(f'dif_hours = {dif_hours}')
-
+        response_text = "Ok"
         bonus_counter = user.profile.bonus_remarcadas
         aulas_counter = user.profile.aulas_remarcadas
         if(evento.desmarcado):
