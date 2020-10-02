@@ -135,11 +135,7 @@ def desmarcar_aula_request(request, eventoId):
 
     bonus_counter = user.profile.bonus_remarcadas
     aulas_counter = user.profile.aulas_remarcadas
-    if(evento.desmarcado):
-        raise ValidationError({"message": "Aula já desmarcada!"})
-    # if(evento.bonus):
-    #    raise ValidationError(
-    #        {"message": "Esta é uma aula bônus e não poderá ser remarcada!"})
+
     if(evento.starting_date.hour <= 12):
         # evento proximo dia
         if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
@@ -171,14 +167,6 @@ def desmarcar_aula_request(request, eventoId):
     end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date)
-    # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-    #                                       starting_date__month__gte=month,
-    #                                       starting_date__year__lte=year,
-    #                                       starting_date__month__lte=month)
-    # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-    #                                      starting_date__month__gte=month,
-    #                                      starting_date__year__lte=year,
-    #                                      starting_date__month__lte=month)
 
     if(user.profile.plano == "4 Aulas"):
 
@@ -202,10 +190,7 @@ def desmarcar_aula_request(request, eventoId):
             response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
-        # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
-        #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
-        #    bonus_counter = bonus_counter + 1
-        #    pass
+
         if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
             aulas_counter = aulas_counter + 1
             pass
@@ -214,15 +199,6 @@ def desmarcar_aula_request(request, eventoId):
             pass
         if(user.profile.aulas_remarcadas > 1):
             response_text = "Você já remarcou 2 aulas deste mês."
-
-        # if(user.profile.aulas_remarcadas > 1):
-        #    raise ValidationError(
-        #        {"message": "Você já remarcou 2 aulas deste mês."})
-        # if(aulas_do_mes.count() > 8):
-        #    if(aulas_do_mes.last() == evento):
-        #        raise ValidationError(
-        #            {"message": "Essa aula é um bônus e não poderá ser remarcada!"})
-        #    pass
 
     if(user.profile.plano == "12 Aulas"):
         aulas_bonus = aulas_do_mes.count() - 12
@@ -238,10 +214,7 @@ def desmarcar_aula_request(request, eventoId):
             response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
-        # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
-        #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
-        #    bonus_counter = bonus_counter + 1
-        #    pass
+
         if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
             aulas_counter = aulas_counter + 1
             pass
@@ -251,13 +224,7 @@ def desmarcar_aula_request(request, eventoId):
         if(aulas_bonus == 3 and user.profile.bonus_remarcadas == 3):
             aulas_counter = aulas_counter + 1
             pass
-        # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
-        #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
-        #    bonus_counter = bonus_counter + 1
-        #    pass
-        # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
-        #    aulas_counter = aulas_counter + 1
-        #    pass
+
         if(user.profile.aulas_remarcadas > 2):
 
             response_text = "Você já remarcou 3 aulas deste mês."
@@ -267,14 +234,7 @@ def desmarcar_aula_request(request, eventoId):
 
             response_text = "Você só poderá remarcar aulas 3 horas antes."
 
-    profile = user.profile
-    profile.aulas_remarcadas = aulas_counter
-    profile.bonus_remarcadas = bonus_counter
-
-    profile.save()
-    print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
-
-    return Response({"message": response_text})
+    return Response({"message": response_text, "aulas_remarcadas": aulas_counter, "bonus_remarcadas": bonus_counter})
 
 
 class EventoUpdateAPIView(UpdateAPIView):
@@ -441,7 +401,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         # print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         # print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user, comentario=response_text)
+        serializer.save(user=user)
 
         # email send_email
 
