@@ -131,8 +131,8 @@ def desmarcar_aula_request(request, eventoId):
     days, seconds = diff.days, diff.seconds
     dif_hours = days * 24 + seconds
     print(f'dif_hours = {dif_hours}')
-    response_text = 'Aula desmarcada com sucesso!'
-
+    response_text = ""
+    dt = date.today()
     bonus_counter = user.profile.bonus_remarcadas
     aulas_counter = user.profile.aulas_remarcadas
     if(evento.desmarcado):
@@ -159,13 +159,23 @@ def desmarcar_aula_request(request, eventoId):
 
     dia_pg = user.profile.dia_pagamento
     month_mais = month + 1
-    start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    month_menos = month - 1
 
     if month_mais == 13:
         month_mais = 1
         year = year + 1
 
-    end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+    if month_menos == 0:
+        month_menos = 12
+        year = year - 1
+
+    if dt < dia_pg:
+        start_date = f'{year}-{month_menos}-{dia_pg} 00:00:00'
+        end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    else:
+        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date)
 
@@ -179,7 +189,7 @@ def desmarcar_aula_request(request, eventoId):
             aulas_counter = aulas_counter + 1
             pass
         if(user.profile.aulas_remarcadas > 0):
-            response_text = "Você já remarcou 1 aula deste mês."
+            response_text = "Você já remarcou 1 aula deste mês e não poderá remarcar outra."
 
     if(user.profile.plano == "8 Aulas"):
         aulas_bonus = aulas_do_mes.count() - 8
@@ -199,7 +209,7 @@ def desmarcar_aula_request(request, eventoId):
             aulas_counter = aulas_counter + 1
             pass
         if(user.profile.aulas_remarcadas > 1):
-            response_text = "Você já remarcou 2 aulas deste mês."
+            response_text = "Você já remarcou 2 aulas deste mês e não poderá remarcar outra."
 
     if(user.profile.plano == "12 Aulas"):
         aulas_bonus = aulas_do_mes.count() - 12
@@ -228,7 +238,7 @@ def desmarcar_aula_request(request, eventoId):
 
         if(user.profile.aulas_remarcadas > 2):
 
-            response_text = "Você já remarcou 3 aulas deste mês."
+            response_text = "Você já remarcou 3 aulas deste mês e não poderá remarcar outra."
 
         if(dif_hours <= 0):
             print('dentro')
@@ -250,6 +260,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         now = datetime.now(timezone.utc)
         evento = self.get_object()
         year = now.year
+        dt = date.today()
         month = now.month
         diff = evento.starting_date - now
         # duration_in_s = diff.total_seconds()
@@ -257,7 +268,6 @@ class EventoUpdateAPIView(UpdateAPIView):
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
         print(f'dif_hours = {dif_hours}')
-        response_text = 'Aula desmarcada com sucesso!'
 
         bonus_counter = user.profile.bonus_remarcadas
         aulas_counter = user.profile.aulas_remarcadas
@@ -271,24 +281,29 @@ class EventoUpdateAPIView(UpdateAPIView):
             if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
                 print(f'um dia anterior')
 
-                response_text = "Você só poderá remarcar aulas matutinas antes das 20hrs do dia anterior."
-
             # msm dia que evento matutino
             if(now.date() == evento.starting_date.date()):
                 print(f'same date')
 
-                response_text = "Você só poderá remarcar aulas matutinas antes das 20hrs do dia anterior."
             pass
         # funcionando
 
         if(dif_hours <= 0):
             print('dentro')
 
-            response_text = "Você só poderá remarcar aulas 3 horas antes."
-
         dia_pg = user.profile.dia_pagamento
         month_mais = month + 1
-        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        month_menos = month - 1
+        if month_menos == 0:
+            month_menos = 12
+            year = year - 1
+
+        if dt < dia_pg:
+            start_date = f'{year}-{month_menos}-{dia_pg} 00:00:00'
+            end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        else:
+            start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+            end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
 
         if month_mais == 13:
             month_mais = 1
@@ -435,12 +450,17 @@ class EventoListAPIView(ListAPIView):
         dia_pg = u.profile.dia_pagamento
         month_mais = month + 1
 
-        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
         if month_mais == 13:
             month_mais = 1
             year = year + 1
 
-        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+        if dt < dia_pg:
+            start_date = dt
+            end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        else:
+            start_date = f'{year}-{month}-{dia_pg} 00:00:00'
+            end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+
         print(f'start_date  {start_date}')
         print(f'end_date  {end_date}')
         # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
