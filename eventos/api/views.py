@@ -256,7 +256,9 @@ class EventoUpdateAPIView(UpdateAPIView):
 
     def perform_update(self, serializer):
         # tudo calculado 3 horas a mais pelo timezone UTC
+
         user = self.request.user
+
         now = datetime.now(timezone.utc)
         evento = self.get_object()
         year = now.year
@@ -298,16 +300,15 @@ class EventoUpdateAPIView(UpdateAPIView):
             month_menos = 12
             year = year - 1
 
+        if month_mais == 13:
+            month_mais = 1
+            year = year + 1
         if dt.day < dia_pg:
             start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
             end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         else:
             start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
             end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-
-        if month_mais == 13:
-            month_mais = 1
-            year = year + 1
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                               starting_date__lt=end_date)
@@ -413,10 +414,14 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.bonus_remarcadas = bonus_counter
 
         profile.save()
+        if profile.tem_bonus > profile.bonus_remarcadas:
+            remarcacao = False
+        else:
+            remarcacao = True
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user)
+        serializer.save(user=user, remarcacao=remarcacao)
 
         # email send_email
 
