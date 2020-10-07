@@ -413,15 +413,22 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
 
-        profile.save()
         if profile.tem_bonus > profile.bonus_remarcadas:
-            remarcacao = False
+            print(f'profile.tem_bonus {profile.tem_bonus}')
+            print(
+                f'profile.profile.bonus_remarcadas {profile.profile.bonus_remarcadas}')
+            remarcacao_aluno = False
         else:
-            remarcacao = True
+            print(
+                f'profile.profile.bonus_remarcadas else {profile.profile.bonus_remarcadas}')
+            print(
+                f'profile.profile.bonus_remarcadas else {profile.profile.bonus_remarcadas}')
+            remarcacao_aluno = True
+        profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user, remarcacao=remarcacao)
+        serializer.save(user=user, remarcacao=remarcacao_aluno)
 
         # email send_email
 

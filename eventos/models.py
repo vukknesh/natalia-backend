@@ -54,6 +54,7 @@ def update_evento(sender, instance, **kwargs):
     print(f'user do sender {sender}')
     now = datetime.now(timezone.utc)
     print(f'instance ={instance}')
+    print(f'instance ={instance.remarcacao}')
     print(f'now ={now}')
     year = instance.starting_date.year
     print(f'year ={year}')
