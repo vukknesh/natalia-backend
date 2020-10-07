@@ -424,7 +424,6 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
 
-        print(f'aula bonus ={}')
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
