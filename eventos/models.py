@@ -76,7 +76,7 @@ def update_evento(sender, instance, **kwargs):
         month_mais = 1
         year = year + 1
 
-    if dt < dia_pg:
+    if dt.day < dia_pg:
         print(f'dt < dia_pg')
         start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
         end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
