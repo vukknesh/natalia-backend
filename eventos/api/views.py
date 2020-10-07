@@ -274,6 +274,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         response_text = "Ok"
         bonus_counter = user.profile.bonus_remarcadas
         aulas_counter = user.profile.aulas_remarcadas
+
         if(evento.desmarcado):
             raise ValidationError({"message": "Aula já desmarcada!"})
         # if(evento.bonus):
@@ -324,7 +325,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         #                                      starting_date__month__lte=month)
 
         if(user.profile.plano == "4 Aulas"):
-
+            aulas_bonus = aulas_do_mes.count() - 4
             if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
                 response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
@@ -336,6 +337,7 @@ class EventoUpdateAPIView(UpdateAPIView):
                 response_text = "Você já remarcou 1 aula deste mês."
 
         if(user.profile.plano == "8 Aulas"):
+
             aulas_bonus = aulas_do_mes.count() - 8
             if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
                 response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
@@ -416,22 +418,18 @@ class EventoUpdateAPIView(UpdateAPIView):
 
         print(f'user.profile.tem_bonus {user.profile.tem_bonus}')
 
-        if user.profile.tem_bonus > user.profile.bonus_remarcadas:
-            print(f'profile.tem_bonus {user.profile.tem_bonus}')
-            print(
-                f'profile.profile.bonus_remarcadas {user.profile.bonus_remarcadas}')
+        if aulas_bonus > user.profile.bonus_remarcadas:
+            print(f'aulas_bonus > = {aulas_bonus}')
             remarcacao_aluno = False
         else:
-            print(
-                f'profile.profile.bonus_remarcadas else {user.profile.bonus_remarcadas}')
-            print(
-                f'profile.profile.bonus_remarcadas else {user.profile.bonus_remarcadas}')
+            print(f'aulas_bonus < = {aulas_bonus}')
+
             remarcacao_aluno = True
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user)
+        serializer.save(user=user, remarcacao=remarcacao_aluno)
 
         # email send_email
 
