@@ -17,7 +17,7 @@ from rest_framework.serializers import (
 )
 from django.shortcuts import get_object_or_404
 from .models import Profile
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,20 +42,31 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         now = datetime.now(timezone.utc)
         year = now.year
         month = now.month
+        dt = date.today()
         dia_pg = obj.user.profile.dia_pagamento
         print(f'dia_pg get_tem_bonus {dia_pg}')
         print(f'obj.user.profile.plano get_tem_bonus {obj.user.profile.plano}')
-        month_mais = month + 1
         resp = 0
+        month_mais = month + 1
+        month_menos = month - 1
+        if month_menos == 0:
+            month_menos = 12
+            year = year - 1
+
         if month_mais == 13:
             month_mais = 1
             year = year + 1
+        if dt.day < dia_pg:
+            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
-        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
         aulas_do_mes = Evento.objects.filter_by_instance(obj).filter(starting_date__gte=start_date,
                                                                      starting_date__lt=end_date)
         print(f'aulas do mes get_tem_bonus = {aulas_do_mes}')
+        print(f'aulas do mes.count() get_tem_bonus = {aulas_do_mes.count()}')
         if(obj.user.profile.plano == "4 Aulas" and aulas_do_mes.count() > 4):
             resp = aulas_do_mes.count() - 4
             print(
