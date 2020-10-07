@@ -43,6 +43,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         year = now.year
         month = now.month
         dia_pg = obj.user.profile.dia_pagamento
+        print(f'dia_pg get_tem_bonus {dia_pg}')
+        print(f'obj.user.profile.plano get_tem_bonus {obj.user.profile.plano}')
         month_mais = month + 1
         resp = 0
         if month_mais == 13:
