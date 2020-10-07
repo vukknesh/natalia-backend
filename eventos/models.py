@@ -58,7 +58,7 @@ def update_evento(sender, instance, **kwargs):
     print(type(instance.starting_date))
     if isinstance(instance.starting_date, str):
         print('e string dentro do if.. ')
-        dt_obj = datetime.datetime.strptime(
+        dt_obj = datetime.strptime(
             instance.starting_date, '%Y-%m-%d %H:%M:%S.%f')
 
         print(f'dt_obj = {dt_obj}')
