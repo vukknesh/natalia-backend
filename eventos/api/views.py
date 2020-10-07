@@ -128,7 +128,7 @@ def desmarcar_aula_request(request, eventoId):
     # print(f'duration in s = {duration_in_s}')
     days, seconds = diff.days, diff.seconds
     dif_hours = days * 24 + seconds
-    print(f'dif_hours = {dif_hours}')
+
     response_text = "Ok"
     dt = date.today()
     bonus_counter = user.profile.bonus_remarcadas
@@ -258,6 +258,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         # tudo calculado 3 horas a mais pelo timezone UTC
 
         user = self.request.user
+        print('dentro do perform_update')
 
         now = datetime.now(timezone.utc)
         evento = self.get_object()
@@ -269,7 +270,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         # print(f'duration in s = {duration_in_s}')
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
-        print(f'dif_hours = {dif_hours}')
+        print(f'dif_hours update = {dif_hours}')
         response_text = "Ok"
         bonus_counter = user.profile.bonus_remarcadas
         aulas_counter = user.profile.aulas_remarcadas
@@ -312,7 +313,7 @@ class EventoUpdateAPIView(UpdateAPIView):
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                               starting_date__lt=end_date)
-        print(f'aulas_do_mes {aulas_do_mes}')
+        print(f'aulas_do_mes update {aulas_do_mes}')
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
         #                                       starting_date__year__lte=year,
@@ -430,7 +431,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
         print(f'evento PERFORM_UPDATE= {evento}')
-        serializer.save(user=user, remarcacao=remarcacao_aluno)
+        serializer.save(user=user)
 
         # email send_email
 
