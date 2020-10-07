@@ -53,12 +53,21 @@ def update_evento(sender, instance, **kwargs):
     print(f'user do instance {user.profile.plano}')
     print(f'user do sender {sender}')
     now = datetime.now(timezone.utc)
+    print(f'instance ={instance}')
+    print(f'now ={now}')
     year = instance.starting_date.year
+    print(f'year ={year}')
     month = instance.starting_date.month
+    print(f'month ={month}')
+
     dt = date.today()
+    print(f'dt ={dt}')
     dia_pg = user.profile.dia_pagamento
+    print(f'dia_pg ={dia_pg}')
     month_mais = month + 1
+    print(f'month_mais ={month_mais}')
     month_menos = month - 1
+    print(f'month_menos ={month_menos}')
     if month_menos == 0:
         month_menos = 12
         year = year - 1
