@@ -413,16 +413,18 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
 
-        if profile.tem_bonus > profile.bonus_remarcadas:
-            print(f'profile.tem_bonus {profile.tem_bonus}')
+        print(f'user.profile.tem_bonus {user.profile.tem_bonus}')
+
+        if user.profile.tem_bonus > user.profile.bonus_remarcadas:
+            print(f'profile.tem_bonus {user.profile.tem_bonus}')
             print(
-                f'profile.profile.bonus_remarcadas {profile.profile.bonus_remarcadas}')
+                f'profile.profile.bonus_remarcadas {user.profile.bonus_remarcadas}')
             remarcacao_aluno = False
         else:
             print(
-                f'profile.profile.bonus_remarcadas else {profile.profile.bonus_remarcadas}')
+                f'profile.profile.bonus_remarcadas else {user.profile.bonus_remarcadas}')
             print(
-                f'profile.profile.bonus_remarcadas else {profile.profile.bonus_remarcadas}')
+                f'profile.profile.bonus_remarcadas else {user.profile.bonus_remarcadas}')
             remarcacao_aluno = True
         profile.save()
         print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
