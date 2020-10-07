@@ -416,8 +416,6 @@ class EventoUpdateAPIView(UpdateAPIView):
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
 
-        print(f'user.profile.tem_bonus {user.profile.tem_bonus}')
-
         if aulas_bonus > user.profile.bonus_remarcadas:
             print(f'aulas_bonus > = {aulas_bonus}')
             remarcacao_aluno = False
