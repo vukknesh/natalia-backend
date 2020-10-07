@@ -56,10 +56,17 @@ def update_evento(sender, instance, **kwargs):
     print(f'instance ={instance}')
     print(f'instance ={instance.remarcacao}')
     print(f'now ={now}')
-    print(f'instance.starting_date for remarcacao {instance.starting_date}')
+
     year = instance.starting_date.year
-    print(f'year ={year}')
     month = instance.starting_date.month
+    print('type of starting date ....')
+    print(type(instance.starting_date))
+    if type(instance.starting_date) == 'str':
+        dt_obj = datetime.datetime.strptime(
+            instance.starting_date, '%Y-%m-%d %H:%M:%S.%f')
+        year = dt_obj.year
+        month = dt_obj.month
+    print(f'year ={year}')
     print(f'month ={month}')
 
     dt = date.today()
