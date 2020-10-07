@@ -56,6 +56,7 @@ def update_evento(sender, instance, **kwargs):
     print(f'instance ={instance}')
     print(f'instance ={instance.remarcacao}')
     print(f'now ={now}')
+    print(f'instance.starting_date for remarcacao {instance.starting_date}')
     year = instance.starting_date.year
     print(f'year ={year}')
     month = instance.starting_date.month
