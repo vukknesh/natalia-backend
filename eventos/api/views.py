@@ -167,12 +167,12 @@ def desmarcar_aula_request(request, eventoId):
         month_menos = 12
         year = year - 1
 
-    if dt < dia_pg:
-        start_date = f'{year}-{month_menos}-{dia_pg} 00:00:00'
-        end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+    if dt.day < dia_pg:
+        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
     else:
-        start_date = f'{year}-{month}-{dia_pg} 00:00:00'
-        end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date)
@@ -298,12 +298,12 @@ class EventoUpdateAPIView(UpdateAPIView):
             month_menos = 12
             year = year - 1
 
-        if dt < dia_pg:
-            start_date = f'{year}-{month_menos}-{dia_pg} 00:00:00'
-            end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+        if dt.day < dia_pg:
+            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         else:
-            start_date = f'{year}-{month}-{dia_pg} 00:00:00'
-            end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         if month_mais == 13:
             month_mais = 1
@@ -454,12 +454,12 @@ class EventoListAPIView(ListAPIView):
             month_mais = 1
             year = year + 1
 
-        if dt < dia_pg:
+        if dt.day < dia_pg:
             start_date = dt
-            end_date = f'{year}-{month}-{dia_pg} 00:00:00'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         else:
-            start_date = f'{year}-{month}-{dia_pg} 00:00:00'
-            end_date = f'{year}-{month_mais}-{dia_pg} 00:00:00'
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         print(f'start_date  {start_date}')
         print(f'end_date  {end_date}')
