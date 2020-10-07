@@ -412,13 +412,17 @@ class EventoUpdateAPIView(UpdateAPIView):
 
                 response_text = "Você só poderá remarcar aulas 3 horas antes."
         # deixar em cima do profile.bonus_remarcadas se nao conta errado!
-        if aulas_bonus > user.profile.bonus_remarcadas:
-            print(f'aulas_bonus > = {aulas_bonus}')
-            remarcacao_aluno = False
-        else:
-            print(f'aulas_bonus < = {aulas_bonus}')
+        # if aulas_bonus > user.profile.bonus_remarcadas:
+        #     print(f'aulas_bonus > = {aulas_bonus}')
+        #     remarcacao_aluno = False
+        # else:
+        #     print(f'aulas_bonus < = {aulas_bonus}')
 
+        #     remarcacao_aluno = True
+        if aulas_bonus == user.profile.bonus_remarcadas:
             remarcacao_aluno = True
+        else:
+            remarcacao_aluno = False
 
         profile = user.profile
         profile.aulas_remarcadas = aulas_counter
