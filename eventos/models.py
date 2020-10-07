@@ -56,9 +56,15 @@ def update_evento(sender, instance, **kwargs):
 
     print('type of starting date ....')
     print(type(instance.starting_date))
-    if type(instance.starting_date) == 'str':
+    if isinstance(instance.starting_date, str):
+        print('e string dentro do if.. ')
         dt_obj = datetime.datetime.strptime(
             instance.starting_date, '%Y-%m-%d %H:%M:%S.%f')
+
+        print(f'dt_obj = {dt_obj}')
+        print(f'dt_obj.year = {dt_obj.year}')
+        print(f'dt_obj.month = {dt_obj.month}')
+
         year = dt_obj.year
         month = dt_obj.month
     else:
