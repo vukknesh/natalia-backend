@@ -572,7 +572,18 @@ class EventoAdminUpdateAPIView(UpdateAPIView):
 @api_view(['GET'])
 def delete_all_aulas(request, alunoId):
     user = User.objects.get(id=alunoId)
-
-    Evento.objects.filter(user=user).delete()
+    Evento.objects.filter(
+        user=user, starting_date__gte=datetime.now()).delete()
 
     return Response({"message": "Todas Aulas Deletadas"})
+
+
+# alteracoes
+# deletar apenas de hj pra frente!
+# mensagem ultima aula do mes nao pode ser remarcada!
+# aula reposicao AZUL
+# pagamento automatico quando alterar plano e dia de pagamento
+# quando aluno desmarcar aula, horario que desmarcou
+# mudar cor no aplicativo de aula desmarcada que precisa repor ou nao
+# mandar email um dia antes pra natalia, e mandar parabens pro aniversariante!
+# aluno marcar propria reposicao
