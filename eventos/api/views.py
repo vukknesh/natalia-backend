@@ -664,28 +664,23 @@ def repor_aula(request):
     if aulas_do_mes.count() > aluno_reposicao:
         print(f'dentro do count > aluno_reposicao')
         # verificar se a data selecionada esta no mes atual do usuario
-        a = datetime.strptime(data, "%m/%d/%y")
-        b = datetime.strptime(start_date, "%m/%d/%y")
-        c = datetime.strptime(end_date, "%m/%d/%y")
-        print(f'a ={a}')
-        print(f'b ={b}')
-        print(f'c ={c}')
-        # if data > start_date and data < end_date:
-        if a > b and a < c:
-            print(f'dentro do data do periodo do aluno')
-            # verificar se existe aula nesse horario e no dia
-            if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
-                print(f'existe()')
-                resposta = "Aula ja existe"
-                pass
-            else:
-                Evento.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
-                                      desmarcado=False, bonus=True)
-                resposta = "Aula remarcada com sucesso!"
 
+        # if data > start_date and data < end_date:
+        # if data > start_date and data < end_date:
+        print(f'dentro do data do periodo do aluno')
+        # verificar se existe aula nesse horario e no dia
+        if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
+            print(f'existe()')
+            resposta = "Aula ja existe"
             pass
         else:
-            resposta = "Data selecionada nao esta dentro do seu mes, escolha outra data!"
+            Evento.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
+                                  desmarcado=False, bonus=True)
+            resposta = "Aula remarcada com sucesso!"
+
+        pass
+        # else:
+        #     resposta = "Data selecionada nao esta dentro do seu mes, escolha outra data!"
 
     return Response({"message": resposta})
 
