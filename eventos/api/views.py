@@ -662,7 +662,7 @@ def repor_aula(request):
     # verificar se tem aula pra repor e se nao ja repos
     if aulas_do_mes.count() > aluno_reposicao:
         # verificar se a data selecionada esta no mes atual do usuario
-        if data > start_date and data < end_date:
+        if data.date() > start_date.date() and data.date() < end_date.date():
             print(f'dentro do data do periodo do aluno')
             # verificar se existe aula nesse horario e no dia
             if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
