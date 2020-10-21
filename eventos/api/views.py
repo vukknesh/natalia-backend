@@ -664,8 +664,6 @@ def repor_aula(request):
     if aulas_do_mes.count() > aluno_reposicao:
         print(f'dentro do count > aluno_reposicao')
         # verificar se a data selecionada esta no mes atual do usuario
-        print(f'start_date.date() = {start_date.date()}')
-        print(f'data.date() = {data.date()}')
         a = datetime.strptime(data, "%m/%d/%y")
         b = datetime.strptime(start_date, "%m/%d/%y")
         c = datetime.strptime(end_date, "%m/%d/%y")
