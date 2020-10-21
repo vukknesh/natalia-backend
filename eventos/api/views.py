@@ -631,6 +631,7 @@ def repor_aula(request):
     now = datetime.now(timezone.utc)
     dt = date.today()
     month = now.month
+    year = now.year
     month_mais = month + 1
     month_menos = month - 1
     resposta = "Alguma coisa"
@@ -653,7 +654,7 @@ def repor_aula(request):
 
     print(f' acima aulas_do_mes')
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, remarcacao=True)
+                                          starting_date__lt=end_date, remarcacao=True, reposicao=False)
     print(f'aulas_do_mes = {aulas_do_mes}')
 
     aluno_reposicao = user.profile.aulas_reposicao
