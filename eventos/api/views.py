@@ -601,7 +601,7 @@ def enviar_parabens():
                 from_email = settings.EMAIL_HOST_USER
                 to_list = [user.email]
                 send_mail(subject, message, from_email,
-                          to_list, fail_silently=True)
+                          to_list, fail_silently=False)
 
             elif data_menos_um.date() == now.date():
                 subject = 'Informe de aniversario de aluno'
@@ -609,16 +609,22 @@ def enviar_parabens():
                 from_email = settings.EMAIL_HOST_USER
                 to_list = ["leomcn@hotmail.com"]
                 send_mail(subject, message, from_email,
-                          to_list, fail_silently=True)
+                          to_list, fail_silently=False)
             else:
+                subject = 'Nenhum aniversario'
+                message = f" {user.first_name}. \n \n faz aniversario no dia {user.profile.data_nascimento} \n \n Natalia Secchi!"
+                from_email = settings.EMAIL_HOST_USER
+                to_list = ["leomcn@hotmail.com"]
                 send_mail(subject, message, from_email,
-                          to_list, fail_silently=True)
+                          to_list, fail_silently=False)
 
 
 @api_view(['POST'])
 def repor_aula(request):
     alunoId = request.data['alunoId']
     data = request.data['data']
+    print(f'alunoId ={alunoId}')
+    print(f'data ={data}')
 
     user = User.objects.get(id=alunoId)
     dia_pg = user.profile.dia_pagamento
@@ -645,8 +651,9 @@ def repor_aula(request):
         start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
+    print(f' acima aulas_do_mes')
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, remarcacao=True, reposicao=False)
+                                          starting_date__lt=end_date, remarcacao=True)
     print(f'aulas_do_mes = {aulas_do_mes}')
 
     aluno_reposicao = user.profile.aulas_reposicao
