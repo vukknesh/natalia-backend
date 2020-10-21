@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
+from django.core.mail import send_mail
+from django.conf import settings
+from calendar import monthrange
 from rest_framework.filters import (
     SearchFilter,
     OrderingFilter,
@@ -28,7 +31,7 @@ from rest_framework.permissions import (
 )
 from django_filters import rest_framework as filters
 from eventos.models import Evento
-
+from calendar import monthrange
 from rest_framework.decorators import api_view
 from .permissions import IsOwnerOrReadOnly
 
@@ -40,7 +43,6 @@ from .serializers import (
 )
 
 import django_filters
-from django.db.models import Q
 
 
 class EventoFilter(filters.FilterSet):
@@ -91,7 +93,7 @@ class EventoRemarcacaoListAllAPIView(CreateAPIView):
 
 
 @api_view(['POST'])
-def add_remarcacao(request):
+def add_reposicao(request):
     print(f'request {request}')
     print(f'request.data {request.data}')
     u = request.data['user']
@@ -99,7 +101,7 @@ def add_remarcacao(request):
     starting_date = request.data['starting_date']
     print(f'starting_date ={starting_date}')
 
-    Evento.objects.create(user=user, starting_date=starting_date, remarcacao=False,
+    Evento.objects.create(user=user, starting_date=starting_date, remarcacao=False, reposicao=True,
                           desmarcado=False, bonus=True)
 
     return Response({"message": "Aula remarcada com sucesso!"})
@@ -133,8 +135,10 @@ def desmarcar_aula_request(request, eventoId):
     dt = date.today()
     bonus_counter = user.profile.bonus_remarcadas
     aulas_counter = user.profile.aulas_remarcadas
+
     if(evento.desmarcado):
         raise ValidationError({"message": "Aula já desmarcada!"})
+
     if(evento.starting_date.hour <= 12):
         # evento proximo dia
         if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
@@ -175,9 +179,10 @@ def desmarcar_aula_request(request, eventoId):
         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date)
+                                          starting_date__lt=end_date, reposicao=False)
 
     print(f'aulas_do_mes {aulas_do_mes}')
+    # teste
 
     if(user.profile.plano == "4 Aulas"):
 
@@ -244,6 +249,9 @@ def desmarcar_aula_request(request, eventoId):
             print('dentro')
 
             response_text = "Você só poderá remarcar aulas 3 horas antes."
+        # teste ultima aula do mes
+        if now.date() == end_date.date():
+            response_text = 'Esta aula é a última do seu mês e não poderá ser remarcada!'
 
     return Response({"message": response_text, "aulas_remarcadas": aulas_counter, "bonus_remarcadas": bonus_counter})
 
@@ -313,7 +321,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                              starting_date__lt=end_date)
+                                              starting_date__lt=end_date, reposicao=False)
         print(f'aulas_do_mes update {aulas_do_mes}')
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
@@ -486,9 +494,7 @@ class EventoListAPIView(ListAPIView):
         #                    starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         qs = Evento.objects.filter(user=u).filter(starting_date__gte=start_date,
                                                   starting_date__lt=end_date)
-        for qqq in qs:
-            print(f'qqq.starting_date.day = {qqq.starting_date.day}')
-        print(f'qs === {qs}')
+
         # queryset_list = Evento.objects.filter(
         #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
         #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
@@ -578,12 +584,101 @@ def delete_all_aulas(request, alunoId):
     return Response({"message": "Todas Aulas Deletadas"})
 
 
-# alteracoes
-# deletar apenas de hj pra frente!
-# mensagem ultima aula do mes nao pode ser remarcada!
-# aula reposicao AZUL
-# pagamento automatico quando alterar plano e dia de pagamento
-# quando aluno desmarcar aula, horario que desmarcou
-# mudar cor no aplicativo de aula desmarcada que precisa repor ou nao
-# mandar email um dia antes pra natalia, e mandar parabens pro aniversariante!
+@api_view(['GET'])
+def enviar_parabens():
+    usuarios = User.objects.all()
+    now = datetime.now(timezone.utc)
+
+    for user in usuarios:
+
+        if user.profile.data_nascimento:
+            data = date(now.year, user.profile.data_nascimento.month,
+                        user.profile.data_nascimento.day)
+            data_menos_um = data - timedelta(1)
+            if now.date() == data.date():
+                subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
+                message = f"Feliz aniversario {user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
+                from_email = settings.EMAIL_HOST_USER
+                to_list = [user.email]
+                send_mail(subject, message, from_email,
+                          to_list, fail_silently=True)
+
+            elif data_menos_um.date() == now.date():
+                subject = 'Informe de aniversario de aluno'
+                message = f" {user.first_name}. \n \n faz aniversario no dia {user.profile.data_nascimento} \n \n Natalia Secchi!"
+                from_email = settings.EMAIL_HOST_USER
+                to_list = ["leomcn@hotmail.com"]
+                send_mail(subject, message, from_email,
+                          to_list, fail_silently=True)
+            else:
+                send_mail(subject, message, from_email,
+                          to_list, fail_silently=True)
+
+
+@api_view(['POST'])
+def repor_aula(request):
+    alunoId = request.data['alunoId']
+    data = request.data['data']
+
+    user = User.objects.get(id=alunoId)
+    dia_pg = user.profile.dia_pagamento
+    now = datetime.now(timezone.utc)
+    dt = date.today()
+    month = now.month
+    month_mais = month + 1
+    month_menos = month - 1
+    resposta = "Alguma coisa"
+    if month_menos == 0:
+        month_menos = 12
+        year = year - 1
+
+    if month_mais == 13:
+        month_mais = 1
+        year = year + 1
+
+    if dt.day < dia_pg:
+        print(f'dt < dia_pg')
+        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+    else:
+        print(f'dt > dia_pg')
+        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+
+    aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
+                                          starting_date__lt=end_date, remarcacao=True, reposicao=False)
+    print(f'aulas_do_mes = {aulas_do_mes}')
+
+    aluno_reposicao = user.profile.aulas_reposicao
+    print(f'aluno_reposicao = {aluno_reposicao}')
+    # verificar se tem aula pra repor e se nao ja repos
+    if aulas_do_mes.count() > aluno_reposicao:
+        # verificar se a data selecionada esta no mes atual do usuario
+        if data > start_date and data < end_date:
+            print(f'dentro do data do periodo do aluno')
+            # verificar se existe aula nesse horario e no dia
+            if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
+                print(f'existe()')
+                resposta = "Aula ja existe"
+                pass
+            else:
+                Evento.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
+                                      desmarcado=False, bonus=True)
+                resposta = "Aula remarcada com sucesso!"
+
+            pass
+        else:
+            resposta = "Data selecionada nao esta dentro do seu mes, escolha outra data!"
+
+    return Response({"message": resposta})
+
+# ####alteracoes
 # aluno marcar propria reposicao
+
+# deletar apenas de hj pra frente! ok
+# aula reposicao AZUL ok
+# quando aluno desmarcar aula, horario que desmarcou ok
+# mudar cor no aplicativo de aula desmarcada que precisa repor ou nao ok
+# pagamento automatico quando alterar plano e dia de pagamento ok
+# mandar email um dia antes pra natalia, e mandar parabens pro aniversariante! ok
+# mensagem ultima aula do mes nao pode ser remarcada!

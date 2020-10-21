@@ -25,6 +25,7 @@ class Evento(models.Model):
     comentario = models.CharField(max_length=255, null=True, blank=True)
     desmarcado = models.BooleanField(default=False)
     remarcacao = models.BooleanField(default=False)
+    reposicao = models.BooleanField(default=False)
     bonus = models.BooleanField(default=False)
     starting_date = models.DateTimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
@@ -98,16 +99,12 @@ def update_evento(sender, instance, **kwargs):
         start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
-    print(f'start_date ={start_date}')
-    print(f'end_date ={end_date}')
     # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
     #                                       starting_date__month__gte=month,
     #                                       starting_date__year__lte=year,
     #                                       starting_date__month__lte=month)
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date)
-
-    print(f'aulas_do_mes = {aulas_do_mes}')
+                                          starting_date__lt=end_date, reposicao=False)
 
     if(user.profile.plano == "4 Aulas"):
         if(aulas_do_mes.count() >= 4):

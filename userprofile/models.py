@@ -17,6 +17,7 @@ class Profile(models.Model):
     # personal
     aulas_remarcadas = models.IntegerField(default=0)
     bonus_remarcadas = models.IntegerField(default=0)
+    aulas_reposicao = models.IntegerField(default=0)
     #image = models.ImageField(default='defprofile.jpg', upload_to='profile_pics', validators=[validate_file_size])
     PLANO_A = '4 Aulas'
     PLANO_B = '8 Aulas'
@@ -115,7 +116,7 @@ def pre_save_profile_receiver(sender, instance, *args, **kwargs):
         # Object is new, so field hasn't technically changed, but you may want to do something else here.
         pass
     else:
-        if not obj.dia_pagamento == instance.dia_pagamento:  # Field has changed
+        if not obj.dia_pagamento == instance.dia_pagamento or obj.plano == instance.plano:  # Field has changed
             print(f'dia de  pagamento mudou')
             # alterar_plano(instance)
             pass

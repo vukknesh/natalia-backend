@@ -14,8 +14,10 @@ from .views import (
     EventoRemarcacaoListAllAPIView,
     EventoDesmarcadosListAllAPIView,
     EventoDesmarcadoByProfAPIView,
-    add_remarcacao,
-    desmarcar_aula_request
+    add_reposicao,
+    desmarcar_aula_request,
+    enviar_parabens,
+    repor_aula
 )
 
 urlpatterns = [
@@ -26,12 +28,16 @@ urlpatterns = [
     url(r'^desmarcado-by-prof/$',
         EventoDesmarcadoByProfAPIView.as_view(), name='desbyprof'),
     url(r'^add-remarcacao/$',
-        add_remarcacao, name='add-remarcacao'),
+        add_reposicao, name='add-reposicao'),
     url(r'^list-by-professor/$',
         EventoByProfAPIView.as_view(), name='prof-aulas'),
     url(r'^create/$', EventoCreateAPIView.as_view(), name='create'),
     url(r'^delete-all/(?P<alunoId>[\w-]+)$',
         delete_all_aulas, name='delete-all'),
+    url(r'^enviar-parabens/$',
+        enviar_parabens, name='enviar-parabens'),
+    url(r'^repor-aula/$',
+        repor_aula, name='repor-aula'),
     url(r'^desmarcar-aula/(?P<eventoId>[\w-]+)$',
         desmarcar_aula_request, name='desmarcar-aula'),
     url(r'^(?P<id>[\w-]+)/$', EventoDetailAPIView.as_view(), name='detail'),
