@@ -624,10 +624,9 @@ def enviar_parabens():
 @api_view(['POST'])
 def repor_aula(request):
     alunoId = request.data['alunoId']
-    data_obj = request.data['data']
+    data = request.data['data']
     print(f'alunoId ={alunoId}')
-    print(f'data ={data_obj}')
-    data = datetime.strptime(data_obj, '%Y/%m/%d %H:%M:%S')
+    print(f'data ={data}')
     user = User.objects.get(id=alunoId)
     dia_pg = user.profile.dia_pagamento
     now = datetime.now(timezone.utc)
@@ -667,7 +666,14 @@ def repor_aula(request):
         # verificar se a data selecionada esta no mes atual do usuario
         print(f'start_date.date() = {start_date.date()}')
         print(f'data.date() = {data.date()}')
-        if data > start_date and data < end_date:
+        a = datetime.strptime(data, "%m/%d/%y")
+        b = datetime.strptime(start_date, "%m/%d/%y")
+        c = datetime.strptime(end_date, "%m/%d/%y")
+        print(f'a ={a}')
+        print(f'b ={b}')
+        print(f'c ={c}')
+        # if data > start_date and data < end_date:
+        if a > b and a < c:
             print(f'dentro do data do periodo do aluno')
             # verificar se existe aula nesse horario e no dia
             if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
