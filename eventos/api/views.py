@@ -595,6 +595,8 @@ def enviar_parabens():
             data = date(now.year, user.profile.data_nascimento.month,
                         user.profile.data_nascimento.day)
             data_menos_um = data - timedelta(1)
+            print(f'data ={data}')
+            print(f'data_menos_um ={data_menos_um}')
             if now.date() == data.date():
                 subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
                 message = f"Feliz aniversario {user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
@@ -661,7 +663,10 @@ def repor_aula(request):
     print(f'aluno_reposicao = {aluno_reposicao}')
     # verificar se tem aula pra repor e se nao ja repos
     if aulas_do_mes.count() > aluno_reposicao:
+        print(f'dentro do count > aluno_reposicao')
         # verificar se a data selecionada esta no mes atual do usuario
+        print(f'data.date() = {data.date()}')
+        print(f'start_date.date() = {start_date.date()}')
         if data.date() > start_date.date() and data.date() < end_date.date():
             print(f'dentro do data do periodo do aluno')
             # verificar se existe aula nesse horario e no dia
