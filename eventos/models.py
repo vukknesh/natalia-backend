@@ -27,6 +27,7 @@ class Evento(models.Model):
     remarcacao = models.BooleanField(default=False)
     reposicao = models.BooleanField(default=False)
     bonus = models.BooleanField(default=False)
+    historico = models.BooleanField(default=False)
     starting_date = models.DateTimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -104,7 +105,7 @@ def update_evento(sender, instance, **kwargs):
     #                                       starting_date__year__lte=year,
     #                                       starting_date__month__lte=month)
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, reposicao=False)
+                                          starting_date__lt=end_date, reposicao=False,  historico=False)
 
     if(user.profile.plano == "4 Aulas"):
         if(aulas_do_mes.count() >= 4):

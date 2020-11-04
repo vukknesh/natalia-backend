@@ -179,7 +179,7 @@ def desmarcar_aula_request(request, eventoId):
         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, reposicao=False)
+                                          starting_date__lt=end_date, reposicao=False,  historico=False)
 
     print(f'aulas_do_mes {aulas_do_mes}')
     # teste
@@ -321,7 +321,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                              starting_date__lt=end_date, reposicao=False)
+                                              starting_date__lt=end_date, reposicao=False,  historico=False)
         print(f'aulas_do_mes update {aulas_do_mes}')
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
@@ -493,7 +493,7 @@ class EventoListAPIView(ListAPIView):
         #     user=u).filter(starting_date__gte=dt, starting_date__year__gte=year,
         #                    starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         qs = Evento.objects.filter(user=u).filter(starting_date__gte=start_date,
-                                                  starting_date__lt=end_date)
+                                                  starting_date__lt=end_date, historico=False)
 
         # queryset_list = Evento.objects.filter(
         #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
@@ -511,7 +511,7 @@ class EventoListAllAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
         dt = date.today() - timedelta(5)
 
-        queryset_list = Evento.objects.filter(user__is_active=True).filter(starting_date__gte=dt)[
+        queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
             :900]  # filter(user=self.request.user)
         print(f'querylist = {queryset_list}')
 
@@ -580,6 +580,14 @@ def delete_all_aulas(request, alunoId):
     user = User.objects.get(id=alunoId)
     Evento.objects.filter(
         user=user, starting_date__gte=datetime.now()).delete()
+    
+    ev = Evento.objects.filter(
+        user=user, starting_date__lte=datetime.now())
+    
+    for aula in ev:
+        aula.historico = True
+        aula.save()
+
 
     return Response({"message": "Todas Aulas Deletadas"})
 
@@ -592,6 +600,8 @@ def enviar_parabens():
     for user in usuarios:
 
         if user.profile.data_nascimento:
+            print(
+                f'user.profile.data_nascimento = {user.profile.data_nascimento}')
             data = date(now.year, user.profile.data_nascimento.month,
                         user.profile.data_nascimento.day)
             data_menos_um = data - timedelta(1)
@@ -655,7 +665,7 @@ def repor_aula(request):
 
     print(f' acima aulas_do_mes')
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, remarcacao=True, reposicao=False)
+                                          starting_date__lt=end_date, remarcacao=True, reposicao=False,  historico=False)
     print(f'aulas_do_mes = {aulas_do_mes}')
 
     aluno_reposicao = user.profile.aulas_reposicao
@@ -669,7 +679,7 @@ def repor_aula(request):
         # if data > start_date and data < end_date:
         print(f'dentro do data do periodo do aluno')
         # verificar se existe aula nesse horario e no dia
-        if Evento.objects.filter(starting_date__gte=now, starting_date__lt=end_date).exists():
+        if Evento.objects.filter(starting_date__hour__gte=now, starting_date__lt=end_date).exists():
             print(f'existe()')
             resposta = "Aula ja existe"
             pass
