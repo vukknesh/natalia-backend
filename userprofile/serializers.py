@@ -64,7 +64,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         aulas_do_mes = Evento.objects.filter_by_instance(obj).filter(starting_date__gte=start_date,
-                                                                     starting_date__lt=end_date, reposicao=False)
+                                                                     starting_date__lt=end_date, reposicao=False, historico=False)
         print(f'aulas do mes get_tem_bonus = {aulas_do_mes}')
         print(f'aulas do mes.count() get_tem_bonus = {aulas_do_mes.count()}')
         if(obj.user.profile.plano == "4 Aulas" and aulas_do_mes.count() > 4):
