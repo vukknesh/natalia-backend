@@ -542,9 +542,17 @@ class EventoListAllAPIView(ListAPIView):
 
     def get_queryset(self, *args, **kwargs):
         dt = date.today() - timedelta(5)
+        data_inicial = self.request.GET.get("data_inicial")
+        data_final = self.request.GET.get("data_final")
 
-        queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
-            :900]  # filter(user=self.request.user)
+        if data_final and data_inicial:
+
+            queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__range=[
+                                                  data_inicial, data_final])  # filter(user=self.request.user)
+        else:
+            queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
+                :900]
+
         print(f'querylist = {queryset_list}')
 
         return queryset_list
