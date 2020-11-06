@@ -427,10 +427,42 @@ class EventoUpdateAPIView(UpdateAPIView):
         #     print(f'aulas_bonus < = {aulas_bonus}')
 
         #     remarcacao_aluno = True
-        if aulas_bonus == user.profile.bonus_remarcadas:
-            remarcacao_aluno = True
-        else:
-            remarcacao_aluno = False
+        remarcacao_aluno = False
+        # if aulas_bonus == user.profile.bonus_remarcadas:
+        #     remarcacao_aluno = True
+        # else:
+        #     remarcacao_aluno = False
+
+        if(user.profile.plano == "4 Aulas"):
+            if aulas_bonus == 1 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 3:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 2:
+                remarcacao_aluno = True
+                pass
+
+        if(user.profile.plano == "8 Aulas"):
+            if aulas_bonus == 1 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 4:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 2 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 5:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 3:
+                remarcacao_aluno = True
+                pass
+        if(user.profile.plano == "12 Aulas"):
+            if aulas_bonus == 1 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 5:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 2 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 6:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 3 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 7:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 4:
+                remarcacao_aluno = True
 
         profile = user.profile
         profile.aulas_remarcadas = aulas_counter
@@ -580,14 +612,13 @@ def delete_all_aulas(request, alunoId):
     user = User.objects.get(id=alunoId)
     Evento.objects.filter(
         user=user, starting_date__gte=datetime.now()).delete()
-    
+
     ev = Evento.objects.filter(
         user=user, starting_date__lte=datetime.now())
-    
+
     for aula in ev:
         aula.historico = True
         aula.save()
-
 
     return Response({"message": "Todas Aulas Deletadas"})
 
