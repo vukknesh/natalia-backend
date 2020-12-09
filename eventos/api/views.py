@@ -505,17 +505,24 @@ class EventoListAPIView(ListAPIView):
 
         dia_pg = u.profile.dia_pagamento
         month_mais = month + 1
+        year_mais = year + 1
 
         if month_mais == 13:
             month_mais = 1
-            year = year + 1
 
-        if dt.day < dia_pg:
-            start_date = dt
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            if dt.day < dia_pg:
+                start_date = dt
+                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            else:
+                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+                end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
         else:
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+            if dt.day < dia_pg:
+                start_date = dt
+                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            else:
+                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+                end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
         print(f'start_date  {start_date}')
         print(f'end_date  {end_date}')
