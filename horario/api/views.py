@@ -125,7 +125,7 @@ def get_horarios_disponiveis(request):
 
 
 class HorarioDetailAPIView(RetrieveAPIView):
-    queryset = Horario.objects.filter(starting_date__gte=datetime.now())
+    queryset = Horario.objects.all()
     serializer_class = HorarioDetailSerializer
     lookup_field = 'id'
     permission_classes = [AllowAny]
@@ -147,51 +147,6 @@ def repor_aula(request):
     month_mais = month + 1
     month_menos = month - 1
     resposta = "Alguma coisa"
-    if month_menos == 0:
-        month_menos = 12
-        year = year - 1
-
-    if month_mais == 13:
-        month_mais = 1
-        year = year + 1
-
-    if dt.day < dia_pg:
-        print(f'dt < dia_pg')
-        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-    else:
-        print(f'dt > dia_pg')
-        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-
-    print(f' acima aulas_do_mes')
-    aulas_do_mes = user.Horario_set.filter(starting_date__gte=start_date,
-                                           starting_date__lt=end_date, remarcacao=True, reposicao=False,  historico=False)
-    print(f'aulas_do_mes = {aulas_do_mes}')
-
-    aluno_reposicao = user.profile.aulas_reposicao
-    print(f'aluno_reposicao = {aluno_reposicao}')
-    # verificar se tem aula pra repor e se nao ja repos
-    if aulas_do_mes.count() > aluno_reposicao:
-        print(f'dentro do count > aluno_reposicao')
-        # verificar se a data selecionada esta no mes atual do usuario
-
-        # if data > start_date and data < end_date:
-        # if data > start_date and data < end_date:
-        print(f'dentro do data do periodo do aluno')
-        # verificar se existe aula nesse horario e no dia
-        if Horario.objects.filter(starting_date__hour__gte=now, starting_date__lt=end_date).exists():
-            print(f'existe()')
-            resposta = "Aula ja existe"
-            pass
-        else:
-            Horario.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
-                                   desmarcado=False, bonus=True)
-            resposta = "Aula remarcada com sucesso!"
-
-        pass
-        # else:
-        #     resposta = "Data selecionada nao esta dentro do seu mes, escolha outra data!"
 
     return Response({"message": resposta})
 
