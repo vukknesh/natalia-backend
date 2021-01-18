@@ -8,8 +8,8 @@ urlpatterns = [
     path('', include('userprofile.urls')),
     url(r'^api/eventos/', inc(("eventos.api.urls", 'eventos'),
                               namespace='eventos-api')),
-    url(r'^api/horario/', inc(("horario.api.urls", 'horario'),
-                              namespace='horario-api')),
+    url(r'^api/horario/', inc(("horariod.api.urls", 'horariod'),
+                              namespace='horariod-api')),
     url(r'^api/financeiro/', inc(("financeiro.urls", 'financeiro'),
                                  namespace='financeiro-api')),
 ]
