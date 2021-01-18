@@ -95,9 +95,18 @@ def add_reposicao(request):
         user=user.profile.professor, weekday=dia_numerico)
 
     print(f'horario_dict = {horario_dict}')
+    lista = []
+    for ho in horario_dict:
+        count = Evento.objects.filter(user__profile_professor=prof,
+                                      starting_date__hour=ho.starting_date__hour).count()
+        print(f'count = {count}')
+        lista.append(ho.hora_aula, count)
+        if count > 3:
+            print(f'aula do dia {starting_date} tem {count} alunos ja')
+        else:
+            print(f'aula disponivel do dia {starting_date}')
 
-    if dia_numerico and horario_dict:
-        pass
+    return Response({"lista": lista})
 
 
 @api_view(['POST'])
