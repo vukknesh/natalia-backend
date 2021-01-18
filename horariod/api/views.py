@@ -100,20 +100,25 @@ def add_reposicao(request):
     for ho in horario_dict:
 
         mytime = datetime.combine(data_obj, ho.hora_aula)
+        print(f'mytime {mytime}')
         count = Evento.objects.filter(
             user__profile__professor=prof, starting_date=mytime).count()
-
+        print(f'count = {count}')
         if count > 3:
+            print('dentro > 3')
             resultado['hora'] = mytime
             resultado['count'] = count
             resultado['bool'] = False
+            print(f'resultado dentro do count>3 ={resultado}')
             lista.append(resultado)
             print(lista)
             print(f'aula do dia {starting_date} tem {count} alunos ja')
         else:
+            print('else > 3')
             resultado['hora'] = mytime
             resultado['count'] = count
             resultado['bool'] = False
+            print(f'resultado fora do > 3 {resultado}')
             lista.append(resultado)
             print(lista)
             print(f'aula disponivel do dia {starting_date}')
@@ -136,7 +141,7 @@ def get_horarios_disponiveis(request):
         data_weekday = data_obj.weekday()
         print(f'data_weekday = {data_weekday}')
         disponiveis = Evento.objects.filter(
-            starting_day__date=data, user__profile_professor=prof)
+            starting_day__date=data, user__profile__professor=prof)
         # .values('starting_date').annotate(dcount=Count('starting_date'))
         print(f'disponiveis = {disponiveis}')
     if prof:
