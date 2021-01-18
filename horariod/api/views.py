@@ -113,7 +113,6 @@ def add_reposicao(request):
             print(f'resultado dentro do count>3 ={resultado}')
             lista.append(resultado)
             print(lista)
-            print(f'aula do dia {starting_date} tem {count} alunos ja')
         else:
             print('else > 3')
             resultado['hora'] = mytime
@@ -122,7 +121,6 @@ def add_reposicao(request):
             print(f'resultado fora do > 3 {resultado}')
             lista.append(resultado)
             print(lista)
-            print(f'aula disponivel do dia {starting_date}')
 
     return Response({"lista": lista})
 
