@@ -18,7 +18,7 @@ class HorarioCreateUpdateSerializer(ModelSerializer):
     class Meta:
         model = Horario
         fields = ['id',  'dia', 'user',
-                  'horario']
+                  'hora_aula']
 
 
 class HorarioDetailSerializer(ModelSerializer):
@@ -27,7 +27,7 @@ class HorarioDetailSerializer(ModelSerializer):
     class Meta:
         model = Horario
         fields = ['id',  'dia',
-                  'user', 'horario']
+                  'user', 'hora_aula']
 
 
 class HorarioListSerializer(ModelSerializer):
@@ -36,7 +36,7 @@ class HorarioListSerializer(ModelSerializer):
     class Meta:
         model = Horario
         fields = ['id', 'dia',
-                  'user',  'horario']
+                  'user',  'hora_aula']
 
 
 class HorarioListAllSerializer(ModelSerializer):
@@ -46,4 +46,4 @@ class HorarioListAllSerializer(ModelSerializer):
     class Meta:
         model = Horario
         fields = ['id', 'dia',
-                  'user',  'horario', 'first_name']
+                  'user',  'hora_aula', 'first_name']

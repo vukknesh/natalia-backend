@@ -27,14 +27,14 @@ class Horario(models.Model):
                              on_delete=models.CASCADE)
     dia = models.IntegerField(
         max_length=50, choices=DIA_CHOICES, default="Segunda", null=True, blank=True)
-    horario = models.TimeField(
+    hora_aula = models.TimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
 
     class Meta:
-        ordering = ['horario']
+        ordering = ['hora_aula']
 
     def __unicode__(self):
-        return f'{self.user.first_name} - {self.horario}'
+        return f'{self.user.first_name} - {self.hora_aula}'
 
     def __str__(self):
-        return f'{self.user.first_name} - {self.horario}'
+        return f'{self.user.first_name} - {self.hora_aula}'
