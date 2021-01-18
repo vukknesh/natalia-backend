@@ -92,7 +92,7 @@ def add_reposicao(request):
     dia_numerico = data_obj.weekday()
     print(f'dia_numerico ={dia_numerico}')
     horario_dict = Horario.objects.filter(
-        user=user.profile.professor, dia=dia_numerico)
+        user=user.profile.professor, weekday=dia_numerico)
 
     print(f'horario_dict = {horario_dict}')
 
@@ -115,7 +115,8 @@ def get_horarios_disponiveis(request):
         data_weekday = data_obj.weekday()
         print(f'data_weekday = {data_weekday}')
         disponiveis = Evento.objects.filter(
-            starting_day__date=data, user__profile_professor=prof).values('starting_date').annotate(dcount=Count('starting_date'))
+            starting_day__date=data, user__profile_professor=prof)
+        # .values('starting_date').annotate(dcount=Count('starting_date'))
         print(f'disponiveis = {disponiveis}')
     if prof:
         horarios_professor = Horario.objects.filter(
