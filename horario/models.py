@@ -11,11 +11,11 @@ from rest_framework.response import Response
 
 
 class Horario(models.Model):
-    SEGUNDA = 'Segunda'
-    TERCA = 'Terca'
-    QUARTA = 'Quarta'
-    QUINTA = 'Quinta'
-    SEXTA = 'Sexta'
+    SEGUNDA = 0
+    TERCA = 1
+    QUARTA = 2
+    QUINTA = 3
+    SEXTA = 4
     DIA_CHOICES = (
         (SEGUNDA, 'Segunda'),
         (TERCA, 'Terca'),
@@ -25,11 +25,8 @@ class Horario(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    # dia = models.IntegerField(choices=DIA_CHOICES, default=0)
-    dia = models.CharField(max_length=20,
-                           choices=DIA_CHOICES,
-                           default="Segunda"
-                           )
+    weekday = models.IntegerField(choices=DIA_CHOICES, default=0)
+
     hora_aula = models.TimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
 
