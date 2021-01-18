@@ -98,7 +98,7 @@ def add_reposicao(request):
 
 
 @api_view(['POST'])
-def get_horarios_disponiveis:
+def get_horarios_disponiveis(request):
     u = request.data['user']
     user = User.objects.get(id=u)
     prof = user.profile.professor
