@@ -96,14 +96,26 @@ def add_reposicao(request):
 
     print(f'horario_dict = {horario_dict}')
     lista = []
+    resultado = {}
     for ho in horario_dict:
-        count = Evento.objects.filter(user__profile_professor=prof,
-                                      starting_date__hour=ho.starting_date__hour).count()
-        print(f'count = {count}')
-        lista.append(ho.hora_aula, count)
+
+        mytime = datetime.combine(data_obj, ho.hora_aula)
+        count = Evento.objects.filter(
+            user__profile__professor=prof, starting_date=mytime).count()
+
         if count > 3:
+            resultado['hora'] = mytime
+            resultado['count'] = count
+            resultado['bool'] = False
+            lista.append(resultado)
+            print(lista)
             print(f'aula do dia {starting_date} tem {count} alunos ja')
         else:
+            resultado['hora'] = mytime
+            resultado['count'] = count
+            resultado['bool'] = False
+            lista.append(resultado)
+            print(lista)
             print(f'aula disponivel do dia {starting_date}')
 
     return Response({"lista": lista})
