@@ -9,7 +9,7 @@ from rest_framework.serializers import (
 
 from accounts.serializers import UserSerializer
 
-from horario.models import Horario
+from horariod.models import Horario
 
 
 class HorarioCreateUpdateSerializer(ModelSerializer):

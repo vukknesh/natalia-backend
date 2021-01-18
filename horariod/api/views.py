@@ -30,7 +30,7 @@ from rest_framework.permissions import (
 
 )
 from django_filters import rest_framework as filters
-from horario.models import Horario
+from horariod.models import Horario
 from eventos.models import Evento
 from calendar import monthrange
 from rest_framework.decorators import api_view
