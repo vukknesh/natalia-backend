@@ -25,7 +25,8 @@ class Horario(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    dia = models.IntegerField(choices=DIA_CHOICES, default=0)
+    # dia = models.IntegerField(choices=DIA_CHOICES, default=0)
+    dia = models.IntegerField()
     hora_aula = models.TimeField(
         auto_now=False, auto_now_add=False, default=timezone.now)
 
