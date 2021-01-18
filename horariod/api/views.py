@@ -84,6 +84,7 @@ def add_reposicao(request):
     print(f'request.data {request.data}')
     u = request.data['user']
     user = User.objects.get(id=u)
+    prof = user.profile.professor
     starting_date_string = request.data['starting_date']
     data_obj = datetime.strptime(starting_date_string, '%Y-%m-%d')
     # data_obj = datetime.strptime(starting_date_string, '%Y-%m-%d %H:%M:%S')
@@ -92,7 +93,7 @@ def add_reposicao(request):
     dia_numerico = data_obj.weekday()
     print(f'dia_numerico ={dia_numerico}')
     horario_dict = Horario.objects.filter(
-        user=user.profile.professor, weekday=dia_numerico)
+        user=prof, weekday=dia_numerico)
 
     print(f'horario_dict = {horario_dict}')
     lista = []
