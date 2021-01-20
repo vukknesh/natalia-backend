@@ -123,6 +123,12 @@ def update_evento(sender, instance, **kwargs):
             instance.bonus = True
             pass
     print(f'instance{instance.comentario} pre save')
+    if instance.reposicao:
+        profile = user.profile
+        print(f'profile = {profile}')
+        print(f'e reposicao')
+        profile.aulas_reposicao = profile.aulas_reposicao + 1
+        profile.save()
 
 
 pre_save.connect(update_evento, sender=Evento)
