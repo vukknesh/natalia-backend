@@ -691,24 +691,33 @@ def repor_aula(request):
     year = now.year
     month_mais = month + 1
     month_menos = month - 1
+    year_menos = year - 1
+    year_mais = year + 1
     status = 0
     resposta = "Alguma coisa"
     if month_menos == 0:
         month_menos = 12
-        year = year - 1
+
+        if dt.day < dia_pg:
+            print(f'dt < dia_pg')
+            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            print(f'dt > dia_pg')
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
     if month_mais == 13:
         month_mais = 1
-        year = year + 1
 
-    if dt.day < dia_pg:
-        print(f'dt < dia_pg')
-        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-    else:
-        print(f'dt > dia_pg')
-        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+        if dt.day < dia_pg:
+            print(f'dt < dia_pg')
+            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year_mais}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            print(f'dt > dia_pg')
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
 
     print(f' acima aulas_do_mes')
     print(f'start_date ={start_date}')
