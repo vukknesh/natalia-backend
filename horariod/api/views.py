@@ -80,6 +80,35 @@ class HorarioCreateAPIView(CreateAPIView):
 
 @api_view(['POST'])
 def add_reposicao(request):
+    u = request.data['user']
+    user = User.objects.get(id=u)
+    prof = user.profile.professor
+    print(f'professor do usuario = {prof}')
+    data = request.data['data']
+    print(f'data = {data}')
+    data_weekday = None
+    horarios_professor = None
+    if data:
+        data_obj = datetime.strptime(data, '%Y-%m-%d')
+        data_weekday = data_obj.weekday()
+        print(f'data_weekday = {data_weekday}')
+        disponiveis = Evento.objects.filter(
+            starting_day__date=data, user__profile__professor=prof)
+        # .values('starting_date').annotate(dcount=Count('starting_date'))
+        print(f'disponiveis = {disponiveis}')
+    if prof:
+        horarios_professor = Horario.objects.filter(
+            user=prof, dia=data_weekday)
+        print(f'horarios_prof = {horarios_professor}')
+
+    # Evento.objects.create(user=user, starting_date=starting_date, remarcacao=False, reposicao=True,
+    #                           desmarcado=False, bonus=True)
+    return Response({"horarios_disponiveis": horarios_professor,
+                     "disponiveis": disponiveis})
+
+
+@api_view(['POST'])
+def get_horarios_disponiveis(request):
     print(f'request {request}')
     print(f'request.data {request.data}')
     u = request.data['user']
@@ -117,41 +146,12 @@ def add_reposicao(request):
             print('else > 3')
             resultado['hora'] = mytime
             resultado['count'] = count
-            resultado['bool'] = False
+            resultado['bool'] = True
             print(f'resultado fora do > 3 {resultado}')
             lista.append(resultado)
             print(lista)
 
     return Response({"lista": lista})
-
-
-@api_view(['POST'])
-def get_horarios_disponiveis(request):
-    u = request.data['user']
-    user = User.objects.get(id=u)
-    prof = user.profile.professor
-    print(f'professor do usuario = {prof}')
-    data = request.data['data']
-    print(f'data = {data}')
-    data_weekday = None
-    horarios_professor = None
-    if data:
-        data_obj = datetime.strptime(data, '%Y-%m-%d')
-        data_weekday = data_obj.weekday()
-        print(f'data_weekday = {data_weekday}')
-        disponiveis = Evento.objects.filter(
-            starting_day__date=data, user__profile__professor=prof)
-        # .values('starting_date').annotate(dcount=Count('starting_date'))
-        print(f'disponiveis = {disponiveis}')
-    if prof:
-        horarios_professor = Horario.objects.filter(
-            user=prof, dia=data_weekday)
-        print(f'horarios_prof = {horarios_professor}')
-
-    # Evento.objects.create(user=user, starting_date=starting_date, remarcacao=False, reposicao=True,
-    #                           desmarcado=False, bonus=True)
-    return Response({"horarios_disponiveis": horarios_professor,
-                     "disponiveis": disponiveis})
 
 
 class HorarioDetailAPIView(RetrieveAPIView):
