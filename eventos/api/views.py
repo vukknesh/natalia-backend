@@ -733,7 +733,7 @@ def repor_aula(request):
         print(f'dentro do count > aluno_reposicao')
         # verificar se a data selecionada esta no mes atual do usuario
         count = Evento.objects.filter(
-            user__profile__professor=user.profile.prof, starting_date=data).count()
+            user__profile__professor=user.profile.professor, starting_date=data).count()
         print(f'count = {count}')
         # if data > start_date and data < end_date:
         # if data > start_date and data < end_date:
