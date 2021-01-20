@@ -711,6 +711,8 @@ def repor_aula(request):
         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
 
     print(f' acima aulas_do_mes')
+    print(f'start_date ={start_date}')
+    print(f'end_date ={end_date}')
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date, remarcacao=True, reposicao=False,  historico=False)
     print(f'aulas_do_mes = {aulas_do_mes}')
