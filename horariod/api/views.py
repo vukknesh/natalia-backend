@@ -82,27 +82,10 @@ class HorarioCreateAPIView(CreateAPIView):
 def add_reposicao(request):
     u = request.data['user']
     user = User.objects.get(id=u)
-    prof = user.profile.professor
-    print(f'professor do usuario = {prof}')
+
     data = request.data['data']
     print(f'data = {data}')
-    data_weekday = None
-    horarios_professor = None
-    if data:
-        data_obj = datetime.strptime(data, '%Y-%m-%d')
-        data_weekday = data_obj.weekday()
-        print(f'data_weekday = {data_weekday}')
-        disponiveis = Evento.objects.filter(
-            starting_day__date=data, user__profile__professor=prof)
-        # .values('starting_date').annotate(dcount=Count('starting_date'))
-        print(f'disponiveis = {disponiveis}')
-    if prof:
-        horarios_professor = Horario.objects.filter(
-            user=prof, dia=data_weekday)
-        print(f'horarios_prof = {horarios_professor}')
 
-    # Evento.objects.create(user=user, starting_date=starting_date, remarcacao=False, reposicao=True,
-    #                           desmarcado=False, bonus=True)
     return Response({"horarios_disponiveis": horarios_professor,
                      "disponiveis": disponiveis})
 
@@ -126,8 +109,8 @@ def get_horarios_disponiveis(request):
 
     print(f'horario_dict = {horario_dict}')
     lista = []
-    resultado = {}
     for ho in horario_dict:
+        resultado = {}
 
         mytime = datetime.combine(data_obj, ho.hora_aula)
         print(f'mytime {mytime}')
