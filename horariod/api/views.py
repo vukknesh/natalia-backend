@@ -152,6 +152,8 @@ def repor_aula(request):
     print(f'alunoId ={alunoId}')
     print(f'data ={data}')
     user = User.objects.get(id=alunoId)
+    prof = user.profile.professor
+    status = 200
     dia_pg = user.profile.dia_pagamento
     now = datetime.now(timezone.utc)
     dt = date.today()
@@ -159,9 +161,74 @@ def repor_aula(request):
     year = now.year
     month_mais = month + 1
     month_menos = month - 1
+    year_menos = year - 1
+    year_mais = year + 1
+    status = 0
     resposta = "Alguma coisa"
+    if month_menos == 0:
+        month_menos = 12
 
-    return Response({"message": resposta})
+        if dt.day < dia_pg:
+            print(f'dt < dia_pg')
+            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            print(f'dt > dia_pg')
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+
+    if month_mais == 13:
+        month_mais = 1
+
+        if dt.day < dia_pg:
+            print(f'dt < dia_pg')
+            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year_mais}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            print(f'dt > dia_pg')
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+
+    print(f' acima aulas_do_mes')
+    print(f'start_date ={start_date}')
+    print(f'end_date ={end_date}')
+    aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
+                                          starting_date__lt=end_date, remarcacao=True, reposicao=False,  historico=False)
+    print(f'aulas_do_mes = {aulas_do_mes}')
+
+    aluno_reposicao = user.profile.aulas_reposicao
+    print(f'aluno_reposicao = {aluno_reposicao}')
+    # verificar se tem aula pra repor e se nao ja repos
+    if aulas_do_mes.count() > aluno_reposicao:
+        print(f'dentro do count > aluno_reposicao')
+        # verificar se a data selecionada esta no mes atual do usuario
+        count = Evento.objects.filter(
+            user__profile__professor=prof, starting_date=data).count()
+
+        # if data > start_date and data < end_date:
+        # if data > start_date and data < end_date:
+        print(f'dentro do data do periodo do aluno')
+        # verificar se existe aula nesse horario e no dia
+        if count > 3:
+
+            resposta = "Nao ha vagas nesse horario!"
+            status = 403
+            pass
+        else:
+            Evento.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
+                                  desmarcado=False, bonus=True)
+            resposta = "Aula remarcada com sucesso!"
+            status = 200
+
+        pass
+        # else:
+        #     resposta = "Data selecionada nao esta dentro do seu mes, escolha outra data!"
+    else:
+        status = 403
+        resposta = "Voce nao tem aulas para remarcar este mes!"
+
+    return Response({"message": resposta, "status": status})
+
 
 # ####alteracoes
 # aluno marcar propria reposicao
