@@ -28,7 +28,7 @@ from rest_framework.permissions import (
 
 )
 from django_filters import rest_framework as filters
-from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item, DespesasFixa
+from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item, DespesasFixa, Teste
 
 
 from .permissions import IsOwnerOrReadOnly
@@ -43,7 +43,8 @@ from .serializers import (
     AulaExperimentalCreateUpdateSerializer,
     AulaPersonalCreateUpdateSerializer,
     VendaItemsCreateUpdateSerializer,
-    ItemCreateUpdateSerializer
+    ItemCreateUpdateSerializer,
+    TesteSerializer
 )
 
 import django_filters
@@ -258,6 +259,17 @@ class ItemsListAllAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
 
         queryset_list = Item.objects.all()  # filter(user=self.request.user)
+
+        return queryset_list
+
+
+class TesteListAllAPIView(ListAPIView):
+    serializer_class = TesteSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+
+        queryset_list = Teste.objects.all()  # filter(user=self.request.user)
 
         return queryset_list
 

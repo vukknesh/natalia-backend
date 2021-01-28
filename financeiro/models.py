@@ -34,6 +34,13 @@ class AulaExperimental(models.Model):
         return f'{self.user} - {self.data}'
 
 
+class Teste(models.Model):
+    teste_remarcacao = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.teste_remarcacao}'
+
+
 class AulaAvulsaGrupo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.CASCADE)

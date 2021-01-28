@@ -9,13 +9,20 @@ from rest_framework.serializers import (
 
 from accounts.serializers import UserSerializer
 
-from financeiro.models import Pagamento, ResumoMensal, AulaPersonal, AulaExperimental, AulaAvulsaGrupo, Item, VendaItems, DespesasFixa
+from financeiro.models import Pagamento, ResumoMensal, AulaPersonal, AulaExperimental, AulaAvulsaGrupo, Item, VendaItems, DespesasFixa, Teste
 
 
 class PagamentoCreateUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Pagamento
+        fields = "__all__"
+
+
+class TesteSerializer(ModelSerializer):
+
+    class Meta:
+        model = Teste
         fields = "__all__"
 
 
