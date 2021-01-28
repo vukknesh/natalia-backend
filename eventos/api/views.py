@@ -21,6 +21,7 @@ from rest_framework.generics import (
 )
 from rest_framework.pagination import LimitOffsetPagination
 from datetime import datetime, timezone, timedelta, date
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from rest_framework.permissions import (
     AllowAny,
@@ -160,35 +161,18 @@ def desmarcar_aula_request(request, eventoId):
         response_text = "Você só poderá remarcar aulas 3 horas antes."
 
     dia_pg = user.profile.dia_pagamento
-    month_mais = month + 1
-    month_menos = month - 1
-    year_menos = year - 1
-    year_mais = year + 1
-    if month_menos == 0:
-        month_menos = 12
 
-        if dt.day < dia_pg:
-            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-    elif month_mais == 13:
-        month_mais = 1
-        month_menos = 11
+    a_month = relativedelta(months=1)
+    d_day = datetime.date(year, month, dia_pg)
+    if dt.day < dia_pg:
+        start_date = d_day - a_month
+        end_date = d_day
+    else:
+        start_date = d_day
+        end_date = d_day + a_month
 
-        if dt.day < dia_pg:
-            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
-
-        print(f'end_date = {end_date}')
-        print(f'start_date = {start_date}')
-
-    aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, reposicao=False,  historico=False)
+    aulas_do_mes = user.evento_set.filter(starting_date__range=(
+        start_date, end_date), reposicao=False,  historico=False)
 
     print(f'aulas_do_mes {aulas_do_mes}')
     # teste

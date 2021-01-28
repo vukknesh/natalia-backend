@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from eventos.models import Evento
 from eventos.api.serializers import EventoDetailSerializer
-
+from dateutil.relativedelta import relativedelta
 from rest_framework.serializers import (
     HyperlinkedIdentityField,
     ModelSerializer,
@@ -47,30 +47,37 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         print(f'dia_pg get_tem_bonus {dia_pg}')
         print(f'obj.user.profile.plano get_tem_bonus {obj.user.profile.plano}')
         resp = 0
-        month_mais = month + 1
-        month_menos = month - 1
-        year_menos = year - 1
-        year_mais = year + 1
-        if month_menos == 0:
-            month_menos = 12
+        # month_mais = month + 1
+        # month_menos = month - 1
+        # year_menos = year - 1
+        # year_mais = year + 1
+        # if month_menos == 0:
+        #     month_menos = 12
 
-            if dt.day < dia_pg:
-                start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-        elif month_mais == 13:
-            month_mais = 1
-            month_menos = 11
+        #     if dt.day < dia_pg:
+        #         start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
+        #         end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        #     else:
+        #         start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        #         end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+        # elif month_mais == 13:
+        #     month_mais = 1
+        #     month_menos = 11
 
-            if dt.day < dia_pg:
-                start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
-
+        #     if dt.day < dia_pg:
+        #         start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+        #         end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        #     else:
+        #         start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        #         end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+        a_month = relativedelta(months=1)
+        d_day = datetime.date(year, month, dia_pg)
+        if dt.day < dia_pg:
+            start_date = d_day - a_month
+            end_date = d_day
+        else:
+            start_date = d_day
+            end_date = d_day + a_month
         print(f'end_date = {end_date}')
         print(f'start_date = {start_date}')
 
