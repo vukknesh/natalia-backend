@@ -162,21 +162,30 @@ def desmarcar_aula_request(request, eventoId):
     dia_pg = user.profile.dia_pagamento
     month_mais = month + 1
     month_menos = month - 1
-
-    if month_mais == 13:
-        month_mais = 1
-        year = year + 1
-
+    year_menos = year - 1
+    year_mais = year + 1
     if month_menos == 0:
         month_menos = 12
-        year = year - 1
 
-    if dt.day < dia_pg:
-        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-    else:
-        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+        if dt.day < dia_pg:
+            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+    elif month_mais == 13:
+        month_mais = 1
+        month_menos = 11
+
+        if dt.day < dia_pg:
+            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        else:
+            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
 
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date, reposicao=False,  historico=False)
