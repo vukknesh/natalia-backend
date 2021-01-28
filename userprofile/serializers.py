@@ -71,15 +71,18 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         #         start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
         #         end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
         a_month = relativedelta(months=1)
-        d_day = datetime.date(year, month, dia_pg)
+        d_day = date(year, month, dia_pg)
+        print(f'd_day ={d_day}')
         if dt.day < dia_pg:
             start_date = d_day - a_month
             end_date = d_day
+            print(f'end_date = {end_date}')
+            print(f'start_date = {start_date}')
         else:
             start_date = d_day
             end_date = d_day + a_month
-        print(f'end_date = {end_date}')
-        print(f'start_date = {start_date}')
+            print(f'end_date = {end_date}')
+            print(f'start_date = {start_date}')
 
         aulas_do_mes = Evento.objects.filter_by_instance(obj).filter(starting_date__gte=start_date,
                                                                      starting_date__lt=end_date, reposicao=False, historico=False)

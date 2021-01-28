@@ -163,7 +163,7 @@ def desmarcar_aula_request(request, eventoId):
     dia_pg = user.profile.dia_pagamento
 
     a_month = relativedelta(months=1)
-    d_day = datetime.date(year, month, dia_pg)
+    d_day = date(year, month, dia_pg)
     if dt.day < dia_pg:
         start_date = d_day - a_month
         end_date = d_day
