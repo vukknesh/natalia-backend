@@ -306,19 +306,30 @@ class EventoUpdateAPIView(UpdateAPIView):
         dia_pg = user.profile.dia_pagamento
         month_mais = month + 1
         month_menos = month - 1
+        year_menos = year - 1
+        year_mais = year + 1
         if month_menos == 0:
             month_menos = 12
-            year = year - 1
 
-        if month_mais == 13:
+            if dt.day < dia_pg:
+                start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
+                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            else:
+                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+                end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+        elif month_mais == 13:
             month_mais = 1
-            year = year + 1
-        if dt.day < dia_pg:
-            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+            month_menos = 11
+
+            if dt.day < dia_pg:
+                start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
+                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+            else:
+                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+                end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
 
         aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                               starting_date__lt=end_date, reposicao=False,  historico=False)
@@ -734,15 +745,15 @@ def repor_aula(request):
         # verificar se a data selecionada esta no mes atual do usuario
         count = Evento.objects.filter(
             user__profile__professor=user.profile.professor, starting_date=data).count()
-        print(f'count = {count}')
+
         # if data > start_date and data < end_date:
         # if data > start_date and data < end_date:
         print(f'dentro do data do periodo do aluno')
         # verificar se existe aula nesse horario e no dia
         if count > 3:
-            print(f'existe()')
+
             resposta = "Nao ha vagas nesse horario!"
-            status = 404
+            status = 403
             pass
         else:
             Evento.objects.create(user=user, starting_date=data, remarcacao=False, reposicao=True,
