@@ -297,35 +297,23 @@ class EventoUpdateAPIView(UpdateAPIView):
             print('dentro')
 
         dia_pg = user.profile.dia_pagamento
-        month_mais = month + 1
-        month_menos = month - 1
-        year_menos = year - 1
-        year_mais = year + 1
-        if month_menos == 0:
-            month_menos = 12
-
-            if dt.day < dia_pg:
-                start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-        elif month_mais == 13:
-            month_mais = 1
-            month_menos = 11
-
-            if dt.day < dia_pg:
-                start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
-
-        print(f'end_date = {end_date}')
-        print(f'start_date = {start_date}')
-
-        aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                              starting_date__lt=end_date, reposicao=False,  historico=False)
+        a_month = relativedelta(months=1)
+        d_day = date(year, month, dia_pg)
+        print(f'd_day ={d_day}')
+        print(f'a month= {a_month}')
+        if dt.day < dia_pg:
+            start_date = d_day - a_month
+            end_date = d_day
+            print(f'start_date < = {start_date}')
+            print(f'end_date < = {end_date}')
+        else:
+            start_date = d_day
+            end_date = d_day + a_month
+            print(f'start_date > = {start_date}')
+            print(f'end_date > = {end_date}')
+        print(f'antes das aulas do mes')
+        aulas_do_mes = user.evento_set.filter(starting_date__range=(
+            start_date, end_date), reposicao=False,  historico=False)
         print(f'aulas_do_mes update {aulas_do_mes}')
         # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
         #                                       starting_date__month__gte=month,
@@ -508,40 +496,22 @@ class EventoListAPIView(ListAPIView):
             u = User.objects.first()
 
         dia_pg = u.profile.dia_pagamento
-        month_mais = month + 1
-        year_mais = year + 1
-
-        if month_mais == 13:
-            month_mais = 1
-
-            if dt.day < dia_pg:
-                start_date = dt
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+        a_month = relativedelta(months=1)
+        d_day = date(year, month, dia_pg)
+        print(f'd_day ={d_day}')
+        if dt.day < dia_pg:
+            start_date = d_day - a_month
+            end_date = d_day
+            print(f'end_date = {end_date}')
+            print(f'start_date = {start_date}')
         else:
-            if dt.day < dia_pg:
-                start_date = dt
-                end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            else:
-                start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-                end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+            start_date = d_day
+            end_date = d_day + a_month
+            print(f'end_date = {end_date}')
+            print(f'start_date = {start_date}')
 
-        print(f'start_date  {start_date}')
-        print(f'end_date  {end_date}')
-        # qs = Evento.objects.filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
-        #                           starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
-        # queryset_list = Evento.objects.filter(
-        #     user=u).filter(starting_date__gte=dt, starting_date__year__gte=year,
-        #                    starting_date__month__gte=month, starting_date__day__gte=dia_pg, starting_date__year__lte=year, starting_date__month__lte=month_mais, starting_date__day__lt=dia_pg)
         qs = Evento.objects.filter(user=u).filter(starting_date__gte=start_date,
                                                   starting_date__lt=end_date, historico=False)
-
-        # queryset_list = Evento.objects.filter(
-        #    user=u).filter(starting_date__gte=datetime.now(), starting_date__year__gte=year,
-        #                   starting_date__month__gte=month, starting_date__year__lte=year, starting_date__month__lte=month)
-        # .filter(starting_date__gte=datetime.now())  # filter(user=self.request.user)
 
         return Response({"eventos": EventoListSerializer(qs, many=True).data})
 
@@ -693,35 +663,22 @@ def repor_aula(request):
     dt = date.today()
     month = now.month
     year = now.year
-    month_mais = month + 1
-    month_menos = month - 1
-    year_menos = year - 1
-    year_mais = year + 1
+
     status = 0
     resposta = "Alguma coisa"
-    if month_menos == 0:
-        month_menos = 12
-
-        if dt.day < dia_pg:
-            print(f'dt < dia_pg')
-            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            print(f'dt > dia_pg')
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-
-    if month_mais == 13:
-        month_mais = 1
-
-        if dt.day < dia_pg:
-            print(f'dt < dia_pg')
-            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year_mais}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            print(f'dt > dia_pg')
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
+    a_month = relativedelta(months=1)
+    d_day = date(year, month, dia_pg)
+    print(f'd_day ={d_day}')
+    if dt.day < dia_pg:
+        start_date = d_day - a_month
+        end_date = d_day
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
+    else:
+        start_date = d_day
+        end_date = d_day + a_month
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
 
     print(f' acima aulas_do_mes')
     print(f'start_date ={start_date}')

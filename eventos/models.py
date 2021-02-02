@@ -8,6 +8,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from rest_framework.response import Response
+from dateutil.relativedelta import relativedelta
 
 
 class EventoManager(models.Manager):
@@ -79,31 +80,20 @@ def update_evento(sender, instance, **kwargs):
     print(f'dt ={dt}')
     dia_pg = user.profile.dia_pagamento
     print(f'dia_pg ={dia_pg}')
-    month_mais = month + 1
-    print(f'month_mais ={month_mais}')
-    month_menos = month - 1
-    print(f'month_menos ={month_menos}')
-    if month_menos == 0:
-        month_menos = 12
-        year = year - 1
-
-    if month_mais == 13:
-        month_mais = 1
-        year = year + 1
-
+    a_month = relativedelta(months=1)
+    d_day = date(year, month, dia_pg)
+    print(f'd_day ={d_day}')
     if dt.day < dia_pg:
-        print(f'dt < dia_pg')
-        start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
+        start_date = d_day - a_month
+        end_date = d_day
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
     else:
-        print(f'dt > dia_pg')
-        start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
+        start_date = d_day
+        end_date = d_day + a_month
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
 
-    # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-    #                                       starting_date__month__gte=month,
-    #                                       starting_date__year__lte=year,
-    #                                       starting_date__month__lte=month)
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date, reposicao=False,  historico=False)
 

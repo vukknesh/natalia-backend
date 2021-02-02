@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
+from dateutil.relativedelta import relativedelta
 from calendar import monthrange
 from rest_framework.filters import (
     SearchFilter,
@@ -159,39 +160,22 @@ def repor_aula(request):
     dt = date.today()
     month = now.month
     year = now.year
-    month_mais = month + 1
-    month_menos = month - 1
-    year_menos = year - 1
-    year_mais = year + 1
+
     status = 0
     resposta = "Alguma coisa"
-    if month_menos == 0:
-        month_menos = 12
-
-        if dt.day < dia_pg:
-            print(f'dt < dia_pg')
-            start_date = f'{year_menos}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            print(f'dt > dia_pg')
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year}-{month_mais}-{dia_pg}T00:00:00Z'
-
-    if month_mais == 13:
-        month_mais = 1
-
-        if dt.day < dia_pg:
-            print(f'dt < dia_pg')
-            start_date = f'{year}-{month_menos}-{dia_pg}T00:00:00Z'
-            end_date = f'{year_mais}-{month}-{dia_pg}T00:00:00Z'
-        else:
-            print(f'dt > dia_pg')
-            start_date = f'{year}-{month}-{dia_pg}T00:00:00Z'
-            end_date = f'{year_mais}-{month_mais}-{dia_pg}T00:00:00Z'
-
-    print(f' acima aulas_do_mes')
-    print(f'start_date ={start_date}')
-    print(f'end_date ={end_date}')
+    a_month = relativedelta(months=1)
+    d_day = date(year, month, dia_pg)
+    print(f'd_day ={d_day}')
+    if dt.day < dia_pg:
+        start_date = d_day - a_month
+        end_date = d_day
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
+    else:
+        start_date = d_day
+        end_date = d_day + a_month
+        print(f'end_date = {end_date}')
+        print(f'start_date = {start_date}')
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
                                           starting_date__lt=end_date, remarcacao=True, reposicao=False,  historico=False)
     print(f'aulas_do_mes = {aulas_do_mes}')
