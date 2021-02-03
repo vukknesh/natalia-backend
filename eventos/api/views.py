@@ -137,6 +137,10 @@ def desmarcar_aula_request(request, eventoId):
     bonus_counter = user.profile.bonus_remarcadas
     aulas_counter = user.profile.aulas_remarcadas
 
+    if(evento.reposicao):
+        response_text = 'Você esta desmarcando uma aula de reposição e não poderá reagendá-la.'
+        return Response({"message": response_text, "aulas_remarcadas": aulas_counter, "bonus_remarcadas": bonus_counter})
+
     if(evento.desmarcado):
         raise ValidationError({"message": "Aula já desmarcada!"})
 
@@ -180,7 +184,7 @@ def desmarcar_aula_request(request, eventoId):
     if(user.profile.plano == "4 Aulas"):
 
         if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
         if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas > 0):
@@ -192,11 +196,11 @@ def desmarcar_aula_request(request, eventoId):
     if(user.profile.plano == "8 Aulas"):
         aulas_bonus = aulas_do_mes.count() - 8
         if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
         if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
 
@@ -212,15 +216,15 @@ def desmarcar_aula_request(request, eventoId):
     if(user.profile.plano == "12 Aulas"):
         aulas_bonus = aulas_do_mes.count() - 12
         if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
         if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
         if(aulas_bonus == 3 and user.profile.bonus_remarcadas <= 3):
-            response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             bonus_counter = bonus_counter + 1
             pass
 
@@ -280,7 +284,7 @@ class EventoUpdateAPIView(UpdateAPIView):
             raise ValidationError({"message": "Aula já desmarcada!"})
         # if(evento.bonus):
         #    raise ValidationError(
-        #        {"message": "Esta é uma aula bônus e não poderá ser remarcada!"})
+        #        {"message": "Esta é bônus e não poderá ser remarcada!"})
         if(evento.starting_date.hour <= 12):
             # evento proximo dia
             if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
@@ -327,7 +331,7 @@ class EventoUpdateAPIView(UpdateAPIView):
         if(user.profile.plano == "4 Aulas"):
             aulas_bonus = aulas_do_mes.count() - 4
             if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas == 0):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             if(aulas_do_mes.count() > 4 and user.profile.bonus_remarcadas > 0):
@@ -340,15 +344,15 @@ class EventoUpdateAPIView(UpdateAPIView):
 
             aulas_bonus = aulas_do_mes.count() - 8
             if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
-            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             #    bonus_counter = bonus_counter + 1
             #    pass
             if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
@@ -372,19 +376,19 @@ class EventoUpdateAPIView(UpdateAPIView):
         if(user.profile.plano == "12 Aulas"):
             aulas_bonus = aulas_do_mes.count() - 12
             if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             if(aulas_bonus == 3 and user.profile.bonus_remarcadas <= 3):
-                response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
                 bonus_counter = bonus_counter + 1
                 pass
             # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
-            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             #    bonus_counter = bonus_counter + 1
             #    pass
             if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
@@ -397,7 +401,7 @@ class EventoUpdateAPIView(UpdateAPIView):
                 aulas_counter = aulas_counter + 1
                 pass
             # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
-            #    response_text = 'Esta aula é uma aula bônus e não poderá ser remarcada!'
+            #    response_text = 'Esta aula é bônus e não poderá ser remarcada!'
             #    bonus_counter = bonus_counter + 1
             #    pass
             # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
