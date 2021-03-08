@@ -547,10 +547,10 @@ class EventoListAllAPIView(ListAPIView):
         print(f'querylist = {queryset_list}')
         print(f'experimental = {experimental}')
         print(f'expe = {expe}')
+        # if list:
+        # result_list = list(chain(expe, queryset_list))
 
-        result_list = list(chain(expe, queryset_list))
-
-        return result_list
+        return queryset_list | expe
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):
