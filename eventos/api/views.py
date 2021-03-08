@@ -558,6 +558,7 @@ class EventoListAllAPIView(ListAPIView):
             resultado['remarcacao'] = a.remarcacao
             resultado['reposicao'] = a.reposicao
             resultado['historico'] = a.historico
+            resultado['bonus'] = a.bonus
             resultado['updated'] = a.updated
             resultado['experimental'] = False
             lista_final.append(resultado)
@@ -565,7 +566,7 @@ class EventoListAllAPIView(ListAPIView):
         # result_list = list(chain(expe, queryset_list))
         print(f'lista_final = {lista_final}')
 
-        return lista_final
+        return Response({"eventos": lista_final})
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):
