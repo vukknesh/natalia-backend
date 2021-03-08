@@ -32,6 +32,7 @@ from rest_framework.permissions import (
 )
 from django_filters import rest_framework as filters
 from financeiro.models import Experimental
+from financeiro.serializers import ExperimentalSerializer
 from eventos.models import Evento
 from calendar import monthrange
 from rest_framework.decorators import api_view
@@ -542,9 +543,12 @@ class EventoListAllAPIView(ListAPIView):
                 :900]
             experimental = Experimental.objects.filter(starting_date__gte=dt)
 
+        expe = ExperimentalSerializer(experimental, many=True).data
         print(f'querylist = {queryset_list}')
+        print(f'experimental = {experimental}')
+        print(f'expe = {expe}')
 
-        result_list = list(chain(experimental, queryset_list))
+        result_list = list(chain(expe, queryset_list))
 
         return result_list
 
