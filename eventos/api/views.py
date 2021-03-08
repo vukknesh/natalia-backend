@@ -545,11 +545,25 @@ class EventoListAllAPIView(ListAPIView):
 
         lista_final = []
         for a in experimental:
-            lista_final.append(a)
+            resultado = {}
+            resultado['starting_date'] = a.starting_date
+            resultado['first_name'] = a.nome
+            resultado['experimental'] = True
+            lista_final.append(resultado)
         for a in queryset_list:
-            lista_final.append(a)
+            resultado = {}
+            resultado['starting_date'] = a.starting_date
+            resultado['first_name'] = a.user.first_name
+            resultado['desmarcado'] = a.desmarcado
+            resultado['remarcacao'] = a.remarcacao
+            resultado['reposicao'] = a.reposicao
+            resultado['historico'] = a.historico
+            resultado['updated'] = a.updated
+            resultado['experimental'] = False
+            lista_final.append(resultado)
         # if list:
         # result_list = list(chain(expe, queryset_list))
+        print(f'lista_final = {lista_final}')
 
         return lista_final
 
