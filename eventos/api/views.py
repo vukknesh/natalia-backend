@@ -543,14 +543,15 @@ class EventoListAllAPIView(ListAPIView):
                 :900]
             experimental = Experimental.objects.filter(starting_date__gte=dt)
 
-        expe = ExperimentalSerializer(experimental, many=True).data
-        print(f'querylist = {queryset_list}')
-        print(f'experimental = {experimental}')
-        print(f'expe = {expe}')
+        lista_final = []
+        for a in experimental:
+            lista_final.append(a)
+        for a in queryset_list:
+            lista_final.append(a)
         # if list:
         # result_list = list(chain(expe, queryset_list))
 
-        return queryset_list | expe
+        return lista_final
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):
