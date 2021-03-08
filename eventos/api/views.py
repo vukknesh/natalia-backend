@@ -523,7 +523,7 @@ class EventoListAPIView(ListAPIView):
 
 
 class EventoListAllAPIView(ListAPIView):
-    serializer_class = EventoListAllSerializer
+    # serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
 
