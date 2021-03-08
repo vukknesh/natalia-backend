@@ -566,9 +566,7 @@ class EventoListAllAPIView(ListAPIView):
         # result_list = list(chain(expe, queryset_list))
         print(f'lista_final = {lista_final}')
 
-        # return Response({"eventos": lista_final})
-        return Response({"eventos": EventoListAllSerializer(queryset_list, many=True).data,
-                         "experimental": ExperimentalSerializer(experimental, many=True).data})
+        return queryset_list
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):
