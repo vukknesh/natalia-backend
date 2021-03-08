@@ -523,7 +523,7 @@ class EventoListAPIView(ListAPIView):
 
 
 class EventoListAllAPIView(ListAPIView):
-    # serializer_class = EventoListAllSerializer
+    serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
 
@@ -566,7 +566,9 @@ class EventoListAllAPIView(ListAPIView):
         # result_list = list(chain(expe, queryset_list))
         print(f'lista_final = {lista_final}')
 
-        return Response({"eventos": lista_final})
+        # return Response({"eventos": lista_final})
+        return Response({"eventos": EventoListAllSerializer(queryset_list, many=True).data,
+                         "experimental": ExperimentalSerializer(experimental, many=True).data})
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):
