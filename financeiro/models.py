@@ -25,6 +25,15 @@ class Pagamento(models.Model):
         return f'{self.user} - {self.data}'
 
 
+class Experimental(models.Model):
+    nome = models.CharField(max_length=255, default='', null=True, blank=True)
+    starting_date = models.DateTimeField(
+        auto_now=False, auto_now_add=False, default=timezone.now)
+
+    def __str__(self):
+        return f'{self.nome} - {self.starting_date}'
+
+
 class AulaExperimental(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.CASCADE)

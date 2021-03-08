@@ -1,5 +1,5 @@
 from django.db.models import Q
-
+from itertools import chain
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
@@ -31,6 +31,7 @@ from rest_framework.permissions import (
 
 )
 from django_filters import rest_framework as filters
+from financeiro.models import Experimental
 from eventos.models import Evento
 from calendar import monthrange
 from rest_framework.decorators import api_view
@@ -534,13 +535,18 @@ class EventoListAllAPIView(ListAPIView):
 
             queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__range=[
                                                   data_inicial, data_final])  # filter(user=self.request.user)
+            experimental = Experimental.objects.filter(starting_date__range=[
+                data_inicial, data_final])
         else:
             queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
                 :900]
+            experimental = Experimental.objects.filter(starting_date__gte=dt)
 
         print(f'querylist = {queryset_list}')
 
-        return queryset_list
+        result_list = list(chain(experimental, queryset_list))
+
+        return result_list
 
 
 class EventoDesmarcadosListAllAPIView(ListAPIView):

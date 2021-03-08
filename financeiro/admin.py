@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item, DespesasFixa, Teste
+from .models import Pagamento, AulaAvulsaGrupo, AulaExperimental, AulaPersonal, ResumoMensal, VendaItems, Item, DespesasFixa, Teste, Experimental
 # Register your models here.
 
 
@@ -23,3 +23,4 @@ admin.site.register(Item)
 admin.site.register(DespesasFixa)
 admin.site.register(VendaItems)
 admin.site.register(Teste)
+admin.site.register(Experimental)
