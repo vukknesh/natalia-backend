@@ -693,44 +693,44 @@ def delete_all_aulas(request, alunoId):
     return Response({"message": "Todas Aulas Deletadas"})
 
 
-@api_view(['GET'])
-def enviar_parabens():
-    usuarios = Profile.objects.all()
-    now = datetime.now(timezone.utc)
-    month = now.month
-    day = now.day
+# @register_job(scheduler, trigger='cron', hour='3', minute='15', replace_existing=True)
+# def enviar_parabens():
+#     usuarios = Profile.objects.all()
+#     now = datetime.now(timezone.utc)
+#     month = now.month
+#     day = now.day
 
-    tomorrow = now + timedelta(days=1)
-    print(f'day= {day}')
-    print(f'month= {month}')
-    print(f'tomorrow= {tomorrow}')
-    print(f'tomorrow.day= {tomorrow.day}')
-    print(f'tomorrow.month= {tomorrow.month}')
-    aniversariantes_hj = Profile.objects.filter(
-        data_nascimento__day=day).filter(data_nascimento__month=month)
+#     tomorrow = now + timedelta(days=1)
+#     print(f'day= {day}')
+#     print(f'month= {month}')
+#     print(f'tomorrow= {tomorrow}')
+#     print(f'tomorrow.day= {tomorrow.day}')
+#     print(f'tomorrow.month= {tomorrow.month}')
+#     aniversariantes_hj = Profile.objects.filter(
+#         data_nascimento__day=day).filter(data_nascimento__month=month)
 
-    aniversariantes_amanha = Profile.objects.filter(
-        data_nascimento__day=tomorrow.day).filter(data_nascimento__month=tomorrow.month)
+#     aniversariantes_amanha = Profile.objects.filter(
+#         data_nascimento__day=tomorrow.day).filter(data_nascimento__month=tomorrow.month)
 
-    print(f'aniversarioantes hj = {aniversariantes_hj}')
-    print(f'aniversarioantes amanha = {aniversariantes_amanha}')
+#     print(f'aniversarioantes hj = {aniversariantes_hj}')
+#     print(f'aniversarioantes amanha = {aniversariantes_amanha}')
 
-    for a in aniversariantes_hj:
-        print(f'a.data_nascimento =  {a.data_nascimento}')
-        subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
-        message = f"Feliz aniversario {a.user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
-        from_email = settings.EMAIL_HOST_USER
-        to_list = [a.user.email]
-        send_mail(subject, message, from_email,
-                  to_list, fail_silently=False)
-    for b in aniversariantes_amanha:
-        print(f'b.data_nascimento =  {b.data_nascimento}')
-        subject = 'AVISO DE ANIVERSARIANTE AMANHA!'
-        message = f"Aluno {a.user.first_name}. vai fazer aniversario amanha!"
-        from_email = settings.EMAIL_HOST_USER
-        to_list = ["leomcn@hotmail.com"]
-        send_mail(subject, message, from_email,
-                  to_list, fail_silently=False)
+#     for a in aniversariantes_hj:
+#         print(f'a.data_nascimento =  {a.data_nascimento}')
+#         subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
+#         message = f"Feliz aniversario {a.user.first_name}."
+#         from_email = settings.EMAIL_HOST_USER
+#         to_list = [a.user.email]
+#         send_mail(subject, message, from_email,
+#                   to_list, fail_silently=False)
+#     for b in aniversariantes_amanha:
+#         print(f'b.data_nascimento =  {b.data_nascimento}')
+#         subject = 'AVISO DE ANIVERSARIANTE AMANHA!'
+#         message = f"Aluno {a.user.first_name}. vai fazer aniversario amanha!"
+#         from_email = settings.EMAIL_HOST_USER
+#         to_list = ["nataliasecchi@hotmail.com"]
+#         send_mail(subject, message, from_email,
+#                   to_list, fail_silently=False)
 
 
 @api_view(['POST'])
