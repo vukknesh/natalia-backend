@@ -699,9 +699,8 @@ def enviar_parabens():
     now = datetime.now(timezone.utc)
     month = now.month
     day = now.day
-    day_mais_um = day + 1
 
-    tomorrow = timezone.now() + timedelta(days=1)
+    tomorrow = now + timedelta(days=1)
     print(f'day= {day}')
     print(f'month= {month}')
     print(f'tomorrow= {tomorrow}')
@@ -718,41 +717,20 @@ def enviar_parabens():
 
     for a in aniversariantes_hj:
         print(f'a.data_nascimento =  {a.data_nascimento}')
+        subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
+        message = f"Feliz aniversario {a.user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [a.user.email]
+        send_mail(subject, message, from_email,
+                  to_list, fail_silently=False)
     for b in aniversariantes_amanha:
         print(f'b.data_nascimento =  {b.data_nascimento}')
-
-    for user in usuarios:
-
-        if user.data_nascimento:
-            print(
-                f'user.data_nascimento = {user.data_nascimento}')
-            data = date(now.year, user.data_nascimento.month,
-                        user.data_nascimento.day)
-            data_menos_um = data - timedelta(1)
-            print(f'data ={data}')
-            print(f'data_menos_um ={data_menos_um}')
-            if now.date() == data.date():
-                subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
-                message = f"Feliz aniversario {user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
-                from_email = settings.EMAIL_HOST_USER
-                to_list = [user.email]
-                send_mail(subject, message, from_email,
-                          to_list, fail_silently=False)
-
-            elif data_menos_um.date() == now.date():
-                subject = 'Informe de aniversario de aluno'
-                message = f" {user.first_name}. \n \n faz aniversario no dia {user.data_nascimento} \n \n Natalia Secchi!"
-                from_email = settings.EMAIL_HOST_USER
-                to_list = ["leomcn@hotmail.com"]
-                send_mail(subject, message, from_email,
-                          to_list, fail_silently=False)
-            else:
-                subject = 'Nenhum aniversario'
-                message = f" {user.first_name}. \n \n faz aniversario no dia {user.data_nascimento} \n \n Natalia Secchi!"
-                from_email = settings.EMAIL_HOST_USER
-                to_list = ["leomcn@hotmail.com"]
-                send_mail(subject, message, from_email,
-                          to_list, fail_silently=False)
+        subject = 'AVISO DE ANIVERSARIANTE AMANHA!'
+        message = f"Aluno {a.user.first_name}. vai fazer aniversario amanha!"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = ["leomcn@hotmail.com"]
+        send_mail(subject, message, from_email,
+                  to_list, fail_silently=False)
 
 
 @api_view(['POST'])
