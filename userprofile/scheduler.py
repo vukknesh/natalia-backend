@@ -49,7 +49,8 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 #                           to_list, fail_silently=True)
 
 
-@register_job(scheduler, trigger='interval', minutes=2)
+# @register_job(scheduler, trigger='interval', minutes=2)
+# @register_job(scheduler, trigger='cron', hour='3', minute='15', replace_existing=True)
 def enviar_parabens():
     usuarios = Profile.objects.all()
     now = datetime.now(timezone.utc)
@@ -84,7 +85,7 @@ def enviar_parabens():
         subject = 'AVISO DE ANIVERSARIANTE AMANHA!'
         message = f"Aluno {a.user.first_name}. vai fazer aniversario amanha!"
         from_email = settings.EMAIL_HOST_USER
-        to_list = ["leomcn@hotmail.com"]
+        to_list = ["nataliasecchi@hotmail.com"]
         send_mail(subject, message, from_email,
                   to_list, fail_silently=False)
 
