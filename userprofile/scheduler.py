@@ -49,7 +49,7 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 #                           to_list, fail_silently=True)
 
 
-@register_job(scheduler, trigger='cron', hour='3', minute='10', replace_existing=True)
+@register_job(scheduler, trigger='interval', minute='2', replace_existing=True)
 def enviar_parabens():
     usuarios = Profile.objects.all()
     now = datetime.now(timezone.utc)
