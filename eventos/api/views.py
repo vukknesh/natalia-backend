@@ -7,6 +7,8 @@ from rest_framework.serializers import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 from calendar import monthrange
+
+from userprofile.models import Profile
 from rest_framework.filters import (
     SearchFilter,
     OrderingFilter,
@@ -569,6 +571,55 @@ class EventoListAllAPIView(ListAPIView):
         return queryset_list
 
 
+# @api_view(['GET'])
+# def listar_eventos_by_professor(request, alunoId):
+
+#     queryset_list = Evento.objects.filter(
+#         user__profile__professor=request.user).filter(user__is_active=True, starting_date__gte=date.today(), starting_date__lte=dt)
+
+#     user = User.objects.get(id=alunoId)
+#     dt = date.today() - timedelta(5)
+
+#     data_inicial = request.GET.get("data_inicial")
+#     data_final = request.GET.get("data_final")
+
+#     if data_final and data_inicial:
+
+#         queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__range=[
+#             data_inicial, data_final])  # filter(user=self.request.user)
+#         experimental = Experimental.objects.filter(starting_date__range=[
+#             data_inicial, data_final])
+#     else:
+#         queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
+#             :900]
+#         experimental = Experimental.objects.filter(starting_date__gte=dt)
+
+#     lista_final = []
+#     for a in experimental:
+#         resultado = {}
+#         resultado['starting_date'] = a.starting_date
+#         resultado['first_name'] = a.nome
+#         resultado['experimental'] = True
+#         lista_final.append(resultado)
+#     for a in queryset_list:
+#         resultado = {}
+#         resultado['starting_date'] = a.starting_date
+#         resultado['first_name'] = a.user.first_name
+#         resultado['desmarcado'] = a.desmarcado
+#         resultado['remarcacao'] = a.remarcacao
+#         resultado['reposicao'] = a.reposicao
+#         resultado['historico'] = a.historico
+#         resultado['bonus'] = a.bonus
+#         resultado['updated'] = a.updated
+#         resultado['experimental'] = False
+#         lista_final.append(resultado)
+#     # if list:
+#     # result_list = list(chain(expe, queryset_list))
+#     print(f'lista_final = {lista_final}')
+
+#     return Response({"message": "Todas Aulas Deletadas"})
+
+
 class EventoDesmarcadosListAllAPIView(ListAPIView):
     serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
@@ -644,16 +695,39 @@ def delete_all_aulas(request, alunoId):
 
 @api_view(['GET'])
 def enviar_parabens():
-    usuarios = User.objects.all()
+    usuarios = Profile.objects.all()
     now = datetime.now(timezone.utc)
+    month = now.month
+    day = now.day
+    day_mais_um = day + 1
+
+    tomorrow = timezone.now() + timedelta(days=1)
+    print(f'day= {day}')
+    print(f'month= {month}')
+    print(f'tomorrow= {tomorrow}')
+    print(f'tomorrow.day= {tomorrow.day}')
+    print(f'tomorrow.month= {tomorrow.month}')
+    aniversariantes_hj = Profile.objects.filter(
+        data_nascimento__day=day).filter(data_nascimento__month=month)
+
+    aniversariantes_amanha = Profile.objects.filter(
+        data_nascimento__day=tomorrow.day).filter(data_nascimento__month=tomorrow.month)
+
+    print(f'aniversarioantes hj = {aniversariantes_hj}')
+    print(f'aniversarioantes amanha = {aniversariantes_amanha}')
+
+    for a in aniversariantes_hj:
+        print(f'a.data_nascimento =  {a.data_nascimento}')
+    for b in aniversariantes_amanha:
+        print(f'b.data_nascimento =  {b.data_nascimento}')
 
     for user in usuarios:
 
-        if user.profile.data_nascimento:
+        if user.data_nascimento:
             print(
-                f'user.profile.data_nascimento = {user.profile.data_nascimento}')
-            data = date(now.year, user.profile.data_nascimento.month,
-                        user.profile.data_nascimento.day)
+                f'user.data_nascimento = {user.data_nascimento}')
+            data = date(now.year, user.data_nascimento.month,
+                        user.data_nascimento.day)
             data_menos_um = data - timedelta(1)
             print(f'data ={data}')
             print(f'data_menos_um ={data_menos_um}')
@@ -667,14 +741,14 @@ def enviar_parabens():
 
             elif data_menos_um.date() == now.date():
                 subject = 'Informe de aniversario de aluno'
-                message = f" {user.first_name}. \n \n faz aniversario no dia {user.profile.data_nascimento} \n \n Natalia Secchi!"
+                message = f" {user.first_name}. \n \n faz aniversario no dia {user.data_nascimento} \n \n Natalia Secchi!"
                 from_email = settings.EMAIL_HOST_USER
                 to_list = ["leomcn@hotmail.com"]
                 send_mail(subject, message, from_email,
                           to_list, fail_silently=False)
             else:
                 subject = 'Nenhum aniversario'
-                message = f" {user.first_name}. \n \n faz aniversario no dia {user.profile.data_nascimento} \n \n Natalia Secchi!"
+                message = f" {user.first_name}. \n \n faz aniversario no dia {user.data_nascimento} \n \n Natalia Secchi!"
                 from_email = settings.EMAIL_HOST_USER
                 to_list = ["leomcn@hotmail.com"]
                 send_mail(subject, message, from_email,
