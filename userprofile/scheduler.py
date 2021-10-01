@@ -21,17 +21,17 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 # @register_job(scheduler, "interval", seconds=60, replace_existing=True)
 
 
-# @register_job(scheduler, trigger='cron', hour='3', minute='30', replace_existing=True)
-# def enviarParabens():
-#     usuarios = User.objects.all()
-#     now = datetime.now(timezone.utc)
+@register_job(scheduler, trigger='cron', hour='3', minute='30', replace_existing=True)
+def enviarParabens():
+    usuarios = User.objects.all()
+    now = datetime.now(timezone.utc)
 
-#     for user in usuarios:
+    for user in usuarios:
 
-#         if user.profile.data_nascimento:
-#             data = date(now.year, user.profile.data_nascimento.month,
-#                         user.profile.data_nascimento.day)
-#             data_menos_um = data - timedelta(1)
+        if user.profile.data_nascimento:
+            data = date(now.year, user.profile.data_nascimento.month,
+                        user.profile.data_nascimento.day)
+            data_menos_um = data - timedelta(1)
 #             if now.date() == data.date():
 #                 subject = 'Studio Natalia Secchi Deseja Feliz Aniversario'
 #                 message = f"Feliz aniversario {user.first_name}. \n \n https://www.murukututu.com/confirm_email/userf87dsafhdsfandjsa7fda6{user.id} \n \n Natalia Secchi!"
@@ -40,13 +40,13 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 #                 send_mail(subject, message, from_email,
 #                           to_list, fail_silently=True)
 
-#             if data_menos_um.date() == now.date():
-#                 subject = 'Informe de aniversario de aluno'
-#                 message = f" {user.first_name}. \n \n faz aniversario no dia {user.profile.data_nascimento} \n \n Natalia Secchi!"
-#                 from_email = settings.EMAIL_HOST_USER
-#                 to_list = ["leomcn@hotmail.com"]
-#                 send_mail(subject, message, from_email,
-#                           to_list, fail_silently=True)
+            if data_menos_um.date() == now.date():
+                subject = f'🎂 Amanhã é o aniversário de {user.first_name}'
+                message = f"🎂 Amanhã é o aniversário de {user.first_name}"
+                from_email = settings.EMAIL_HOST_USER
+                to_list = ["nat_secchi@hotmail.com"]
+                send_mail(subject, message, from_email,
+                          to_list, fail_silently=True)
 
 
 @register_job(scheduler, trigger='cron', hour='3', minute='10', replace_existing=True)
