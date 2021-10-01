@@ -1,6 +1,5 @@
 from django.contrib import admin
 from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
-from datetime import datetime
 from .models import Evento
 # Register your models here.
 
@@ -14,15 +13,7 @@ class ExtraAdmin(admin.ModelAdmin):
         ('starting_date', DateRangeFilter), ('updated', DateTimeRangeFilter),
     )
 
-    def get_rangefilter_starting_date_default(self, request):
-        return (datetime.date.today, datetime.date.today)
-
-    # If you would like to change a title range filter
-    # method pattern "get_rangefilter_{field_name}_title"
-    def get_rangefilter_starting_date_title(self, request, field_path):
-        return 'Aula'
-    def get_rangefilter_updated_title(self, request, field_path):
-        return 'Dia que foi remarcado'
+   
     def get_name(self, obj):
         return "{}".format(obj.user.first_name)
 
