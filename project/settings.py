@@ -201,4 +201,4 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # 9- “Cadastrar aula” e “deletar aula” aparecer apenas os alunos ativos.
 
 
-# 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
+# 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

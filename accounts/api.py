@@ -34,7 +34,7 @@ class RegisterAPI(generics.GenericAPIView):
 
 # Login API
 
-class UsersActiveList(ListAPIView):
+class UsersActiveList(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
