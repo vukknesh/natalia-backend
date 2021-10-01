@@ -75,6 +75,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             resp = aulas_do_mes.count() - 8
         if(obj.user.profile.plano == "12 Aulas" and aulas_do_mes.count() > 12):
             resp = aulas_do_mes.count() - 12
+        if(obj.user.profile.plano == "16 Aulas" and aulas_do_mes.count() > 16):
+            resp = aulas_do_mes.count() - 16
 
         return resp
 

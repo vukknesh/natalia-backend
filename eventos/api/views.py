@@ -253,6 +253,49 @@ def desmarcar_aula_request(request, eventoId):
         # teste ultima aula do mes
         if now.date() == end_date.date():
             response_text = 'Esta aula é a última do seu mês e não poderá ser remarcada!'
+    if(user.profile.plano == "16 Aulas"):
+        aulas_bonus = aulas_do_mes.count() - 16
+        if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            bonus_counter = bonus_counter + 1
+            pass
+        if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            bonus_counter = bonus_counter + 1
+            pass
+        if(aulas_bonus == 3 and user.profile.bonus_remarcadas <= 3):
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            bonus_counter = bonus_counter + 1
+            pass
+        if(aulas_bonus == 4 and user.profile.bonus_remarcadas <= 4):
+            response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            bonus_counter = bonus_counter + 1
+            pass
+
+        if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
+            aulas_counter = aulas_counter + 1
+            pass
+        if(aulas_bonus == 2 and user.profile.bonus_remarcadas == 2):
+            aulas_counter = aulas_counter + 1
+            pass
+        if(aulas_bonus == 3 and user.profile.bonus_remarcadas == 3):
+            aulas_counter = aulas_counter + 1
+            pass
+        if(aulas_bonus == 4 and user.profile.bonus_remarcadas == 4):
+            aulas_counter = aulas_counter + 1
+            pass
+
+        if(user.profile.aulas_remarcadas > 3):
+
+            response_text = "Você já remarcou 4 aulas deste mês e não poderá remarcar outra."
+
+        if(dif_hours <= 0):
+            print('dentro')
+
+            response_text = "Você só poderá remarcar aulas 3 horas antes."
+        # teste ultima aula do mes
+        if now.date() == end_date.date():
+            response_text = 'Esta aula é a última do seu mês e não poderá ser remarcada!'
 
     return Response({"message": response_text, "aulas_remarcadas": aulas_counter, "bonus_remarcadas": bonus_counter})
 
@@ -419,6 +462,55 @@ class EventoUpdateAPIView(UpdateAPIView):
                 print('dentro')
 
                 response_text = "Você só poderá remarcar aulas 3 horas antes."
+        if(user.profile.plano == "16 Aulas"):
+            aulas_bonus = aulas_do_mes.count() - 16
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas == 0):
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas <= 2):
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_bonus == 3 and user.profile.bonus_remarcadas <= 3):
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            if(aulas_bonus == 4 and user.profile.bonus_remarcadas <= 4):
+                response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+                bonus_counter = bonus_counter + 1
+                pass
+            # if(aulas_do_mes.count() > 8 and user.profile.bonus_remarcadas == 0):
+            #    response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            #    bonus_counter = bonus_counter + 1
+            #    pass
+            if(aulas_bonus == 1 and user.profile.bonus_remarcadas > 0):
+                aulas_counter = aulas_counter + 1
+                pass
+            if(aulas_bonus == 2 and user.profile.bonus_remarcadas == 2):
+                aulas_counter = aulas_counter + 1
+                pass
+            if(aulas_bonus == 3 and user.profile.bonus_remarcadas == 3):
+                aulas_counter = aulas_counter + 1
+                pass
+            if(aulas_bonus == 4 and user.profile.bonus_remarcadas == 4):
+                aulas_counter = aulas_counter + 1
+                pass
+            # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas == 0):
+            #    response_text = 'Esta aula é bônus e não poderá ser remarcada!'
+            #    bonus_counter = bonus_counter + 1
+            #    pass
+            # if(aulas_do_mes.count() > 12 and user.profile.bonus_remarcadas > 0):
+            #    aulas_counter = aulas_counter + 1
+            #    pass
+            if(user.profile.aulas_remarcadas > 3):
+
+                response_text = "Você já remarcou 4 aulas deste mês."
+
+            if(dif_hours <= 0):
+                print('dentro')
+
+                response_text = "Você só poderá remarcar aulas 3 horas antes."
         # deixar em cima do profile.bonus_remarcadas se nao conta errado!
         # if aulas_bonus > user.profile.bonus_remarcadas:
         #     print(f'aulas_bonus > = {aulas_bonus}')
@@ -462,6 +554,21 @@ class EventoUpdateAPIView(UpdateAPIView):
                 remarcacao_aluno = True
                 pass
             if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 4:
+                remarcacao_aluno = True
+        if(user.profile.plano == "16 Aulas"):
+            if aulas_bonus == 1 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 5:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 2 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 6:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 3 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 7:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 4 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 8:
+                remarcacao_aluno = True
+                pass
+            if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 5:
                 remarcacao_aluno = True
 
         profile = user.profile

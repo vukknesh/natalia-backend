@@ -22,7 +22,8 @@ class Profile(models.Model):
     PLANO_A = '4 Aulas'
     PLANO_B = '8 Aulas'
     PLANO_C = '12 Aulas'
-    PLANO_D = 'Gratuito'
+    PLANO_D = '16 Aulas'
+    PLANO_E = 'Gratuito'
     PAGAMENTO_A = 'Mensal'
     PAGAMENTO_B = 'Trimestral'
     PAGAMENTO_C = 'Semestral'
@@ -45,7 +46,8 @@ class Profile(models.Model):
         (PLANO_A, '4 Aulas'),
         (PLANO_B, '8 Aulas'),
         (PLANO_C, '12 Aulas'),
-        (PLANO_D, 'Gratuito'),
+        (PLANO_D, '16 Aulas'),
+        (PLANO_E, 'Gratuito'),
     )
     PAGAMENTO_CHOICES = (
         (PAGAMENTO_A, 'Mensal'),
@@ -196,6 +198,15 @@ def alterar_plano(instance):
             valor = 380
         if(plano_pagamento == "Anual"):
             valor = 360
+    if (plano == "16 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 560
+        if(plano_pagamento == "Trimestral"):
+            valor = 540
+        if(plano_pagamento == "Semestral"):
+            valor = 520
+        if(plano_pagamento == "Anual"):
+            valor = 500
     for single_date in daterange(start_date, end_date):
         print(f'single_date = {single_date}')
 

@@ -256,6 +256,15 @@ def add_pagamentos_por_aluno(aluno_id):
             valor = 380
         if(plano_pagamento == "Anual"):
             valor = 360
+    if (plano == "16 Aulas"):
+        if(plano_pagamento == "Mensal"):
+            valor = 560
+        if(plano_pagamento == "Trimestral"):
+            valor = 540
+        if(plano_pagamento == "Semestral"):
+            valor = 520
+        if(plano_pagamento == "Anual"):
+            valor = 500
     for single_date in daterange(start_date, end_date):
         print(f'single_date = {single_date}')
 

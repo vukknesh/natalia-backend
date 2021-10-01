@@ -112,6 +112,11 @@ def update_evento(sender, instance, **kwargs):
         if(aulas_do_mes.count() >= 12):
             instance.bonus = True
             pass
+    if(user.profile.plano == "16 Aulas"):
+
+        if(aulas_do_mes.count() >= 16):
+            instance.bonus = True
+            pass
     print(f'instance{instance.comentario} pre save')
     if instance.reposicao:
         profile = user.profile

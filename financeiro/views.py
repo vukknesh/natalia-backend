@@ -449,6 +449,15 @@ def get_pagamento_professor(request):
                     valor = 380
                 if(plano_pagamento == "Anual"):
                     valor = 360
+            if (plano == "16 Aulas"):
+                if(plano_pagamento == "Mensal"):
+                    valor = 560
+                if(plano_pagamento == "Trimestral"):
+                    valor = 540
+                if(plano_pagamento == "Semestral"):
+                    valor = 520
+                if(plano_pagamento == "Anual"):
+                    valor = 500
             valor_acumulado += valor
         list_prof_rend.append(valor_acumulado)
         print(f'lista_prof {list_prof}')
