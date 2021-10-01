@@ -10,7 +10,7 @@ class ExtraAdmin(admin.ModelAdmin):
     list_editable = ('desmarcado', 'bonus', 'remarcacao')
     # list_filter = ('desmarcado', 'user', 'bonus', 'remarcacao')
     list_filter = (
-        ('created_at', DateRangeFilter), ('updated_at', DateTimeRangeFilter),
+        ('starting_date', DateRangeFilter), ('updated', DateTimeRangeFilter),
     )
 
     # def get_rangefilter_starting_date_default(self, request):
