@@ -247,7 +247,7 @@ class PagamentoPorAulunoAPIView(ListAPIView):
         month = now.month
 
         queryset_list = Pagamento.objects.filter(
-            user__is_active=True, user=user, data__year=year)  # filter(user=self.request.user)
+            user__is_active=True, user=user, data__year__gte=year,data__year__lte=year+1)  # filter(user=self.request.user)
 
         return queryset_list
 
