@@ -34,6 +34,14 @@ class RegisterAPI(generics.GenericAPIView):
 
 # Login API
 
+class UsersActiveList(ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = User.objects.filter(is_active=True)
+
+        return queryset_list
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer

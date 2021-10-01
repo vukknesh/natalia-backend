@@ -187,7 +187,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # 7 - mandar email desejando feliz aniversário
 # 8 - mandar email um dia antes pra natalia sobre aniversário
 # 9 - aluno poder remarcar suas aulas
-# 10 - enviar email um dia antes do pagamento?
+# 10 - enviar email um dia antes do pagamento? 
 # 11 - manter aba dos pagamentos
 
 # 1-Colocar R nas aulas de reposição (na relação de aulas do aplicativo). E quando for desmarcar colocar a frase: “Aula de reposição não pode ser remarcada.”9
@@ -199,4 +199,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # 7- Quando eu faço um cadastro e agendo as aulas de uma aluno do dia 22/09, mas vai começar só 10/10. O sistema já lança a aula dela fixa desde o dia 22/09. Então ele precisa lançar só a partir do dia 10/10. Fica ocupando um horário que outra pessoa pode agendar a reposição.
 # 8- Aula experimental: forma de agendar sem cadastro (nome do aluno e professora apenas) e ficar cor diferente.
 # 9- “Cadastrar aula” e “deletar aula” aparecer apenas os alunos ativos.
-# 10- Acrescentar um plano de 4x, 16 aulas mês. Com seus respectivos cálculos de aulas bônus. O aluno só pode repor  4 aulas dentro do mês.
+
+
+# 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
