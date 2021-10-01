@@ -36,7 +36,7 @@ class RegisterAPI(generics.GenericAPIView):
 
 class UsersActiveList(generics.ListAPIView):
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self, *args, **kwargs):
         queryset_list = User.objects.filter(is_active=True)
