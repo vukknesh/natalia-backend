@@ -312,7 +312,7 @@ def pagamentos_pendentes(request):
     
     return Response({
         "quantos_em_aberto": quantos_em_aberto,
-        "diferenca_prox_boleto": diferenca
+        "diferenca_prox_boleto": diferenca_dias
     })
 
 
