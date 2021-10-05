@@ -304,7 +304,7 @@ def pagamentos_pendentes(request):
     print(f'quantos_em_aberto = {quantos_em_aberto}')
     proximo_boleto = Pagamento.objects.filter(user=user, pago=False, data__gt=now).first()
     print(f'proximo_boleto = {proximo_boleto}')
-    diferenca = proximo_boleto.data - now
+    diferenca = proximo_boleto.data - dt
     print(f'diferenca = {diferenca}')
     print(f'diferenca.days = {diferenca.days}')
 
