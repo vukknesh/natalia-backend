@@ -18,7 +18,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 from rest_framework.pagination import LimitOffsetPagination
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from django.contrib.auth.models import User
 from rest_framework.permissions import (
     AllowAny,
@@ -221,6 +221,10 @@ class PagamentoListAPIView(ListAPIView):
         return Response({"financeiros": PagamentoListSerializer(queryset_list, many=True).data})
 
 
+
+
+
+
 class PagamentoListAllAPIView(ListAPIView):
     serializer_class = PagamentoListAllSerializer
     permission_classes = [AllowAny]
@@ -283,6 +287,35 @@ class ResumoMensalListAllAPIView(ListAPIView):
         queryset_list = ResumoMensal.objects.all()  # filter(user=self.request.user)
 
         return queryset_list
+
+
+@api_view(['POST'])
+def pagamentos_pendentes(request):
+    alunoId = request.data['alunoId']
+    print(f'alunoId from api/pendentes {alunoId}')
+    user = User.objects.get(id=alunoId)
+    now = datetime.now(timezone.utc)
+    dt = date.today()
+    month = now.month
+    year = now.year
+    pagamentos_em_aberto = Pagamento.objects.filter(user=user, pago=False, data__lt=now)
+    print(f'pagamentos_em_aberto = {pagamentos_em_aberto}')
+    quantos_em_aberto = pagamentos_em_aberto.count()
+    print(f'quantos_em_aberto = {quantos_em_aberto}')
+    proximo_boleto = Pagamento.objects.filter(user=user, pago=False, data__gt=now).first()
+    print(f'proximo_boleto = {proximo_boleto}')
+    diferenca = proximo_boleto.data - now
+    print(f'diferenca = {diferenca}')
+    print(f'diferenca.days = {diferenca.days}')
+
+    
+    return Response({
+        "pagamentos_em_aberto": pagamentos_em_aberto,
+        "quantos_em_aberto": quantos_em_aberto,
+        "diferenca_prox_boleto": diferenca.days
+    })
+
+
 
 
 @api_view(['GET'])

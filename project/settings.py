@@ -178,27 +178,30 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # TODO
 
+# 7 - mandar email desejando feliz aniversário
+# 10 - enviar email um dia antes do pagamento? 
+
+# 2- Dar a opção de agendar reposição fora do pacote (caso de atestado) sem alterar a contagem das aulas. Somente no admin.
+# 7- Quando eu faço um cadastro e agendo as aulas de uma aluno do dia 22/09, mas vai começar só 10/10. O sistema já lança a aula dela fixa desde o dia 22/09. Então ele precisa lançar só a partir do dia 10/10. Fica ocupando um horário que outra pessoa pode agendar a reposição.
+# 8- Aula experimental: forma de agendar sem cadastro (nome do aluno e professora apenas) e ficar cor diferente.
+
+
+
+# FEITO
 # 1 - deletar apenas aulas de hj pra frente check
 # 2 - mensagem “Esta é ultima aula de mês e não poderá ser remarcada!”
 # 3 - aula reposição em azul
 # 4 - alterar Pagamentos automaticamente quando alterado tanto plano quanto a data de pagamento
 # 5 - mostrar horario que aluno desmarcou a aula
 # 6 - mudar de cor no aplicativo aulas que precisam ser remarcadas
-# 7 - mandar email desejando feliz aniversário
 # 8 - mandar email um dia antes pra natalia sobre aniversário
 # 9 - aluno poder remarcar suas aulas
-# 10 - enviar email um dia antes do pagamento? 
 # 11 - manter aba dos pagamentos
-
 # 1-Colocar R nas aulas de reposição (na relação de aulas do aplicativo). E quando for desmarcar colocar a frase: “Aula de reposição não pode ser remarcada.”9
-# 2- Dar a opção de agendar reposição fora do pacote (caso de atestado) sem alterar a contagem das aulas. Somente no admin.
 # 3- Aba “Planos” - Imagem
 # 4- Abra “Regras de funcionamento” - Imagem
 # 5- Aparecer o pagamento do ano seguinte (pq tem aluno que paga anual).
 # 6- Colocar a busca do evento  (admin) mais fácil, por mês e ano para trocar algum horário que precisar.
-# 7- Quando eu faço um cadastro e agendo as aulas de uma aluno do dia 22/09, mas vai começar só 10/10. O sistema já lança a aula dela fixa desde o dia 22/09. Então ele precisa lançar só a partir do dia 10/10. Fica ocupando um horário que outra pessoa pode agendar a reposição.
-# 8- Aula experimental: forma de agendar sem cadastro (nome do aluno e professora apenas) e ficar cor diferente.
 # 9- “Cadastrar aula” e “deletar aula” aparecer apenas os alunos ativos.
 
-
-# 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
+# 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
