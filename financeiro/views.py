@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
+from django.conf import settings
 from rest_framework.filters import (
     SearchFilter,
     OrderingFilter,
@@ -46,9 +47,10 @@ from .serializers import (
     ItemCreateUpdateSerializer,
     TesteSerializer
 )
-
+import mercadopago
 import django_filters
 from django.db.models import Q
+
 
 
 class PagamentoFilter(filters.FilterSet):
@@ -287,6 +289,39 @@ class ResumoMensalListAllAPIView(ListAPIView):
         queryset_list = ResumoMensal.objects.all()  # filter(user=self.request.user)
 
         return queryset_list
+
+
+@api_view(['POST'])
+def mercadopago_pix(request):
+    sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+    # alunoId = request.data['alunoId']
+    payment_data = {
+        "transaction_amount": 100,
+        "description": "Título do produto",
+        "payment_method_id": "pix",
+        "payer": {
+            "email": "test@test.com",
+            "first_name": "Test",
+            "last_name": "User",
+            "identification": {
+                "type": "CPF",
+                "number": "191191191-00"
+            },
+            "address": {
+                "zip_code": "06233-200",
+                "street_name": "Av. das Nações Unidas",
+                "street_number": "3003",
+                "neighborhood": "Bonfim",
+                "city": "Osasco",
+                "federal_unit": "SP"
+            }
+        }
+    }
+
+    payment_response = sdk.payment().create(payment_data)
+    payment = payment_response["response"]
+    return payment
+
 
 
 @api_view(['POST'])

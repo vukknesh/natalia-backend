@@ -19,7 +19,8 @@ from .views import (
     ItemsListAllAPIView,
     PagamentoPorAulunoAPIView,
     TesteListAllAPIView,
-    pagamentos_pendentes
+    pagamentos_pendentes,
+    mercadopago_pix
 
 )
 
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^list-items/$', ItemsListAllAPIView.as_view(), name='list-items'),
     url(r'^resumo-mes/$', get_resumo_mes, name='resumo-mes'),
     url(r'^pendentes/$', pagamentos_pendentes, name='pendentes'),
+    url(r'^mercadopago-pix/$', mercadopago_pix, name='mercadopago-pix'),
     url(r'^pagamento-professores/$', get_pagamento_professor, name='pagamento-mes'),
     url(r'^historico/$', ResumoMensalListAllAPIView.as_view(), name='historico'),
     url(r'^create/$', PagamentoCreateAPIView.as_view(), name='create'),

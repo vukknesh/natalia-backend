@@ -179,7 +179,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # TODO
 
 # 7 - mandar email desejando feliz aniversário
-# 10 - enviar email um dia antes do pagamento? 
 
 # 2- Dar a opção de agendar reposição fora do pacote (caso de atestado) sem alterar a contagem das aulas. Somente no admin.
 # 7- Quando eu faço um cadastro e agendo as aulas de uma aluno do dia 22/09, mas vai começar só 10/10. O sistema já lança a aula dela fixa desde o dia 22/09. Então ele precisa lançar só a partir do dia 10/10. Fica ocupando um horário que outra pessoa pode agendar a reposição.
