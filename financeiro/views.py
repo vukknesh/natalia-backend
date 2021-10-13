@@ -323,7 +323,6 @@ def mercadopago_pix(request):
     payment_response = sdk.payment().create(payment_data)
     payment = payment_response["response"]
     print(f'payment = {payment}')
-    print(f'settings.M = {settings.MERCADO_PAGO_ACCESS_TOKEN}')
     return payment
 
 
