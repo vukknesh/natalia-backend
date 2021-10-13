@@ -324,7 +324,7 @@ def mercadopago_pix(request):
     payment_response = sdk.payment().create(payment_data)
     payment = payment_response["response"]
     print(f'payment = {payment}')
-    return payment
+    return Response(payment)
 
 
 
