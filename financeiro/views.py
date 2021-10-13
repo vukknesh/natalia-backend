@@ -294,7 +294,7 @@ class ResumoMensalListAllAPIView(ListAPIView):
 @api_view(['POST'])
 def mercadopago_pix(request):
     print(f'antes do sdk')
-    sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+    sdk = mercadopago.SDK('TEST-53fd79b4-bce3-465f-a726-7e1281725712')
     print(f'sdk')
     # alunoId = request.data['alunoId']
     payment_data = {
@@ -323,6 +323,7 @@ def mercadopago_pix(request):
     payment_response = sdk.payment().create(payment_data)
     payment = payment_response["response"]
     print(f'payment = {payment}')
+    print(f'settings.M = {settings.MERCADO_PAGO_ACCESS_TOKEN}')
     return payment
 
 
