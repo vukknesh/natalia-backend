@@ -23,7 +23,7 @@ from .views import (
 urlpatterns = [
     url(r'^$', EventoListAPIView.as_view(), name='list'),
     # url(r'^list-all/$', EventoListAllAPIView.as_view(), name='list-all'),
-    url(r'^list-all/$', listar_eventos_com_experimentais),
+    url(r'^list-all/$', listar_eventos_com_experimentais, name='listar-eventos-com-experimentais'),
     url(r'^mostrar-desmarcados/$',
         EventoDesmarcadosListAllAPIView.as_view(), name='desmarcados'),
     url(r'^desmarcado-by-prof/$',
