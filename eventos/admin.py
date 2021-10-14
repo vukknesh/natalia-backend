@@ -9,6 +9,7 @@ class ExtraAdmin(admin.ModelAdmin):
                     )
     list_editable = ('desmarcado', 'bonus', 'remarcacao')
     # list_filter = ('desmarcado', 'user', 'bonus', 'remarcacao')
+    search_fields = ('user__first_name', )
     list_filter = (
         ('starting_date', DateRangeFilter), ('updated', DateTimeRangeFilter),
     )
