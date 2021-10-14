@@ -643,12 +643,12 @@ class EventoListAllAPIView(ListAPIView):
 
         if data_final and data_inicial:
 
-            queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__range=[
+            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__range=[
                                                   data_inicial, data_final])  # filter(user=self.request.user)
             experimental = Experimental.objects.filter(starting_date__range=[
                 data_inicial, data_final])
         else:
-            queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
+            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt)[
                 :900]
             experimental = Experimental.objects.filter(starting_date__gte=dt)
 
