@@ -687,10 +687,10 @@ def listar_eventos_com_experimentais(request, data_inicial, data_final):
     dt = date.today() - timedelta(5)
 
     
-    print(f'data iniceial ={data_inicial}')
-    print(f'data  final ={data_final}')
 
+    print('antes')
     if data_final and data_inicial:
+        print(f'data  final ={data_final}')
 
         queryset_list = Evento.objects.filter(user__is_active=True, starting_date__range=[
             data_inicial, data_final])  # filter(user=self.request.user)
