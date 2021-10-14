@@ -724,7 +724,7 @@ def listar_eventos_com_experimentais(request):
     # if list:
     # result_list = list(chain(expe, queryset_list))
     print(f'lista_final = {lista_final}')
-    return lista_final
+    return list(lista_final)
 
 #     return Response({"message": "Todas Aulas Deletadas"})
 
