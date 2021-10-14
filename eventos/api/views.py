@@ -631,7 +631,7 @@ class EventoListAPIView(ListAPIView):
 
 
 class EventoListAllAPIView(ListAPIView):
-    # serializer_class = EventoListAllSerializer
+    serializer_class = EventoListAllSerializer
     permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
 
@@ -674,59 +674,57 @@ class EventoListAllAPIView(ListAPIView):
         # result_list = list(chain(expe, queryset_list))
         # print(f'lista_final = {lista_final}')
  
-        result_list = list(chain(queryset_list, experimental))
+        # result_list = list(chain(queryset_list, experimental))
         # print(f'result_list = {result_list}')
-        json = serialize('json', result_list)
-        print(f'json = {json}')
-        # return queryset_list
-        return json
+        # json = serialize('json', result_list)
+        # print(f'json = {json}')
+        return queryset_list
 
 
-# @api_view(['GET'])
-# def listar_eventos_by_professor(request, alunoId):
+@api_view(['GET'])
+def listar_eventos_com_experimentais(request, data_inicial, data_final):
 
-#     queryset_list = Evento.objects.filter(
-#         user__profile__professor=request.user).filter(user__is_active=True, starting_date__gte=date.today(), starting_date__lte=dt)
+    dt = date.today() - timedelta(5)
 
-#     user = User.objects.get(id=alunoId)
-#     dt = date.today() - timedelta(5)
+    data_inicial = request.GET.get("data_inicial")
+    data_final = request.GET.get("data_final")
+    print(f'data iniceial ={data_inicial}')
+    print(f'data  final ={data_final}')
 
-#     data_inicial = request.GET.get("data_inicial")
-#     data_final = request.GET.get("data_final")
+    if data_final and data_inicial:
 
-#     if data_final and data_inicial:
+        queryset_list = Evento.objects.filter(user__is_active=True, starting_date__range=[
+            data_inicial, data_final])  # filter(user=self.request.user)
+        experimental = Experimental.objects.filter(starting_date__range=[
+            data_inicial, data_final])
+    else:
+        queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt)[
+            :900]
+        experimental = Experimental.objects.filter(starting_date__gte=dt)
 
-#         queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__range=[
-#             data_inicial, data_final])  # filter(user=self.request.user)
-#         experimental = Experimental.objects.filter(starting_date__range=[
-#             data_inicial, data_final])
-#     else:
-#         queryset_list = Evento.objects.filter(user__is_active=True, historico=False, starting_date__gte=dt)[
-#             :900]
-#         experimental = Experimental.objects.filter(starting_date__gte=dt)
-
-#     lista_final = []
-#     for a in experimental:
-#         resultado = {}
-#         resultado['starting_date'] = a.starting_date
-#         resultado['first_name'] = a.nome
-#         resultado['experimental'] = True
-#         lista_final.append(resultado)
-#     for a in queryset_list:
-#         resultado = {}
-#         resultado['starting_date'] = a.starting_date
-#         resultado['first_name'] = a.user.first_name
-#         resultado['desmarcado'] = a.desmarcado
-#         resultado['remarcacao'] = a.remarcacao
-#         resultado['reposicao'] = a.reposicao
-#         resultado['historico'] = a.historico
-#         resultado['bonus'] = a.bonus
-#         resultado['updated'] = a.updated
-#         resultado['experimental'] = False
-#         lista_final.append(resultado)
-#     # if list:
-#     # result_list = list(chain(expe, queryset_list))
-#     print(f'lista_final = {lista_final}')
+    lista_final = []
+    for a in experimental:
+        resultado = {}
+        resultado['starting_date'] = a.starting_date
+        resultado['first_name'] = a.nome
+        resultado['experimental'] = True
+        lista_final.append(resultado)
+    for a in queryset_list:
+        resultado = {}
+        resultado['starting_date'] = a.starting_date
+        resultado['first_name'] = a.user.first_name
+        resultado['desmarcado'] = a.desmarcado
+        resultado['remarcacao'] = a.remarcacao
+        resultado['reposicao'] = a.reposicao
+        resultado['historico'] = a.historico
+        resultado['bonus'] = a.bonus
+        resultado['updated'] = a.updated
+        resultado['experimental'] = False
+        lista_final.append(resultado)
+    # if list:
+    # result_list = list(chain(expe, queryset_list))
+    print(f'lista_final = {lista_final}')
+    return lista_final
 
 #     return Response({"message": "Todas Aulas Deletadas"})
 
