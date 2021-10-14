@@ -675,8 +675,9 @@ class EventoListAllAPIView(ListAPIView):
         # result_list = list(chain(expe, queryset_list))
         print(f'lista_final = {lista_final}')
  
+        result_list = list(chain(queryset_list, experimental))
         # return queryset_list
-        return lista_final
+        return result_list
 
 
 # @api_view(['GET'])
