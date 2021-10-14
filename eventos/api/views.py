@@ -673,9 +673,10 @@ class EventoListAllAPIView(ListAPIView):
             lista_final.append(resultado)
         # if list:
         # result_list = list(chain(expe, queryset_list))
-        print(f'lista_final = {lista_final}')
+        # print(f'lista_final = {lista_final}')
  
         result_list = list(chain(queryset_list, experimental))
+        print(f'result_list = {result_list}')
         # return queryset_list
         return result_list
 
