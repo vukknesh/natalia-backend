@@ -3,11 +3,10 @@ from itertools import chain
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.serializers import ValidationError
+from rest_framework.serializers import ValidationError, serialize
 from django.core.mail import send_mail
 from django.conf import settings
 from calendar import monthrange
-
 from userprofile.models import Profile
 from rest_framework.filters import (
     SearchFilter,
@@ -676,9 +675,11 @@ class EventoListAllAPIView(ListAPIView):
         # print(f'lista_final = {lista_final}')
  
         result_list = list(chain(queryset_list, experimental))
-        print(f'result_list = {result_list}')
+        # print(f'result_list = {result_list}')
+        json = serialize('json', result_list)
+        print(f'json = {json}')
         # return queryset_list
-        return result_list
+        return json
 
 
 # @api_view(['GET'])
