@@ -682,10 +682,11 @@ class EventoListAllAPIView(ListAPIView):
 
 
 @api_view(['GET'])
-def listar_eventos_com_experimentais(request, data_inicial, data_final):
+def listar_eventos_com_experimentais(request):
 
     dt = date.today() - timedelta(5)
-
+    data_inicial = self.request.GET.get("data_inicial")
+    data_final = self.request.GET.get("data_final")
     
 
     print('antes')
