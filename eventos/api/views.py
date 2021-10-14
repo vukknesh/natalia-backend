@@ -3,7 +3,7 @@ from itertools import chain
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.serializers import ValidationError, serialize
+from rest_framework.serializers import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 from calendar import monthrange
