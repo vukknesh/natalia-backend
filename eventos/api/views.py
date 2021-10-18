@@ -913,13 +913,4 @@ def repor_aula(request):
 
     return Response({"message": resposta, "status": status})
 
-# ####alteracoes
-# aluno marcar propria reposicao
 
-# deletar apenas de hj pra frente! ok
-# aula reposicao AZUL ok
-# quando aluno desmarcar aula, horario que desmarcou ok
-# mudar cor no aplicativo de aula desmarcada que precisa repor ou nao ok
-# pagamento automatico quando alterar plano e dia de pagamento ok
-# mandar email um dia antes pra natalia, e mandar parabens pro aniversariante! ok
-# mensagem ultima aula do mes nao pode ser remarcada!

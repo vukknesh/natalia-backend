@@ -24,6 +24,7 @@ class Evento(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
+    extra = models.CharField(max_length=255, null=True, blank=True)
     desmarcado = models.BooleanField(default=False)
     remarcacao = models.BooleanField(default=False)
     reposicao = models.BooleanField(default=False)

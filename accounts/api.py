@@ -39,7 +39,7 @@ class UsersActiveList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = User.objects.filter(is_active=True)
+        queryset_list = User.objects.filter(is_active=True).order_by('first_name')
 
         return queryset_list
 
