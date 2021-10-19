@@ -150,7 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
@@ -185,7 +185,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # 2- Dar a opção de agendar reposição fora do pacote (caso de atestado) sem alterar a contagem das aulas. Somente no admin.
 # 7- Quando eu faço um cadastro e agendo as aulas de uma aluno do dia 22/09, mas vai começar só 10/10. O sistema já lança a aula dela fixa desde o dia 22/09. Então ele precisa lançar só a partir do dia 10/10. Fica ocupando um horário que outra pessoa pode agendar a reposição.
 # 8- Aula experimental: forma de agendar sem cadastro (nome do aluno e professora apenas) e ficar cor diferente.
-
 
 
 # FEITO
