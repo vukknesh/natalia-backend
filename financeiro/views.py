@@ -53,7 +53,6 @@ import django_filters
 from django.db.models import Q
 
 
-
 class PagamentoFilter(filters.FilterSet):
     multi_name_fields = django_filters.CharFilter(
         method='filter_by_all_name_fields')
@@ -224,10 +223,6 @@ class PagamentoListAPIView(ListAPIView):
         return Response({"financeiros": PagamentoListSerializer(queryset_list, many=True).data})
 
 
-
-
-
-
 class PagamentoListAllAPIView(ListAPIView):
     serializer_class = PagamentoListAllSerializer
     permission_classes = [AllowAny]
@@ -235,7 +230,7 @@ class PagamentoListAllAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
 
         queryset_list = Pagamento.objects.filter(
-            user__is_active=True)  # filter(user=self.request.user)
+            user__is_active=True).exclude(user_profile__is_professor=True)  # filter(user=self.request.user)
 
         return queryset_list
 
@@ -254,7 +249,7 @@ class PagamentoPorAulunoAPIView(ListAPIView):
         month = now.month
 
         queryset_list = Pagamento.objects.filter(
-            user__is_active=True, user=user, data__year__gte=year,data__year__lte=year+1)  # filter(user=self.request.user)
+            user__is_active=True, user=user, data__year__gte=year, data__year__lte=year+1)  # filter(user=self.request.user)
 
         return queryset_list
 
@@ -295,7 +290,8 @@ class ResumoMensalListAllAPIView(ListAPIView):
 @api_view(['POST'])
 def mercadopago_pix(request):
     print(f'antes do sdk')
-    sdk = mercadopago.SDK("TEST-4458147267707345-101313-a90d00320a2823cb5a9161348e5ebcf6-98517282")
+    sdk = mercadopago.SDK(
+        "TEST-4458147267707345-101313-a90d00320a2823cb5a9161348e5ebcf6-98517282")
     print(f'sdk')
     # alunoId = request.data['alunoId']
     payment_data = {
@@ -327,7 +323,6 @@ def mercadopago_pix(request):
     return Response(payment)
 
 
-
 @api_view(['POST'])
 def pagamentos_pendentes(request):
     alunoId = request.data['alunoId']
@@ -337,24 +332,23 @@ def pagamentos_pendentes(request):
     dt = date.today()
     month = now.month
     year = now.year
-    pagamentos_em_aberto = Pagamento.objects.filter(user=user, pago=False, data__lt=now)
+    pagamentos_em_aberto = Pagamento.objects.filter(
+        user=user, pago=False, data__lt=now)
     print(f'pagamentos_em_aberto = {pagamentos_em_aberto}')
     quantos_em_aberto = pagamentos_em_aberto.count()
     print(f'quantos_em_aberto = {quantos_em_aberto}')
-    proximo_boleto = Pagamento.objects.filter(user=user, pago=False, data__gt=now).first()
+    proximo_boleto = Pagamento.objects.filter(
+        user=user, pago=False, data__gt=now).first()
     print(f'proximo_boleto = {proximo_boleto}')
     diferenca = proximo_boleto.data - dt
     diferenca_dias = diferenca.days
     print(f'diferenca = {diferenca}')
     print(f'diferenca.days = {diferenca.days}')
 
-    
     return Response({
         "quantos_em_aberto": quantos_em_aberto,
         "diferenca_prox_boleto": diferenca_dias
     })
-
-
 
 
 @api_view(['GET'])
