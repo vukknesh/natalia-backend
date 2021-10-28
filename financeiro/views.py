@@ -230,7 +230,7 @@ class PagamentoListAllAPIView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
 
         queryset_list = Pagamento.objects.filter(
-            user__is_active=True).exclude(user_profile__is_professor=True)  # filter(user=self.request.user)
+            user__is_active=True).exclude(user__profile__is_professor=True)  # filter(user=self.request.user)
 
         return queryset_list
 
