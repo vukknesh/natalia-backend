@@ -88,6 +88,13 @@ class DespesasSerializer(ModelSerializer):
 
 
 class ResumoManualMesListAllSerializer(ModelSerializer):
+
+    class Meta:
+        model = ResumoManualMes
+        fields = ['data', ]
+
+
+class ResumoManualMesDetailSerializer(ModelSerializer):
     despesas_do_mes = DespesasSerializer(many=True, read_only=True)
 
     class Meta:

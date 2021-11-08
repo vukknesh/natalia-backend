@@ -46,7 +46,8 @@ from .serializers import (
     VendaItemsCreateUpdateSerializer,
     ItemCreateUpdateSerializer,
     ResumoManualMesListAllSerializer,
-    TesteSerializer
+    TesteSerializer,
+    ResumoManualMesDetailSerializer
 )
 import mercadopago
 
@@ -297,6 +298,14 @@ class ResumoMensalListAllAPIView(ListAPIView):
         queryset_list = ResumoMensal.objects.all()  # filter(user=self.request.user)
 
         return queryset_list
+
+
+class ResumoManualMesDetailAPIView(RetrieveAPIView):
+    queryset = ResumoManualMes.objects.all()
+    serializer_class = ResumoManualMesDetailSerializer
+    lookup_field = 'id'
+    permission_classes = [AllowAny]
+    # lookup_url_kwarg = "abc"
 
 
 @api_view(['POST'])
