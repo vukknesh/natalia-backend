@@ -15,7 +15,7 @@ class ExtraAdmin(admin.ModelAdmin):
 
 
 class ExtraResumoAdmin(admin.ModelAdmin):
-    list_display = ('data')
+    list_display = ('data',)
     list_filter = ('data', )
 
     # def get_despesas(self, obj):
