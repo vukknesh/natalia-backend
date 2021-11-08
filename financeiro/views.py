@@ -372,7 +372,7 @@ def mensal_por_professor(request):
         print(f'aluno.user.first_name === {aluno.user.first_name}')
 
         pagamento_do_aluno = aluno.user.pagamento_set.filter(
-            data__year=year, data__month=month).first()
+            data__year=data.year, data__month=data.month).first()
 
         print(f'pagament_do_aluno {pagamento_do_aluno}')
         if(pagamento_do_aluno):
