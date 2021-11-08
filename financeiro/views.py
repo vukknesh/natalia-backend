@@ -336,6 +336,34 @@ def mercadopago_pix(request):
 
 
 @api_view(['POST'])
+def mensal_por_professor(request):
+    now = datetime.now(timezone.utc)
+    year = now.year
+    month = now.month
+
+    professorId = request.data['professorId']
+    data = request.data['data']
+    professor = Profile.objects.get(id=professorId)
+    alunos_do_professor = Profile.objects.filter(professor=professorId.user)
+
+    listResposta = []
+    for aluno in alunos_do_professor:
+        listAluno = []
+        listAluno.append(aluno.dia_pagamento)
+        listAluno.append(aluno.user.first_name)
+
+        pagamento_do_aluno = aluno.user.pagamento_set.get(
+            data__year=year, data__month=month)
+        listAluno.append(pagamento_do_aluno.valor)
+        listAluno.append(pagamento_do_aluno.valor * 0.6)
+        listAluno.append(pagamento_do_aluno.valor * 0.4)
+
+    return Response({
+        "data": listResposta
+    })
+
+
+@api_view(['POST'])
 def pagamentos_pendentes(request):
     alunoId = request.data['alunoId']
     print(f'alunoId from api/pendentes {alunoId}')
