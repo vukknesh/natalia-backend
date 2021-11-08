@@ -14,14 +14,6 @@ class ExtraAdmin(admin.ModelAdmin):
         return "{}".format(obj.user.first_name)
 
 
-class ExtraResumoAdmin(admin.ModelAdmin):
-    list_display = ('data', 'despesas_do_mes',)
-    list_filter = ('data', )
-
-    # def despesas(self, obj):
-    #     return self.despesas_do_mes
-
-
 admin.site.register(Pagamento, ExtraAdmin)
 admin.site.register(AulaExperimental)
 admin.site.register(AulaAvulsaGrupo)
@@ -33,4 +25,4 @@ admin.site.register(VendaItems)
 admin.site.register(Teste)
 admin.site.register(Experimental)
 admin.site.register(Despesas)
-admin.site.register(ResumoManualMes, ExtraResumoAdmin)
+admin.site.register(ResumoManualMes)
