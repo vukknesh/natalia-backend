@@ -1,3 +1,4 @@
+from django.db.models.fields import FloatField
 from rest_framework.fields import ReadOnlyField
 from rest_framework.serializers import (
     HyperlinkedIdentityField,
@@ -89,7 +90,10 @@ class DespesasSerializer(ModelSerializer):
 
 class ResumoManualMesListAllSerializer(ModelSerializer):
     despesas_do_mes = DespesasSerializer(many=True, read_only=True)
-    total = ReadOnlyField('total')
+    total = SerializerMethodField()
+
+    def get_total(self, obj):
+        return self.total
 
     class Meta:
         model = ResumoManualMes
