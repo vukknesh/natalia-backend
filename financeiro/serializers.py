@@ -89,6 +89,7 @@ class DespesasSerializer(ModelSerializer):
 
 class ResumoManualMesListAllSerializer(ModelSerializer):
     despesas_do_mes = DespesasSerializer(many=True, read_only=True)
+    total = ReadOnlyField('total')
 
     class Meta:
         model = ResumoManualMes
