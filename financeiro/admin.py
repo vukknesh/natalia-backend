@@ -15,11 +15,11 @@ class ExtraAdmin(admin.ModelAdmin):
 
 
 class ExtraResumoAdmin(admin.ModelAdmin):
-    list_display = ('data', 'despesas',)
+    list_display = ('data', 'despesas_do_mes', 'despesas')
     list_filter = ('data', )
 
     def despesas(self, obj):
-        return self.despesas_set.all()
+        return self.despesas_do_mes
 
 
 admin.site.register(Pagamento, ExtraAdmin)
