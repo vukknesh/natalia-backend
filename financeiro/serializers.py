@@ -104,9 +104,7 @@ class ResumoManualMesListAllSerializer(ModelSerializer):
 
     class Meta:
         model = ResumoManualMes
-        fields = ('data',
-                  'despesas_do_mes',
-                  'total',)
+        fields = ['data', 'despesas_do_mes']
 
 
 class ResumoMensalListAllSerializer(ModelSerializer):
