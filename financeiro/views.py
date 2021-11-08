@@ -386,8 +386,9 @@ def mensal_por_professor(request):
         print(f'listaAluno= {listAluno}')
         listResposta.append(listAluno)
         print(f'listResposta= {listResposta}')
+        final = sorted(listResposta, key=lambda x: x[0])
     return Response({
-        "data": listResposta
+        "data": final
     })
 
 
