@@ -19,7 +19,7 @@ class ExtraResumoAdmin(admin.ModelAdmin):
     list_filter = ('data', )
 
     def get_despesas(self, obj):
-        return "{}".format(self.despesas_set.objects.all())
+        return self.despesas_set.objects.all()
 
 
 admin.site.register(Pagamento, ExtraAdmin)
