@@ -125,7 +125,7 @@ class ResumoManualMes(models.Model):
 
     @property
     def despesas_do_mes(self):
-        return self.despesas_set.objects.all()
+        return self.despesas_set.all()
 
     def __str__(self):
         return f'{self.data}'
