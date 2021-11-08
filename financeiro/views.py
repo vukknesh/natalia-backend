@@ -300,14 +300,6 @@ class ResumoMensalListAllAPIView(ListAPIView):
         return queryset_list
 
 
-class ResumoManualMesDetailAPIView(RetrieveAPIView):
-    queryset = ResumoManualMes.objects.all()
-    serializer_class = ResumoManualMesDetailSerializer
-    lookup_field = 'id'
-    permission_classes = [AllowAny]
-    # lookup_url_kwarg = "abc"
-
-
 @api_view(['POST'])
 def mercadopago_pix(request):
     print(f'antes do sdk')

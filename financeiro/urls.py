@@ -22,7 +22,6 @@ from .views import (
     pagamentos_pendentes,
     mercadopago_pix,
     ResumoManualMesListAllAPIView,
-    ResumoManualMesDetailAPIView
 
 )
 
@@ -47,8 +46,7 @@ urlpatterns = [
         AulaExperimentalCreateAPIView.as_view(), name='experimental'),
     url(r'^add-avulsa/$', AulaAvulsaGrupoCreateAPIView.as_view(), name='avulsa'),
     url(r'^add-personal/$', AulaPersonalCreateAPIView.as_view(), name='personal'),
-    url(r'^detail-mes/^(?P<id>[\w-]+)/$',
-        ResumoManualMesDetailAPIView.as_view(), name='res-detail'),
+
     url(r'^(?P<id>[\w-]+)/$',
         PagamentoDetailAPIView.as_view(), name='detail'),
     url(r'^(?P<id>[\w-]+)/edit/$',
