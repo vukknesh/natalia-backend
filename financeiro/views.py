@@ -346,8 +346,7 @@ def mensal_por_professor(request):
     total_prof = 0
     total_studio = 0
     now = datetime.now(timezone.utc)
-    year = now.year
-    month = now.month
+
     print('dentro do mensao_por_professor')
     professorId = request.data['professorId']
     print(f'professorId {professorId}')
@@ -356,11 +355,12 @@ def mensal_por_professor(request):
     print(f'data {data}')
     print(f' type data {type(data)}')
     dt_obj = datetime.strptime(
-        data, '%Y-%m-%d')
+        data, '%d-%m-%Y')
     print(f'dt_obj = {dt_obj}')
     print(f'dt_obj.year = {dt_obj.year}')
     print(f'dt_obj.month = {dt_obj.month}')
-
+    year = dt_obj.year
+    month = dt_obj.month
     year = dt_obj.year
     month = dt_obj.month
     professor = Profile.objects.get(id=professorId)
@@ -384,7 +384,7 @@ def mensal_por_professor(request):
         print(f'aluno.user.first_name === {aluno.user.first_name}')
 
         pagamento_do_aluno = aluno.user.pagamento_set.filter(
-            data__year=data.year, data__month=data.month).first()
+            data__year=year, data__month=month).first()
 
         print(f'pagament_do_aluno {pagamento_do_aluno}')
         if(pagamento_do_aluno):
