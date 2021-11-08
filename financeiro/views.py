@@ -232,9 +232,12 @@ class PagamentoListAllAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self, *args, **kwargs):
+        now = datetime.now(timezone.utc)
+        year = now.year
+        month = now.month
 
-        queryset_list = Pagamento.objects.filter(
-            user__is_active=True).exclude(user__profile__is_professor=True)  # filter(user=self.request.user)
+        queryset_list = Pagamento.objects.filter(data__year__gte=year,
+                                                 user__is_active=True).exclude(user__profile__is_professor=True)  # filter(user=self.request.user)
 
         return queryset_list
 
@@ -348,8 +351,8 @@ def mensal_por_professor(request):
     print('dentro do mensao_por_professor')
     professorId = request.data['professorId']
     print(f'professorId {professorId}')
-    data = request.data['data']
-
+    data_string = request.data['data']
+    data = datetime.strptime(data_string, '%m/%d/%y')
     print(f'data {data}')
     professor = Profile.objects.get(id=professorId)
     print(f'professor = {professor}')
