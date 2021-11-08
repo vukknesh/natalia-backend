@@ -47,7 +47,6 @@ from .serializers import (
     ItemCreateUpdateSerializer,
     ResumoManualMesListAllSerializer,
     TesteSerializer,
-    ResumoManualMesDetailSerializer
 )
 import mercadopago
 
