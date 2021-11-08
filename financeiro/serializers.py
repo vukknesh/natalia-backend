@@ -80,16 +80,19 @@ class PagamentoListAllSerializer(ModelSerializer):
                   'data', 'valor', 'plano_pagamento']
 
 
-class ResumoManualMesListAllSerializer(ModelSerializer):
-    despesas = SerializerMethodField()
+class DespesasSerializer(ModelSerializer):
 
-    def get_despesas(self, obj):
-        return self.despesas_set.objects.all()
+    class Meta:
+        model = Despesas
+        fields = ("__all__")
+
+
+class ResumoManualMesListAllSerializer(ModelSerializer):
+    despesas_do_mes = DespesasSerializer(many=True, read_only=True)
 
     class Meta:
         model = ResumoManualMes
-        readonly_fields = ['despesas_do_mes']
-        fields = ['despesas', 'data', 'despesas_do_mes']
+        fields = ['data', 'despesas_do_mes']
 
 
 class ResumoMensalListAllSerializer(ModelSerializer):
