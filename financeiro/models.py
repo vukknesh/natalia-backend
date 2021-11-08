@@ -127,6 +127,8 @@ class ResumoManualMes(models.Model):
     def despesas_do_mes(self):
         return self.despesas_set.all()
 
+    list_display = ['despesas_do_mes', despesas_do_mes]
+
     def __str__(self):
         return f'{self.data}'
 
