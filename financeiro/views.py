@@ -361,7 +361,6 @@ def mensal_por_professor(request):
         obj = {"dia_pagamento": 0, "first_name": "Sem Nome",
                "id_pagamento": 0, "valor": 0, "valor_professor": 0, "valor_studio": 0}
         print('------------------------------------------')
-        print(f'aluno === {aluno}')
 
         if(aluno.dia_pagamento):
             obj['dia_pagamento'] = aluno.dia_pagamento
@@ -386,7 +385,6 @@ def mensal_por_professor(request):
                 total_studio += pagamento_do_aluno.valor * 0.6
 
         listResposta.append(obj)
-        print(f'listResposta= {listResposta}')
         # final = sorted(listResposta, key=lambda x: x[0])
     return Response({
         "data": listResposta,
