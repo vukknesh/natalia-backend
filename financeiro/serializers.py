@@ -90,17 +90,17 @@ class DespesasSerializer(ModelSerializer):
 
 class ResumoManualMesListAllSerializer(ModelSerializer):
     despesas_do_mes = DespesasSerializer(many=True, read_only=True)
-    total = SerializerMethodField()
+    # total = SerializerMethodField()
 
-    def get_total(self, obj):
-        t = 0
-        print(f'get Total ')
-        print(f'self {self} ')
-        print(f'self.despesas_set.all() {self.despesas_set.all()} ')
-        for a in self.despesas_set.objects.all():
-            t += a.valor
+    # def get_total(self, obj):
+    #     t = 0
+    #     print(f'get Total ')
+    #     print(f'self {self} ')
+    #     print(f'self.despesas_set.all() {self.despesas_set.all()} ')
+    #     for a in self.despesas_set.objects.all():
+    #         t += a.valor
 
-        return t
+    #     return t
 
     class Meta:
         model = ResumoManualMes
