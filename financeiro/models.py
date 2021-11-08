@@ -114,3 +114,21 @@ class ResumoMensal(models.Model):
 
     def __str__(self):
         return f'{self.total_mes} - {self.data}'
+
+
+class ResumoManualMes(models.Model):
+
+    data = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.data}'
+
+
+class Despesas(models.Model):
+    nome = models.CharField(max_length=255, default='', null=True, blank=True)
+
+    valor = models.FloatField(default=0.0)
+    resumoMes = models.ForeignKey(ResumoManualMes, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.nome} - {self.valor} - {self.resumoMes.data.month}/{self.resumoMes.data.year}'

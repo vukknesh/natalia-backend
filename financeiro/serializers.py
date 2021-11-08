@@ -9,7 +9,7 @@ from rest_framework.serializers import (
 
 from accounts.serializers import UserSerializer
 
-from financeiro.models import Pagamento, ResumoMensal, AulaPersonal, AulaExperimental, AulaAvulsaGrupo, Item, VendaItems, DespesasFixa, Teste, Experimental
+from financeiro.models import Pagamento, ResumoMensal, AulaPersonal, AulaExperimental, AulaAvulsaGrupo, Item, VendaItems, DespesasFixa, Teste, Experimental, ResumoManualMes, Despesas
 
 
 class PagamentoCreateUpdateSerializer(ModelSerializer):
@@ -77,6 +77,17 @@ class PagamentoListAllSerializer(ModelSerializer):
         model = Pagamento
         fields = ['id', 'first_name', 'pago',
                   'data', 'valor', 'plano_pagamento']
+
+
+class ResumoManualMesListAllSerializer(ModelSerializer):
+    despesas = SerializerMethodField()
+
+    def get_despesas(self, obj):
+        return self.despesas_set.objects.all()
+
+    class Meta:
+        model = ResumoManualMes
+        fields = ['despesas', 'data']
 
 
 class ResumoMensalListAllSerializer(ModelSerializer):
