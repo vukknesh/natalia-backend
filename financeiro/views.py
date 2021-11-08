@@ -348,7 +348,7 @@ def mensal_por_professor(request):
     print(f'data {data}')
     professor = Profile.objects.get(id=professorId)
     print(f'professor = {professor}')
-    alunos_do_professor = Profile.objects.filter(professor=professorId.user)
+    alunos_do_professor = Profile.objects.filter(professor=professor.user)
     print(f'alunos_do_professor = {alunos_do_professor}')
 
     listResposta = []
