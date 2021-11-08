@@ -340,6 +340,8 @@ def mercadopago_pix(request):
 
 @api_view(['POST'])
 def mensal_por_professor(request):
+    total_prof = 0
+    total_studio = 0
     now = datetime.now(timezone.utc)
     year = now.year
     month = now.month
@@ -360,16 +362,13 @@ def mensal_por_professor(request):
                "id_pagamento": 0, "valor": 0, "valor_professor": 0, "valor_studio": 0}
         print('------------------------------------------')
         print(f'aluno === {aluno}')
-        listAluno = []
+
         if(aluno.dia_pagamento):
             obj['dia_pagamento'] = aluno.dia_pagamento
-            # listAluno.append(aluno.dia_pagamento)
-            # print(f'dia_pagamento === {aluno.dia_pagamento}')
+
         else:
             obj['dia_pagamento'] = 0
-            # listAluno.append(" ")
 
-        # listAluno.append(aluno.user.first_name)
         obj['first_name'] = aluno.user.first_name
         print(f'aluno.user.first_name === {aluno.user.first_name}')
 
@@ -383,13 +382,16 @@ def mensal_por_professor(request):
                 obj['valor_professor'] = pagamento_do_aluno.valor * 0.4
                 obj['valor_studio'] = pagamento_do_aluno.valor * 0.6
                 obj['id_pagamento'] = pagamento_do_aluno.id
+                total_prof += pagamento_do_aluno.valor * 0.4
+                total_studio += pagamento_do_aluno.valor * 0.6
 
-        print(f'listaAluno= {listAluno}')
         listResposta.append(obj)
         print(f'listResposta= {listResposta}')
         # final = sorted(listResposta, key=lambda x: x[0])
     return Response({
-        "data": listResposta
+        "data": listResposta,
+        "total_prof": total_prof,
+        "total_studio": total_studio
     })
 
 
