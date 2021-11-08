@@ -365,11 +365,8 @@ def mensal_por_professor(request):
         listAluno.append(aluno.user.first_name)
         print(f'aluno.user.first_name === {aluno.user.first_name}')
 
-        try:
-            pagamento_do_aluno = aluno.user.pagamento_set.get(
-                data__year=year, data__month=month)
-        except aluno.user.pagamento_set.DoesNotExist:
-            pagamento_do_aluno = None
+        pagamento_do_aluno = aluno.user.pagamento_set.filter(
+            data__year=year, data__month=month).first()
 
         print(f'pagament_do_aluno {pagamento_do_aluno}')
         if(pagamento_do_aluno):
