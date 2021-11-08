@@ -123,18 +123,8 @@ class ResumoManualMes(models.Model):
     class Meta:
         ordering = ['-data']
 
-    @property
-    def despesas_do_mes(self):
-        list = ''
-        for n in self.despesas_set.all():
-            list += f'{n.nome} = {n.valor}'
-
-        return list
-
-    list_display = ['despesas_do_mes', despesas_do_mes]
-
     def __str__(self):
-        return f'{self.data}'
+        return f'{self.data.month}/ {self.data.year}'
 
 
 class Despesas(models.Model):
