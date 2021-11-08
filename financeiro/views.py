@@ -358,10 +358,12 @@ def mensal_por_professor(request):
         listAluno = []
         if(aluno.dia_pagamento):
             listAluno.append(aluno.dia_pagamento)
+            print(f'dia_pagamento === {aluno.dia_pagamento}')
         else:
             listAluno.append(" ")
 
         listAluno.append(aluno.user.first_name)
+        print(f'aluno.user.first_name === {aluno.user.first_name}')
 
         pagamento_do_aluno = aluno.user.pagamento_set.get(
             data__year=year, data__month=month)
