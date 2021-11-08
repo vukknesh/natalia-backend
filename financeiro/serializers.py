@@ -107,7 +107,8 @@ class ResumoManualMesListAllSerializer(ModelSerializer):
         print(f'self {self} ')
         print(f'self.despesas_set.all() {obj.despesas_set.all()} ')
         for a in obj.despesas_set.all():
-            t += a.valor
+            print(f'a = {a}')
+            # t += a.valor
 
         return t
 
