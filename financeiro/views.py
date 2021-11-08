@@ -396,7 +396,7 @@ def mensal_por_professor(request):
             total_prof += pagamento_do_aluno.valor * 0.4
             total_studio += pagamento_do_aluno.valor * 0.6
 
-        listResposta.append(obj)
+            listResposta.append(obj)
         # final = sorted(listResposta, key=lambda x: x[0])
     return Response({
         "data": listResposta,
