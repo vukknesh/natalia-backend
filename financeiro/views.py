@@ -340,16 +340,22 @@ def mensal_por_professor(request):
     now = datetime.now(timezone.utc)
     year = now.year
     month = now.month
-
+    print('dentro do mensao_por_professor')
     professorId = request.data['professorId']
+    print(f'professorId {professorId}')
     data = request.data['data']
+
+    print(f'data {data}')
     professor = Profile.objects.get(id=professorId)
+    print(f'professor = {professor}')
     alunos_do_professor = Profile.objects.filter(professor=professorId.user)
+    print(f'alunos_do_professor = {alunos_do_professor}')
 
     listResposta = []
     for aluno in alunos_do_professor:
         listAluno = []
         listAluno.append(aluno.dia_pagamento)
+        print(f'------------------- listaAluno')
         listAluno.append(aluno.user.first_name)
 
         pagamento_do_aluno = aluno.user.pagamento_set.get(
@@ -357,7 +363,9 @@ def mensal_por_professor(request):
         listAluno.append(pagamento_do_aluno.valor)
         listAluno.append(pagamento_do_aluno.valor * 0.6)
         listAluno.append(pagamento_do_aluno.valor * 0.4)
-
+        print(f'listaAluno= {listAluno}')
+        listResposta.append(listAluno)
+        print(f'listResposta= {listResposta}')
     return Response({
         "data": listResposta
     })
