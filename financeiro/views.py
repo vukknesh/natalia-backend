@@ -353,16 +353,28 @@ def mensal_por_professor(request):
 
     listResposta = []
     for aluno in alunos_do_professor:
+        print('------------------------------------------')
+        print(f'aluno === {aluno}')
         listAluno = []
-        listAluno.append(aluno.dia_pagamento)
-        print(f'------------------- listaAluno')
+        if(aluno.dia_pagamento):
+            listAluno.append(aluno.dia_pagamento)
+        else:
+            listAluno.append(" ")
+
         listAluno.append(aluno.user.first_name)
 
         pagamento_do_aluno = aluno.user.pagamento_set.get(
             data__year=year, data__month=month)
-        listAluno.append(pagamento_do_aluno.valor)
-        listAluno.append(pagamento_do_aluno.valor * 0.6)
-        listAluno.append(pagamento_do_aluno.valor * 0.4)
+        if(pagamento_do_aluno.valor):
+
+            listAluno.append(pagamento_do_aluno.valor)
+            listAluno.append(pagamento_do_aluno.valor * 0.6)
+            listAluno.append(pagamento_do_aluno.valor * 0.4)
+        else:
+            listAluno.append(0)
+            listAluno.append(0)
+            listAluno.append(0)
+
         print(f'listaAluno= {listAluno}')
         listResposta.append(listAluno)
         print(f'listResposta= {listResposta}')
