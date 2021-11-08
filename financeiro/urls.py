@@ -47,7 +47,7 @@ urlpatterns = [
         AulaExperimentalCreateAPIView.as_view(), name='experimental'),
     url(r'^add-avulsa/$', AulaAvulsaGrupoCreateAPIView.as_view(), name='avulsa'),
     url(r'^add-personal/$', AulaPersonalCreateAPIView.as_view(), name='personal'),
-    url(r'^res-mes/^(?P<id>[\w-]+)/$',
+    url(r'^detail-mes/^(?P<id>[\w-]+)/$',
         ResumoManualMesDetailAPIView.as_view(), name='res-detail'),
     url(r'^(?P<id>[\w-]+)/$',
         PagamentoDetailAPIView.as_view(), name='detail'),
