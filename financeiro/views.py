@@ -357,7 +357,7 @@ def mensal_por_professor(request):
     listResposta = []
     for aluno in alunos_do_professor:
         obj = {"dia_pagamento": 0, "first_name": "Sem Nome",
-               "id_pagamento": 0, "valor": 0}
+               "id_pagamento": 0, "valor": 0, "valor_professor": 0, "valor_studio": 0}
         print('------------------------------------------')
         print(f'aluno === {aluno}')
         listAluno = []
@@ -380,6 +380,8 @@ def mensal_por_professor(request):
         if(pagamento_do_aluno):
             if(pagamento_do_aluno.valor):
                 obj['valor'] = pagamento_do_aluno.valor
+                obj['valor_professor'] = pagamento_do_aluno.valor * 0.4
+                obj['valor_studio'] = pagamento_do_aluno.valor * 0.6
                 obj['id_pagamento'] = pagamento_do_aluno.id
 
         print(f'listaAluno= {listAluno}')
