@@ -94,21 +94,14 @@ class ResumoManualMesListAllSerializer(ModelSerializer):
     total = SerializerMethodField()
 
     def get_despesas_do_mes(self, obj):
-        print('get_despesas')
-        print(f'self = {self}')
-        print(f'obj.despesas_set = {obj.despesas_set.all()}')
         d = obj.despesas_set.all()
 
-        return DespesasSerializer(d, many=True)
+        return DespesasSerializer(d, many=True).data
 
     def get_total(self, obj):
         t = 0
-        print(f'get Total ')
-        print(f'self {self} ')
-        print(f'self.despesas_set.all() {obj.despesas_set.all()} ')
         for a in obj.despesas_set.all():
-            print(f'a = {a}')
-            # t += a.valor
+            t += a.valor
 
         return t
 
