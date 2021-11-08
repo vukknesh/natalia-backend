@@ -14,6 +14,17 @@ class ExtraAdmin(admin.ModelAdmin):
         return "{}".format(obj.user.first_name)
 
 
+class InlineModel(admin.TabularInline):
+    model = Despesas
+    extra = 1
+    max_num = 15
+
+
+# @admin.register(Profile)
+class ResumoMensalAdmin(admin.ModelAdmin):
+    inlines = [InlineModel]
+
+
 admin.site.register(Pagamento, ExtraAdmin)
 admin.site.register(AulaExperimental)
 admin.site.register(AulaAvulsaGrupo)
@@ -25,4 +36,4 @@ admin.site.register(VendaItems)
 admin.site.register(Teste)
 admin.site.register(Experimental)
 admin.site.register(Despesas)
-admin.site.register(ResumoManualMes)
+admin.site.register(ResumoManualMes, ResumoMensalAdmin)
