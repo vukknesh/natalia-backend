@@ -353,16 +353,21 @@ def mensal_por_professor(request):
 
     listResposta = []
     for aluno in alunos_do_professor:
+        obj = {"dia_pagamento": 0, "first_name": "Sem Nome",
+               "id_pagamento": 0, "valor": 0}
         print('------------------------------------------')
         print(f'aluno === {aluno}')
         listAluno = []
         if(aluno.dia_pagamento):
-            listAluno.append(aluno.dia_pagamento)
-            print(f'dia_pagamento === {aluno.dia_pagamento}')
+            obj['dia_pagamento'] = aluno.dia_pagamento
+            # listAluno.append(aluno.dia_pagamento)
+            # print(f'dia_pagamento === {aluno.dia_pagamento}')
         else:
-            listAluno.append(" ")
+            obj['dia_pagamento'] = 0
+            # listAluno.append(" ")
 
-        listAluno.append(aluno.user.first_name)
+        # listAluno.append(aluno.user.first_name)
+        obj['first_name'] = aluno.user.first_name
         print(f'aluno.user.first_name === {aluno.user.first_name}')
 
         pagamento_do_aluno = aluno.user.pagamento_set.filter(
@@ -371,24 +376,15 @@ def mensal_por_professor(request):
         print(f'pagament_do_aluno {pagamento_do_aluno}')
         if(pagamento_do_aluno):
             if(pagamento_do_aluno.valor):
+                obj['valor'] = pagamento_do_aluno.valor
+                obj['id_pagamento'] = pagamento_do_aluno.id
 
-                listAluno.append(pagamento_do_aluno.valor)
-                listAluno.append(pagamento_do_aluno.valor * 0.6)
-                listAluno.append(pagamento_do_aluno.valor * 0.4)
-            else:
-                listAluno.append(0)
-                listAluno.append(0)
-                listAluno.append(0)
-        else:
-            listAluno.append("sem pagamento")
-            listAluno.append("sem pagamento")
-            listAluno.append("sem pagamento")
         print(f'listaAluno= {listAluno}')
-        listResposta.append(listAluno)
+        listResposta.append(obj)
         print(f'listResposta= {listResposta}')
-        final = sorted(listResposta, key=lambda x: x[0])
+        # final = sorted(listResposta, key=lambda x: x[0])
     return Response({
-        "data": final
+        "data": listResposta
     })
 
 
