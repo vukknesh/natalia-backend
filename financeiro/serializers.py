@@ -1,3 +1,4 @@
+from rest_framework.fields import ReadOnlyField
 from rest_framework.serializers import (
     HyperlinkedIdentityField,
     ModelSerializer,
@@ -87,7 +88,8 @@ class ResumoManualMesListAllSerializer(ModelSerializer):
 
     class Meta:
         model = ResumoManualMes
-        fields = ['despesas', 'data']
+        readonly_fields = ['despesas_do_mes']
+        fields = ['despesas', 'data', 'despesas_do_mes']
 
 
 class ResumoMensalListAllSerializer(ModelSerializer):

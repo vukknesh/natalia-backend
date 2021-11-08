@@ -120,6 +120,13 @@ class ResumoManualMes(models.Model):
 
     data = models.DateField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['-data']
+
+    @property
+    def despesas_do_mes(self):
+        return self.despesas_set.objects.all()
+
     def __str__(self):
         return f'{self.data}'
 
