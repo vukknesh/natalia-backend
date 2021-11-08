@@ -388,13 +388,13 @@ def mensal_por_professor(request):
 
         print(f'pagament_do_aluno {pagamento_do_aluno}')
         if(pagamento_do_aluno):
-            if(pagamento_do_aluno.valor):
-                obj['valor'] = pagamento_do_aluno.valor
-                obj['valor_professor'] = pagamento_do_aluno.valor * 0.4
-                obj['valor_studio'] = pagamento_do_aluno.valor * 0.6
-                obj['id_pagamento'] = pagamento_do_aluno.id
-                total_prof += pagamento_do_aluno.valor * 0.4
-                total_studio += pagamento_do_aluno.valor * 0.6
+
+            obj['valor'] = pagamento_do_aluno.valor
+            obj['valor_professor'] = pagamento_do_aluno.valor * 0.4
+            obj['valor_studio'] = pagamento_do_aluno.valor * 0.6
+            obj['id_pagamento'] = pagamento_do_aluno.id
+            total_prof += pagamento_do_aluno.valor * 0.4
+            total_studio += pagamento_do_aluno.valor * 0.6
 
         listResposta.append(obj)
         # final = sorted(listResposta, key=lambda x: x[0])
