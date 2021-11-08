@@ -236,7 +236,7 @@ class PagamentoListAllAPIView(ListAPIView):
         year = now.year
         month = now.month
 
-        queryset_list = Pagamento.objects.filter(data__year__gte=year,
+        queryset_list = Pagamento.objects.filter(data__year__gte=year, data__year__lte=year+1,
                                                  user__is_active=True).exclude(user__profile__is_professor=True)  # filter(user=self.request.user)
 
         return queryset_list
@@ -351,9 +351,18 @@ def mensal_por_professor(request):
     print('dentro do mensao_por_professor')
     professorId = request.data['professorId']
     print(f'professorId {professorId}')
-    data_string = request.data['data']
-    data = datetime.strptime(data_string, '%m/%d/%y')
+    data = request.data['data']
+    # data = datetime.strptime(data_string, '%m/%d/%y')
     print(f'data {data}')
+    print(f' type data {type(data)}')
+    dt_obj = datetime.strptime(
+        data, '%Y-%m-%d')
+    print(f'dt_obj = {dt_obj}')
+    print(f'dt_obj.year = {dt_obj.year}')
+    print(f'dt_obj.month = {dt_obj.month}')
+
+    year = dt_obj.year
+    month = dt_obj.month
     professor = Profile.objects.get(id=professorId)
     print(f'professor = {professor}')
     alunos_do_professor = Profile.objects.filter(professor=professor.user)
