@@ -168,6 +168,9 @@ class PagamentoUpdateAPIView(UpdateAPIView):
     lookup_field = 'id'
     permission_classes = [IsAuthenticated]
 
+    def perform_update(self, serializer):
+        serializer.save()
+
     # def perform_update(self, serializer):
     #     pagamento_obj = self.get_object()
     #     print(f'pagamento_obj = {pagamento_obj}')
