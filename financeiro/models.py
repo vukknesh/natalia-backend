@@ -133,16 +133,6 @@ class ResumoManualMes(models.Model):
 
     list_display = ['despesas_do_mes', despesas_do_mes]
 
-    @property
-    def total(self):
-        t = 0
-        for n in self.despesas_set.all():
-            t += n.valor
-
-        return t
-
-    list_display = ['total', total]
-
     def __str__(self):
         return f'{self.data}'
 

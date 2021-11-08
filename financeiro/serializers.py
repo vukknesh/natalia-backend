@@ -90,14 +90,10 @@ class DespesasSerializer(ModelSerializer):
 
 class ResumoManualMesListAllSerializer(ModelSerializer):
     despesas_do_mes = DespesasSerializer(many=True, read_only=True)
-    total = SerializerMethodField()
-
-    def get_total(self, obj):
-        return self.total
 
     class Meta:
         model = ResumoManualMes
-        fields = ['data', 'despesas_do_mes', 'total']
+        fields = ['data', 'despesas_do_mes']
 
 
 class ResumoMensalListAllSerializer(ModelSerializer):
