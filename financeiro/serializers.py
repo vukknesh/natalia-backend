@@ -94,7 +94,9 @@ class ResumoManualMesListAllSerializer(ModelSerializer):
 
     def get_total(self, obj):
         t = 0
-
+        print(f'get Total ')
+        print(f'self {self} ')
+        print(f'self.despesas_set.all() {self.despesas_set.all()} ')
         for a in self.despesas_set.objects.all():
             t += a.valor
 
