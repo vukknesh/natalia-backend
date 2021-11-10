@@ -643,11 +643,11 @@ class EventoListAllAPIView(ListAPIView):
         if data_final and data_inicial:
 
             queryset_list = Evento.objects.filter(user__is_active=True, starting_date__range=[
-                                                  data_inicial, data_final])  # filter(user=self.request.user)
+                                                  data_inicial, data_final]).distinct('starting_date')  # filter(user=self.request.user)
             experimental = Experimental.objects.filter(starting_date__range=[
                 data_inicial, data_final])
         else:
-            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt)[
+            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt).distinct('starting_date')[
                 :900]
             experimental = Experimental.objects.filter(starting_date__gte=dt)
 
@@ -673,7 +673,7 @@ class EventoListAllAPIView(ListAPIView):
         # if list:
         # result_list = list(chain(expe, queryset_list))
         # print(f'lista_final = {lista_final}')
- 
+
         # result_list = list(chain(queryset_list, experimental))
         # print(f'result_list = {result_list}')
         # json = serialize('json', result_list)
@@ -688,7 +688,6 @@ def listar_eventos_com_experimentais(request):
     dt = date.today() - timedelta(5)
     data_inicial = request.GET.get("data_inicial")
     data_final = request.GET.get("data_final")
-    
 
     if data_final and data_inicial:
         print(f'data  final ={data_final}')
@@ -725,8 +724,8 @@ def listar_eventos_com_experimentais(request):
     # result_list = list(chain(expe, queryset_list))
     print(f'lista_final = {list(lista_final)}')
     return Response({
-        "lista":list(lista_final)
-        })
+        "lista": list(lista_final)
+    })
 
 #     return Response({"message": "Todas Aulas Deletadas"})
 
@@ -912,5 +911,3 @@ def repor_aula(request):
         resposta = "Voce nao tem aulas para remarcar este mes!"
 
     return Response({"message": resposta, "status": status})
-
-
