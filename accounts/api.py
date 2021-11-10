@@ -154,11 +154,14 @@ class RegisterWithPlano(generics.GenericAPIView):
 @api_view(['POST'])
 def add_aulas_por_aluno(request):
     now = datetime.now(timezone.utc)
+    if request.data['comecar']:
+        now = request.data['comecar']
     print(f'now {now}')
     year = now.year
     print(f'year {year}')
     month = now.month
     print(f'month {month}')
+    d = now.day
     user = None
     aluno_id = None
     if request.data['alunoId']:
@@ -183,7 +186,7 @@ def add_aulas_por_aluno(request):
             for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
 
-        start_date = date(year, month, 1)
+        start_date = date(year, month, d)
 
         end_date = date(2025, 12, 30)
         tempo_horario = datetime.strptime(horario, '%H:%M:%S').time()
