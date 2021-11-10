@@ -70,6 +70,9 @@ class EventoCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        print('dentro do create')
+        print('self', self)
+
         data = datetime.now()
         if self.request.data['starting_date']:
             data = self.request.data['starting_date']
@@ -79,10 +82,9 @@ class EventoCreateAPIView(CreateAPIView):
         else:
             user = self.request.user
 
-        if data and user:
-            if Evento.objects.exclude(pk=self.pk).filter(starting_date=self.starting_date).exists():
-                print('existe ')
-                return
+        if Evento.objects.exclude(id=self.id).filter(starting_date=self.starting_date).exists():
+            print('existe ')
+            return
         serializer.save(user=user, starting_date=data)
 
 
@@ -648,11 +650,11 @@ class EventoListAllAPIView(ListAPIView):
         if data_final and data_inicial:
 
             queryset_list = Evento.objects.filter(user__is_active=True, starting_date__range=[
-                                                  data_inicial, data_final]).order_by('user', 'starting_date').distinct('user', 'starting_date').values('starting_date')  # filter(user=self.request.user)
+                                                  data_inicial, data_final])
             experimental = Experimental.objects.filter(starting_date__range=[
                 data_inicial, data_final])
         else:
-            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt).order_by('user', 'starting_date').distinct('user', 'starting_date').values('starting_date')[
+            queryset_list = Evento.objects.filter(user__is_active=True, starting_date__gte=dt)[
                 :900]
             experimental = Experimental.objects.filter(starting_date__gte=dt)
 

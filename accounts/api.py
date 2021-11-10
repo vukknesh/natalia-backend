@@ -39,9 +39,11 @@ class UsersActiveList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = User.objects.filter(is_active=True).order_by('first_name')
+        queryset_list = User.objects.filter(
+            is_active=True).order_by('first_name')
 
         return queryset_list
+
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -192,9 +194,12 @@ def add_aulas_por_aluno(request):
 
                     mydatetime = datetime.combine(
                         single_date, tempo_horario)
-                    Evento.objects.create(
-                        user=user, starting_date=mydatetime)
-                    print('criado')
+                    if Evento.objects.filter(user=user, starting_date=mydatetime).exists():
+                        pass
+                    else:
+                        Evento.objects.create(
+                            user=user, starting_date=mydatetime)
+                        print('criado')
         while date_object.year == year:
             print(date_object)
             date_object += timedelta(days=7)
