@@ -53,7 +53,12 @@ class Evento(models.Model):
 
 
 def update_evento(sender, instance, **kwargs):
+
+    print('dentro do update_evento', instance.id)
     user = instance.user
+    if Evento.objects.exclude(id=instance.id).filter(user=user, starting_date=instance.starting_date).exists():
+        print('JA EXISTE ESSA AULA')
+        return
     now = datetime.now(timezone.utc)
     print(f'instance ={instance}')
     print(f'now ={now}')
