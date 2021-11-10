@@ -52,17 +52,6 @@ class Evento(models.Model):
         return reverse("eventos:delete", kwargs={"id": self.id})
 
 
-def save(self, *args, **kwargs):
-    # Make sure there are no bookings on the same day
-    if Evento.objects.exclude(pk=self.pk).filter(starting_date=self.starting_date).exists():
-        print('evento ja existe')
-        print(f'self', self.starting_date)
-        pass
-        # raise ValidationError('There cannot be two bookings with the same date.')
-
-    super(Evento, self).save(*args, **kwargs)
-
-
 def update_evento(sender, instance, **kwargs):
     user = instance.user
     now = datetime.now(timezone.utc)
