@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.checks.messages import Error
 from django.utils import timezone
 
 from datetime import datetime, date
@@ -7,6 +8,7 @@ from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from dateutil.relativedelta import relativedelta
 
@@ -58,7 +60,7 @@ def update_evento(sender, instance, **kwargs):
     user = instance.user
     if Evento.objects.exclude(id=instance.id).filter(user=user, starting_date=instance.starting_date).exists():
         print('JA EXISTE ESSA AULA')
-        return
+        raise ValidationError("Aula ja existe")
     now = datetime.now(timezone.utc)
     print(f'instance ={instance}')
     print(f'now ={now}')

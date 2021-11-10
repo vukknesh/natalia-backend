@@ -82,9 +82,10 @@ class EventoCreateAPIView(CreateAPIView):
         else:
             user = self.request.user
 
-        if Evento.objects.exclude(id=self.id).filter(starting_date=self.starting_date).exists():
-            print('existe ')
-            return
+        if Evento.objects.exclude(pk=self.pk).filter(starting_date=self.starting_date).exists():
+            print('existe dentro do perform create ')
+            raise ValueError
+
         serializer.save(user=user, starting_date=data)
 
 

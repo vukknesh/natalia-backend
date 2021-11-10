@@ -194,12 +194,10 @@ def add_aulas_por_aluno(request):
 
                     mydatetime = datetime.combine(
                         single_date, tempo_horario)
-                    if Evento.objects.filter(user=user, starting_date=mydatetime).exists():
-                        pass
-                    else:
-                        Evento.objects.create(
-                            user=user, starting_date=mydatetime)
-                        print('criado')
+
+                    Evento.objects.get_or_create(
+                        user=user, starting_date=mydatetime)
+                    print('criado')
         while date_object.year == year:
             print(date_object)
             date_object += timedelta(days=7)
