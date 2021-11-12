@@ -185,7 +185,7 @@ def add_aulas_por_aluno(request):
     if request.data['comecar']:
 
         dddd = request.data['comecar']
-        now = datetime.strptime(dddd, "%Y-%m-%d").date()
+        now = datetime.strptime(dddd, "%Y-%m-%d")
 
     print(f'now {now}')
     print(f'type {type(now)}')
