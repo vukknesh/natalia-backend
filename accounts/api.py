@@ -184,7 +184,9 @@ def add_aulas_por_aluno(request):
     now = datetime.now(timezone.utc)
     if request.data['comecar']:
         now = request.data['comecar']
+
     print(f'now {now}')
+    print(f'type {type(now)}')
     year = now.year
     print(f'year {year}')
     month = now.month
