@@ -119,6 +119,50 @@ def add_reposicao(request):
     return Response({"message": "Aula remarcada com sucesso!"})
 
 
+@api_view(['POST'])
+def add_avulsa(request):
+    print(f'request {request}')
+    print(f'request.data {request.data}')
+    u = request.data['user']
+    user = User.objects.get(id=u)
+    starting_date = request.data['starting_date']
+    print(f'starting_date ={starting_date}')
+
+    Evento.objects.create(user=user, starting_date=starting_date, avulsa=True)
+
+    return Response({"message": "Aula remarcada com sucesso!"})
+
+
+@api_view(['POST'])
+def add_atestado(request):
+    print(f'request {request}')
+    print(f'request.data {request.data}')
+    u = request.data['user']
+    user = User.objects.get(id=u)
+    starting_date = request.data['starting_date']
+    print(f'starting_date ={starting_date}')
+
+    Evento.objects.create(
+        user=user, starting_date=starting_date, atestado=True)
+
+    return Response({"message": "Aula remarcada com sucesso!"})
+
+
+@api_view(['POST'])
+def add_experimental(request):
+    print(f'request {request}')
+    print(f'request.data {request.data}')
+    u = request.data['user']
+    user = User.objects.get(id=u)
+    starting_date = request.data['starting_date']
+    print(f'starting_date ={starting_date}')
+
+    Evento.objects.create(
+        user=user, starting_date=starting_date, experimental=True)
+
+    return Response({"message": "Aula remarcada com sucesso!"})
+
+
 class EventoDetailAPIView(RetrieveAPIView):
     queryset = Evento.objects.filter(starting_date__gte=datetime.now())
     serializer_class = EventoDetailSerializer

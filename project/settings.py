@@ -204,4 +204,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # 6- Colocar a busca do evento  (admin) mais fácil, por mês e ano para trocar algum horário que precisar.
 # 9- “Cadastrar aula” e “deletar aula” aparecer apenas os alunos ativos.
 
+
+# orcamento
+
+# 1- Gerenciar Despesas
+# 2- Gerenciar Professores
+# 3-
+
 # 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

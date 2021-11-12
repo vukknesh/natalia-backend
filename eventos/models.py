@@ -27,7 +27,10 @@ class Evento(models.Model):
                              on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, null=True, blank=True)
     extra = models.CharField(max_length=255, null=True, blank=True)
+    atestado = models.BooleanField(default=False)
     desmarcado = models.BooleanField(default=False)
+    experimental = models.BooleanField(default=False)
+    avulsa = models.BooleanField(default=False)
     remarcacao = models.BooleanField(default=False)
     reposicao = models.BooleanField(default=False)
     bonus = models.BooleanField(default=False)
@@ -103,7 +106,7 @@ def update_evento(sender, instance, **kwargs):
         print(f'start_date = {start_date}')
 
     aulas_do_mes = user.evento_set.filter(starting_date__gte=start_date,
-                                          starting_date__lt=end_date, reposicao=False,  historico=False)
+                                          starting_date__lt=end_date, reposicao=False,  historico=False, atestado=False)
 
     if(user.profile.plano == "4 Aulas"):
         if(aulas_do_mes.count() >= 4):

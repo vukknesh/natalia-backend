@@ -365,7 +365,8 @@ def mensal_por_professor(request):
     month = dt_obj.month
     professor = Profile.objects.get(id=professorId)
     print(f'professor = {professor}')
-    alunos_do_professor = Profile.objects.filter(professor=professor.user)
+    alunos_do_professor = Profile.objects.filter(
+        professor=professor.user, user__is_active=True)
     print(f'alunos_do_professor = {alunos_do_professor}')
 
     listResposta = []

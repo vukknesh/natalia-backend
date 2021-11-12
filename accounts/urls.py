@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .api import RegisterAPI, LoginAPI, UserAPI, RegisterWithPlano, add_aulas_por_aluno, add_pagamentos_por_aluno, get_pagamentos_retroativo, UsersActiveList
+from .api import RegisterAPI, LoginAPI, UserAPI, RegisterWithPlano, RegistrarUserSimples, add_aulas_por_aluno, add_pagamentos_por_aluno, get_pagamentos_retroativo, UsersActiveList
 from knox import views as knox_views
 from django.conf.urls import url
 
@@ -8,8 +8,9 @@ urlpatterns = [
     path('api/auth/register', RegisterAPI.as_view()),
     path('api/auth/login', LoginAPI.as_view()),
     path('api/auth/user', UserAPI.as_view()),
-    path('api/auth/active', UsersActiveList.as_view(),name='active-users'),
+    path('api/auth/active', UsersActiveList.as_view(), name='active-users'),
     path('api/auth/cadastrar-aluno', RegisterWithPlano.as_view(), name='cadastrar'),
+    path('api/auth/simples-aluno', RegistrarUserSimples.as_view(), name='cadastrar'),
     path('api/auth/add-aulas', add_aulas_por_aluno, name='add-aulas'),
     url(r'^api/pagamento-retroativo/(?P<user_id>[\w-]+)$',
         get_pagamentos_retroativo, name='pagamento-retroativo'),

@@ -151,6 +151,34 @@ class RegisterWithPlano(generics.GenericAPIView):
         return Response({"user": UserSerializer(user).data})
 
 
+class RegistrarUserSimples(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+    query_set = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        plano = None
+        professor = None
+        professor_id = None
+
+        if request.data['professor_id']:
+            professor_id = request.data['professor_id']
+            print('antes do professor')
+            professor = User.objects.get(id=professor_id)
+
+        print('aqui dps dos ifs')
+        serializer = self.get_serializer(data=request.data)
+        print('antes do is valid')
+        serializer.is_valid(raise_exception=True)
+        print('depois do is valid')
+        user = serializer.save()
+        perfil = Profile.objects.get(user=user)
+        print('perfil')
+        perfil.professor = professor
+        perfil.save()
+
+        return Response({"user": UserSerializer(user).data})
+
+
 @api_view(['POST'])
 def add_aulas_por_aluno(request):
     now = datetime.now(timezone.utc)

@@ -17,7 +17,10 @@ from .views import (
     add_reposicao,
     desmarcar_aula_request,
     repor_aula,
-    listar_eventos_com_experimentais
+    listar_eventos_com_experimentais,
+    add_avulsa,
+    add_atestado,
+    add_experimental
 )
 
 urlpatterns = [
@@ -30,6 +33,12 @@ urlpatterns = [
         EventoDesmarcadoByProfAPIView.as_view(), name='desbyprof'),
     url(r'^add-remarcacao/$',
         add_reposicao, name='add-reposicao'),
+    url(r'^add-avulsa/$',
+        add_avulsa, name='add-avulsa'),
+    url(r'^add-atestado/$',
+        add_atestado, name='add-atestado'),
+    url(r'^add-experimental/$',
+        add_experimental, name='add-experimental'),
     url(r'^list-by-professor/$',
         EventoByProfAPIView.as_view(), name='prof-aulas'),
     url(r'^create/$', EventoCreateAPIView.as_view(), name='create'),

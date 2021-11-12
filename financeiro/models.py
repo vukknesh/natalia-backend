@@ -85,12 +85,16 @@ class Item(models.Model):
     cod = models.CharField(max_length=255, default='', null=True, blank=True)
     estoque = models.IntegerField(default=0, null=True, blank=True)
 
+    class Meta:
+        ordering = ['nome']
+
     def __str__(self):
         return f'{self.nome} - {self.valor} - {self.cod} - estoque {self.estoque}'
 
 
 class VendaItems(models.Model):
     data = models.DateTimeField(auto_now_add=True, null=True)
+    nome = models.CharField(max_length=255, default='', null=True, blank=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.CASCADE)
