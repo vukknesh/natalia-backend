@@ -20,7 +20,7 @@ from .views import (
     listar_eventos_com_experimentais,
     add_avulsa,
     add_atestado,
-    add_experimental
+    add_experimental,
 )
 
 urlpatterns = [

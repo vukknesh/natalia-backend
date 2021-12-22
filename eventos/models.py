@@ -58,7 +58,7 @@ class Evento(models.Model):
 
 
 def update_evento(sender, instance, **kwargs):
-
+    print(f'kwags {kwargs}')
     print('dentro do update_evento', instance.id)
     user = instance.user
     if Evento.objects.exclude(id=instance.id).filter(user=user, starting_date=instance.starting_date).exists():

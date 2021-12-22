@@ -36,7 +36,7 @@ from financeiro.models import Experimental
 from financeiro.serializers import ExperimentalSerializer
 from eventos.models import Evento
 from calendar import monthrange
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .permissions import IsOwnerOrReadOnly
 
 from .serializers import (
@@ -186,6 +186,12 @@ def desmarcar_aula_request(request, eventoId):
     # print(f'duration in s = {duration_in_s}')
     days, seconds = diff.days, diff.seconds
     dif_hours = days * 24 + seconds
+    print(f'diff.seconds = {diff.seconds}')
+    print(f'diff.days = {diff.days}')
+    print(f'dif_hours = {dif_hours}')
+    print(f'agora hora = {now}')
+    print(f'evento hora = {evento.starting_date}')
+    print(f'agora hora = {now}')
 
     response_text = "Ok"
     dt = date.today()
@@ -214,7 +220,7 @@ def desmarcar_aula_request(request, eventoId):
         pass
     # funcionando
 
-    if(dif_hours <= 0):
+    if(dif_hours <= 10800):
         print('dentro')
 
         response_text = "Você só poderá remarcar aulas 3 horas antes."
@@ -232,9 +238,6 @@ def desmarcar_aula_request(request, eventoId):
 
     aulas_do_mes = user.evento_set.filter(starting_date__range=(
         start_date, end_date), reposicao=False,  historico=False)
-
-    print(f'aulas_do_mes {aulas_do_mes}')
-    # teste
 
     if(user.profile.plano == "4 Aulas"):
 
@@ -297,10 +300,6 @@ def desmarcar_aula_request(request, eventoId):
 
             response_text = "Você já remarcou 3 aulas deste mês e não poderá remarcar outra."
 
-        if(dif_hours <= 0):
-            print('dentro')
-
-            response_text = "Você só poderá remarcar aulas 3 horas antes."
         # teste ultima aula do mes
         if now.date() == end_date.date():
             response_text = 'Esta aula é a última do seu mês e não poderá ser remarcada!'
@@ -340,10 +339,6 @@ def desmarcar_aula_request(request, eventoId):
 
             response_text = "Você já remarcou 4 aulas deste mês e não poderá remarcar outra."
 
-        if(dif_hours <= 0):
-            print('dentro')
-
-            response_text = "Você só poderá remarcar aulas 3 horas antes."
         # teste ultima aula do mes
         if now.date() == end_date.date():
             response_text = 'Esta aula é a última do seu mês e não poderá ser remarcada!'
@@ -361,7 +356,6 @@ class EventoUpdateAPIView(UpdateAPIView):
         # tudo calculado 3 horas a mais pelo timezone UTC
 
         user = self.request.user
-        print('dentro do perform_update')
 
         now = datetime.now(timezone.utc)
         evento = self.get_object()
@@ -369,11 +363,11 @@ class EventoUpdateAPIView(UpdateAPIView):
         dt = date.today()
         month = now.month
         diff = evento.starting_date - now
+        print(f'diff = {diff}')
         # duration_in_s = diff.total_seconds()
         # print(f'duration in s = {duration_in_s}')
         days, seconds = diff.days, diff.seconds
         dif_hours = days * 24 + seconds
-        print(f'dif_hours update = {dif_hours}')
         response_text = "Ok"
         bonus_counter = user.profile.bonus_remarcadas
         aulas_counter = user.profile.aulas_remarcadas
@@ -383,48 +377,23 @@ class EventoUpdateAPIView(UpdateAPIView):
         # if(evento.bonus):
         #    raise ValidationError(
         #        {"message": "Esta é bônus e não poderá ser remarcada!"})
-        if(evento.starting_date.hour <= 12):
-            # evento proximo dia
-            if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
-                print(f'um dia anterior')
 
-            # msm dia que evento matutino
-            if(now.date() == evento.starting_date.date()):
-                print(f'same date')
-
-            pass
         # funcionando
-
-        if(dif_hours <= 0):
-            print('dentro')
 
         dia_pg = user.profile.dia_pagamento
         a_month = relativedelta(months=1)
         d_day = date(year, month, dia_pg)
-        print(f'd_day ={d_day}')
-        print(f'a month= {a_month}')
         if dt.day < dia_pg:
             start_date = d_day - a_month
             end_date = d_day
-            print(f'start_date < = {start_date}')
-            print(f'end_date < = {end_date}')
         else:
             start_date = d_day
             end_date = d_day + a_month
             print(f'start_date > = {start_date}')
             print(f'end_date > = {end_date}')
-        print(f'antes das aulas do mes')
         aulas_do_mes = user.evento_set.filter(starting_date__range=(
             start_date, end_date), reposicao=False,  historico=False)
-        print(f'aulas_do_mes update {aulas_do_mes}')
-        # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-        #                                       starting_date__month__gte=month,
-        #                                       starting_date__year__lte=year,
-        #                                       starting_date__month__lte=month)
-        # aulas_do_mes = user.evento_set.filter(starting_date__year__gte=year,
-        #                                      starting_date__month__gte=month,
-        #                                      starting_date__year__lte=year,
-        #                                      starting_date__month__lte=month)
+        print(f'aulas_do_mes couunt {aulas_do_mes.count()}')
 
         if(user.profile.plano == "4 Aulas"):
             aulas_bonus = aulas_do_mes.count() - 4
@@ -558,10 +527,6 @@ class EventoUpdateAPIView(UpdateAPIView):
 
                 response_text = "Você já remarcou 4 aulas deste mês."
 
-            if(dif_hours <= 0):
-                print('dentro')
-
-                response_text = "Você só poderá remarcar aulas 3 horas antes."
         # deixar em cima do profile.bonus_remarcadas se nao conta errado!
         # if aulas_bonus > user.profile.bonus_remarcadas:
         #     print(f'aulas_bonus > = {aulas_bonus}')
@@ -621,15 +586,26 @@ class EventoUpdateAPIView(UpdateAPIView):
                 pass
             if aulas_bonus == 0 and aulas_bonus == user.profile.bonus_remarcadas and user.profile.aulas_remarcadas < 5:
                 remarcacao_aluno = True
+        if(dif_hours <= 10800):
+            remarcacao_aluno = False
+
+        if(evento.starting_date.hour <= 12):
+            print(f'proximo dia')
+            # evento proximo dia
+            if(now.hour >= 23 and ((evento.starting_date.day - now.day) == 1)):
+                remarcacao_aluno = False
+
+            # msm dia que evento matutino
+            if(now.date() == evento.starting_date.date()):
+                remarcacao_aluno = False
+
+            pass
 
         profile = user.profile
         profile.aulas_remarcadas = aulas_counter
         profile.bonus_remarcadas = bonus_counter
-
         profile.save()
-        print(f'finalizou com perfil salvo + 1 {profile.aulas_remarcadas}')
 
-        print(f'evento PERFORM_UPDATE= {evento}')
         serializer.save(user=user, remarcacao=remarcacao_aluno)
 
         # email send_email
