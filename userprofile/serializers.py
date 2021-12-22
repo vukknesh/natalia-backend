@@ -81,10 +81,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         return resp
 
     def get_aulas(self, obj):
+
         c_qs = Evento.objects.filter_by_instance(
-            obj)[:30]
-        # c_qs = Evento.objects.filter_by_instance(
-        #     obj).distinct('starting_date')[:30]
+            obj).distinct('starting_date')[:30]
         aulas = EventoDetailSerializer(c_qs, many=True).data
         return aulas
 
