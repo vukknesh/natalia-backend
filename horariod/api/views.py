@@ -115,8 +115,8 @@ def get_horarios_disponiveis(request):
 
         mytime = datetime.combine(data_obj, ho.hora_aula)
         print(f'mytime {mytime}')
-        # filter user_is_active
-        count = Evento.objects.filter(user__is_active=True).filter(
+        # filter user_is_active historico=False, desmarcado=False
+        count = Evento.objects.filter(user__is_active=True, historico=False, desmarcado=False).filter(
             user__profile__professor=prof, starting_date=mytime).count()
         print(f'count = {count}')
         if count > 3:

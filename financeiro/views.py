@@ -573,40 +573,40 @@ def get_pagamento_professor(request):
             plano_pagamento = pr.user.profile.plano_pagamento
             if (plano == "4 Aulas"):
                 if(plano_pagamento == "Mensal"):
-                    valor = 180
+                    valor = 200
                 if(plano_pagamento == "Trimestral"):
-                    valor = 170
+                    valor = 190
                 if(plano_pagamento == "Semestral"):
-                    valor = 160
+                    valor = 180
                 if(plano_pagamento == "Anual"):
-                    valor = 150
+                    valor = 170
             if (plano == "8 Aulas"):
                 if(plano_pagamento == "Mensal"):
-                    valor = 300
+                    valor = 320
                 if(plano_pagamento == "Trimestral"):
-                    valor = 280
+                    valor = 300
                 if(plano_pagamento == "Semestral"):
-                    valor = 260
+                    valor = 280
                 if(plano_pagamento == "Anual"):
-                    valor = 240
+                    valor = 260
             if (plano == "12 Aulas"):
                 if(plano_pagamento == "Mensal"):
-                    valor = 420
+                    valor = 440
                 if(plano_pagamento == "Trimestral"):
-                    valor = 400
+                    valor = 420
                 if(plano_pagamento == "Semestral"):
-                    valor = 380
+                    valor = 400
                 if(plano_pagamento == "Anual"):
-                    valor = 360
+                    valor = 380
             if (plano == "16 Aulas"):
                 if(plano_pagamento == "Mensal"):
-                    valor = 560
+                    valor = 580
                 if(plano_pagamento == "Trimestral"):
-                    valor = 540
+                    valor = 560
                 if(plano_pagamento == "Semestral"):
-                    valor = 520
+                    valor = 540
                 if(plano_pagamento == "Anual"):
-                    valor = 500
+                    valor = 520
             valor_acumulado += valor
         list_prof_rend.append(valor_acumulado)
         print(f'lista_prof {list_prof}')
