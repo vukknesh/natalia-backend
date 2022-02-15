@@ -188,7 +188,7 @@ def repor_aula(request):
         print(f'dentro do count > aluno_reposicao')
         # verificar se a data selecionada esta no mes atual do usuario
         count = Evento.objects.filter(
-            user__profile__professor=prof, starting_date=data).count()
+            user__profile__professor=prof, starting_date=data, user__is_active=True, historico=False, desmarcado=False).count()
 
         # if data > start_date and data < end_date:
         # if data > start_date and data < end_date:
@@ -196,7 +196,7 @@ def repor_aula(request):
         # verificar se existe aula nesse horario e no dia
         if count > 3:
 
-            resposta = "Nao ha vagas nesse horario!"
+            resposta = "Não há vagas nesse horário!"
             status = 403
             pass
         else:
